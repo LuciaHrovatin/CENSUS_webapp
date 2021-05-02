@@ -9,23 +9,36 @@ def get_data(filename: str):
 get_data("dataset/Tasso_occupazione.csv")
 get_data("dataset/Tasso_disoccupazione.csv")
 
-def clean_data(filename: str):
+def rename_column(filename: str):
     data = pd.read_csv(filename)
-    # rename value of occupazione/dispccupazione
-    if filename == "dataset/Tasso_occupazione.csv":
-        renamed_data = data.rename(columns={'Value': 'Tasso di occupazione'})
-        renamed_data.to_csv(dataset_clean/filename, index=None)
-    elif filename == "dataset/Tasso_disoccupazione.csv":
-        renamed_data = data.rename(columns={'Value': 'Tasso di disoccupazione'})
-        renamed_data.to_csv(dataset_clean/filename, index=None)
-    # rename with NUTS3 code
-    renamed_location = data.rename(columns={'ITTER107': 'NUTS3'})
-    renamed_location.to_csv(dataset_clean/filename, index=None)
-    # delete Flag Code & Flags
-    data.drop(['Flag Codes', 'Flags'], inplace=True, axis=1)
+    file_n = filename[filename.find("/")+1: ]
+    # rename columns
+    if file_n == "Tasso_occupazione.csv":
+        renamed_data = data.rename(columns={'Value': 'VALUE EMP', 'ITTER107': 'NUTS3', 'SEXISTAT1': 'SEX', 'ETA1': 'AGE'})
+        renamed_data.to_csv("dataset_clean/" + file_n, index=None)
+    elif file_n == "Tasso_disoccupazione.csv":
+        renamed_data = data.rename(columns={'Value': 'VALUE UNEMP', 'ITTER107': 'NUTS3', 'SEXISTAT1': 'SEX', 'ETA1': 'AGE'})
+        renamed_data.to_csv("dataset_clean/" + file_n, index=None)
+    return print(data.head())
 
+def delete_column(filename: str):
+    data = pd.read_csv(filename)
+    cols_to_remove = ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato', 'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags']
+    del_col = []
+    for i in cols_to_remove:
+         if i in data.columns:
+             del_col.append(i)
 
+    delete_column = data.drop(del_col, inplace=False, axis=1)
+    delete_column.to_csv(filename, index=None)
+    #delete_column = data.drop(['Territorio', 'TIPO_DATO_FOL', 'Tipo dato', 'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'], inplace=False, axis=1)
+   # delete_column.to_csv(filename, index=None)
     print(data.head())
 
-clean_data("dataset/Tasso_occupazione.csv")
+delete_column("dataset_clean/Tasso_disoccupazione.csv")
 
+
+
+# data = pd.read_csv("dataset/Tasso_disoccupazione.csv")
+# renamed_data = data.rename(columns={'Value': 'Tasso di disoccupazione'})
+# renamed_data.to_csv("dataset_clean/Tasso_disoccupazione.csv", index=None)
