@@ -6,16 +6,16 @@ def get_data(filename: str):
     data = pd.read_csv(filename)
     return print(data.head())
 
-get_data("Tasso_occupazione.csv")
-get_data("Tasso_disoccupazione.csv")
+get_data("dataset/Tasso_occupazione.csv")
+get_data("dataset/Tasso_disoccupazione.csv")
 
 def clean_data(filename: str):
     data = pd.read_csv(filename)
     # rename value of occupazione/dispccupazione
-    if filename == "Tasso_occupazione.csv":
+    if filename == "dataset/Tasso_occupazione.csv":
         renamed_data = data.rename(columns={'Value': 'Tasso di occupazione'})
         renamed_data.to_csv(filename, index=None)
-    elif filename == "Tasso_disoccupazione.csv":
+    elif filename == "dataset/Tasso_disoccupazione.csv":
         renamed_data = data.rename(columns={'Value': 'Tasso di disoccupazione'})
         renamed_data.to_csv(filename, index=None)
     # rename with NUTS3 code
@@ -27,5 +27,5 @@ def clean_data(filename: str):
 
     print(data.head())
 
-clean_data("Tasso_occupazione.csv")
+clean_data("dataset/Tasso_occupazione.csv")
 
