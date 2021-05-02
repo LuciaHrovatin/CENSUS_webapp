@@ -14,13 +14,13 @@ def clean_data(filename: str):
     # rename value of occupazione/dispccupazione
     if filename == "dataset/Tasso_occupazione.csv":
         renamed_data = data.rename(columns={'Value': 'Tasso di occupazione'})
-        renamed_data.to_csv(filename, index=None)
+        renamed_data.to_csv(dataset_clean/filename, index=None)
     elif filename == "dataset/Tasso_disoccupazione.csv":
         renamed_data = data.rename(columns={'Value': 'Tasso di disoccupazione'})
-        renamed_data.to_csv(filename, index=None)
+        renamed_data.to_csv(dataset_clean/filename, index=None)
     # rename with NUTS3 code
     renamed_location = data.rename(columns={'ITTER107': 'NUTS3'})
-    renamed_location.to_csv(filename, index=None)
+    renamed_location.to_csv(dataset_clean/filename, index=None)
     # delete Flag Code & Flags
     data.drop(['Flag Codes', 'Flags'], inplace=True, axis=1)
 
