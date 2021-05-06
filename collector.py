@@ -10,8 +10,10 @@ def get_data(filename: str):
 get_data("dataset/Tasso_occupazione.csv")
 get_data("dataset/Tasso_disoccupazione.csv")
 
+## -----------------------------------------RENAMING/ DELETING COLUMNS ----------------------------------
 def rename_column(filename: str):
     """
+
     The function renames the column of pandas dataframes given the file name
     and save it in a new folder
     :param filename: name of the file whose columns' names will be changed
@@ -34,6 +36,13 @@ def rename_column(filename: str):
     return print(data.head())
 
 def delete_column(filename: str, cols_to_remove: list):
+    """
+    The function deletes the columns contained in the list cols_to_remove.
+    :param str filename: name of the file on which the modifications are applied
+    :param list cols_to_remove: list of columns' names that have to be removed
+    :return: return the same dataset but updated
+    """
+
     data = pd.read_csv(filename)
     del_col = []
     del_col.extend([i for i in cols_to_remove if i in data.columns])
@@ -47,15 +56,25 @@ def delete_column(filename: str, cols_to_remove: list):
 #delete_column("dataset_clean/Tasso_occupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato', 'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'])
 
 # DISOCCUPAZIONE
-rename_column("dataset/Tasso_disoccupazione.csv")
-delete_column("dataset_clean/Tasso_disoccupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato', 'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'])
+#rename_column("dataset/Tasso_disoccupazione.csv")
+#delete_column("dataset_clean/Tasso_disoccupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato', 'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'])
 
 # QUALITA VITA
 # rename_column("dataset/Qualita_vita.csv")
 # delete_column("dataset_clean/Qualita_vita.csv", ['NOME PROVINCIA (ISTAT)', 'CODICE PROVINCIA ISTAT (STORICO)', 'DENOMINAZIONE CORRENTE', 'FONTE ORIGINALE'])
 
+
+## -----------------------------------------CLEANING ROWS ----------------------------------
+
 def clean_rows(filename: str):
+    """
+    The function cleans the dataset from the rows which contains special cases.
+    It also updates the value of certain rows
+    :param filename: name of the file
+    :return: the file updated
+    """
     data = pd.read_csv(filename)
+<<<<<<< HEAD
     if "occupazione" in filename:
         data = data.loc[data["SEX"] != 9]
         count = 0
@@ -105,6 +124,34 @@ def clean_rows(filename: str):
 
 
 
+=======
+    count = 0
+    row_lst = []
+    if "occupazione" in filename:
+        data = data.loc[data["SEX"] != 9]
+        while count < len(data["NUTS3"]):
+            if (data["NUTS3"][count].isalpha()) or ("Q" in data["TIME"][count]):
+                row_lst.append(count)
+            count += 1
+        data = data.drop(data.index[row_lst], inplace=False)
+    else:
+        for row in data["TIME"]:
+            if not row.isnumeric():
+                value = parse_string(row)
+                row_lst.append((count, value))
+            count += 1
+        if 0 < len(row_lst):
+            data.loc[[v[0] for v in row_lst],["TIME"]] = [v[1] for v in row_lst]
+    data.to_csv(filename, index=None)
+>>>>>>> 543844dbc15ffc508fc2b4a2616e6b98bbc51684
+
+def parse_string(stringa: str):
+    try:
+        value = [v for v in stringa.split() if v.isnumeric()]
+        if len(value) == 1:
+            return value[0]
+    except Exception:
+        print("Oops! Two years have been founded")
 
 # DISOCCUPAZIONE
 #clean_rows("dataset_clean/Tasso_disoccupazione.csv")
@@ -112,12 +159,35 @@ def clean_rows(filename: str):
 # OCCUPAZIONE
 #clean_rows("dataset_clean/Tasso_occupazione.csv")
 
+<<<<<<< HEAD
 # QUALITA' DELLA VITA
 # clean_rows("dataset_clean/Qualita_vita.csv")
+=======
+# QUALITA DELLA VITA
+#clean_rows("dataset_clean/Qualita_vita.csv")
 
-#----TODO-----#
-#Delete rows
-#tasso occupazione/disoccupazione:
-#9 in column SEX --> done
-#IT/ITC in column NUTS3 (isalpha = False) --> done
-#Q in Time --> done
+## ----------------------------------------- STORE PROPERLY ----------------------------------
+
+def sub_table(filename:str):
+    data = pd.read_csv(filename)
+    table = dict()
+    count = 0
+    for row in data["INDICATORE"]:
+        if row not in table:
+            table[row] = data["UNITA' DI MISURA"][count]
+        count += 1
+    return table
+
+sub_table("dataset_clean\Qualita_vita.csv")
+
+# TODO #
+# create a table where unit of measure and indicators are reported --> save it as JSON FILE
+# it will correspond to another table having 3 columns
+# --> 1 codice indicatore
+# --> 2 indicatore stesso
+# --> 3 unità di misura
+
+# TODO #
+# Delete the column UNITà DI MISURA
+>>>>>>> 543844dbc15ffc508fc2b4a2616e6b98bbc51684
+
