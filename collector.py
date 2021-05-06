@@ -24,13 +24,7 @@ def rename_column(filename: str):
         renamed_data = data.rename(columns={'CODICE NUTS 3 2021': 'NUTS3',
                                             'RIFERIMENTO TEMPORALE': 'TIME'})
     elif "occupazione" in file_n:
-        if "disoccupazione" in file_n:
-            renamed_data = data.rename(columns={'Value': 'VALUE UNEMP',
-                                                'ITTER107': 'NUTS3',
-                                                'SEXISTAT1': 'SEX',
-                                                'ETA1': 'AGE'})
-        else:
-            renamed_data = data.rename(columns={'Value': 'VALUE EMP',
+        renamed_data = data.rename(columns={'Value': ('VALUE UNEMP' if "dis" in file_n else 'VALUE EMP'),
                                                 'ITTER107': 'NUTS3',
                                                 'SEXISTAT1': 'SEX',
                                                 'ETA1': 'AGE'})
@@ -52,8 +46,8 @@ def delete_column(filename: str, cols_to_remove: list):
 #delete_column("dataset_clean/Tasso_occupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato', 'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'])
 
 # DISOCCUPAZIONE
-#rename_column("dataset/Tasso_disoccupazione.csv")
-#delete_column("dataset_clean/Tasso_disoccupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato', 'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'])
+rename_column("dataset/Tasso_disoccupazione.csv")
+delete_column("dataset_clean/Tasso_disoccupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato', 'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'])
 
 # QUALITA VITA
 #rename_column("dataset/Qualita_vita.csv")
@@ -62,18 +56,25 @@ def delete_column(filename: str, cols_to_remove: list):
 def clean_rows(filename: str):
     data = pd.read_csv(filename)
     data = data.loc[data["SEX"] != 9]
+    count = 0
+    del_lst = []
+    while count < len(data["NUTS3"]):
+        if (data["NUTS3"][count].isalpha()) or ("Q" in data["TIME"][count]):
+            del_lst.append(count)
+        count += 1
+    data = data.drop(data.index[del_lst], inplace=False)
     data.to_csv(filename, index=None)
 
 # DISOCCUPAZIONE
 #clean_rows("dataset_clean/Tasso_disoccupazione.csv")
 
 # OCCUPAZIONE
-clean_rows("dataset_clean/Tasso_occupazione.csv")
+#clean_rows("dataset_clean/Tasso_occupazione.csv")
 
 
 #----TODO-----#
 #Delete rows
 #tasso occupazione/disoccupazione:
-#9 in column SEX
-#IT/ITC in column NUTS3 (isalpha = False)
-#Q in Time
+#9 in column SEX --> done
+#IT/ITC in column NUTS3 (isalpha = False) --> done
+#Q in Time --> done
