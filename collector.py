@@ -1,6 +1,7 @@
 from __future__ import absolute_import, annotations
 import requests
 import pandas as pd
+import re
 
 def get_data(filename: str):
     data = pd.read_csv(filename)
@@ -50,20 +51,60 @@ rename_column("dataset/Tasso_disoccupazione.csv")
 delete_column("dataset_clean/Tasso_disoccupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato', 'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'])
 
 # QUALITA VITA
-#rename_column("dataset/Qualita_vita.csv")
-#delete_column("dataset_clean/Qualita_vita.csv", ['NOME PROVINCIA (ISTAT)', 'CODICE PROVINCIA ISTAT (STORICO)', 'DENOMINAZIONE CORRENTE', 'FONTE ORIGINALE'])
+# rename_column("dataset/Qualita_vita.csv")
+# delete_column("dataset_clean/Qualita_vita.csv", ['NOME PROVINCIA (ISTAT)', 'CODICE PROVINCIA ISTAT (STORICO)', 'DENOMINAZIONE CORRENTE', 'FONTE ORIGINALE'])
 
 def clean_rows(filename: str):
     data = pd.read_csv(filename)
-    data = data.loc[data["SEX"] != 9]
-    count = 0
-    del_lst = []
-    while count < len(data["NUTS3"]):
-        if (data["NUTS3"][count].isalpha()) or ("Q" in data["TIME"][count]):
-            del_lst.append(count)
-        count += 1
-    data = data.drop(data.index[del_lst], inplace=False)
-    data.to_csv(filename, index=None)
+    if "occupazione" in filename:
+        data = data.loc[data["SEX"] != 9]
+        count = 0
+        del_lst = []
+        while count < len(data["NUTS3"]):
+            if (data["NUTS3"][count].isalpha()) or ("Q" in data["TIME"][count]):
+                del_lst.append(count)
+            count += 1
+        data = data.drop(data.index[del_lst], inplace=False)
+        data.to_csv(filename, index=None)
+    elif filename == "dataset_clean/Qualita_vita.csv":
+        # data = data["TIME"]
+        # row_del = []
+        # count = 0
+        # for i in data:
+        #     if i.isnumeric() == False:
+        #         tokens = i.split()
+        #         if tokens[0].isnumeric() == False:
+        #             print(tokens)
+
+        # for i in data:
+        #     if i.isnumeric() == False:
+        #         i = i.split()
+        #         for n in i:
+        #             if n.isalpha():
+        #                 del_str = i.pop(0)
+
+        # data['TIME'] = data['TIME'].replace(r'\D', '').to_csv(filename, index=None)
+        # print(data)
+        count = 0
+        rows_lst = []
+        values = []
+        for i in data:
+            if not i.isnumeric():
+                rows_lst.append(count)
+                values.append()
+        data = data.loc(rows_lst, values)
+        data.to_csv(filename, index = None)
+
+
+
+
+
+
+
+
+
+
+
 
 # DISOCCUPAZIONE
 #clean_rows("dataset_clean/Tasso_disoccupazione.csv")
@@ -71,6 +112,8 @@ def clean_rows(filename: str):
 # OCCUPAZIONE
 #clean_rows("dataset_clean/Tasso_occupazione.csv")
 
+# QUALITA' DELLA VITA
+# clean_rows("dataset_clean/Qualita_vita.csv")
 
 #----TODO-----#
 #Delete rows
