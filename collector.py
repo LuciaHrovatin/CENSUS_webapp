@@ -6,13 +6,15 @@ def get_data(filename: str):
     data = pd.read_csv(filename)
     return print(data.head())
 
-get_data("dataset/Tasso_occupazione.csv")
-get_data("dataset/Tasso_disoccupazione.csv")
+# get data set
+# get_data("dataset/Tasso_occupazione.csv")
+# get_data("dataset/Tasso_disoccupazione.csv")
 
+
+# rename columns
 def rename_column(filename: str):
     data = pd.read_csv(filename)
     file_n = filename[filename.find("/")+1: ]
-    # rename columns
     if file_n == "Tasso_occupazione.csv":
         renamed_data = data.rename(columns={'Value': 'VALUE EMP', 'ITTER107': 'NUTS3', 'SEXISTAT1': 'SEX', 'ETA1': 'AGE'})
         renamed_data.to_csv("dataset_clean/" + file_n, index=None)
@@ -24,6 +26,7 @@ def rename_column(filename: str):
         renamed_data.to_csv("dataset_clean/" + file_n, index=None)
     return print(data.head())
 
+# delete unuseful column
 def delete_column(filename: str, cols_to_remove: list):
     data = pd.read_csv(filename)
     #cols_to_remove = ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato', 'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags']
@@ -35,7 +38,7 @@ def delete_column(filename: str, cols_to_remove: list):
     delete_column = data.drop(del_col, inplace=False, axis=1)
     delete_column.to_csv(filename, index=None)
 
-    print(data.head())
+    return print(data.head())
 
 #delete_column("dataset_clean/Tasso_disoccupazione.csv")
 # rename_column("dataset/Tasso_disoccupazione.csv")
@@ -46,20 +49,19 @@ def delete_column(filename: str, cols_to_remove: list):
 
 def clean_rows(filename: str):
     data = pd.read_csv(filename)
-    for i in data["SEX"]:
-        if i == 9:
-            data.drop(i, axis=0)
+    sex_clean = data[data["SEX"] == 9]
+    del_row = data.drop(sex_clean.index, axis=0)
+    del_row.to_csv(filename, index=None)
+    # del_rows = []
+    # for i in data["SEX"]:
+    #     print(i)
+    #     # if i == 9:
+    #     #     print(data[i])
+    #         # data.drop(i, axis=0)
+    #         # data.to_csv(filename, index=None)
+    # # return print(data.head())
 
-clean_rows("dataset_clean/Tasso_occupazione.csv")
-
-# data = pd.read_csv("dataset_clean/Tasso_disoccupazione.csv")
-# for i in data["SEX"]:
-#     if i == 9:
-#         print(i)
-# row = data.loc[data["SEX"]]
-# if row == 9:
-#     print(row)
-
+clean_rows("dataset_clean/Tasso_disoccupazione.csv")
 
 
 
