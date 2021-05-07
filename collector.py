@@ -1,7 +1,6 @@
 from __future__ import absolute_import, annotations
 import requests
 import pandas as pd
-import re
 
 def get_data(filename: str):
     data = pd.read_csv(filename)
@@ -74,57 +73,6 @@ def clean_rows(filename: str):
     :return: the file updated
     """
     data = pd.read_csv(filename)
-<<<<<<< HEAD
-    if "occupazione" in filename:
-        data = data.loc[data["SEX"] != 9]
-        count = 0
-        del_lst = []
-        while count < len(data["NUTS3"]):
-            if (data["NUTS3"][count].isalpha()) or ("Q" in data["TIME"][count]):
-                del_lst.append(count)
-            count += 1
-        data = data.drop(data.index[del_lst], inplace=False)
-        data.to_csv(filename, index=None)
-    elif filename == "dataset_clean/Qualita_vita.csv":
-        # data = data["TIME"]
-        # row_del = []
-        # count = 0
-        # for i in data:
-        #     if i.isnumeric() == False:
-        #         tokens = i.split()
-        #         if tokens[0].isnumeric() == False:
-        #             print(tokens)
-
-        # for i in data:
-        #     if i.isnumeric() == False:
-        #         i = i.split()
-        #         for n in i:
-        #             if n.isalpha():
-        #                 del_str = i.pop(0)
-
-        # data['TIME'] = data['TIME'].replace(r'\D', '').to_csv(filename, index=None)
-        # print(data)
-        count = 0
-        rows_lst = []
-        values = []
-        for i in data:
-            if not i.isnumeric():
-                rows_lst.append(count)
-                values.append()
-        data = data.loc(rows_lst, values)
-        data.to_csv(filename, index = None)
-
-
-
-
-
-
-
-
-
-
-
-=======
     count = 0
     row_lst = []
     if "occupazione" in filename:
@@ -143,7 +91,7 @@ def clean_rows(filename: str):
         if 0 < len(row_lst):
             data.loc[[v[0] for v in row_lst],["TIME"]] = [v[1] for v in row_lst]
     data.to_csv(filename, index=None)
->>>>>>> 543844dbc15ffc508fc2b4a2616e6b98bbc51684
+
 
 def parse_string(stringa: str):
     try:
@@ -159,12 +107,10 @@ def parse_string(stringa: str):
 # OCCUPAZIONE
 #clean_rows("dataset_clean/Tasso_occupazione.csv")
 
-<<<<<<< HEAD
+
 # QUALITA' DELLA VITA
 # clean_rows("dataset_clean/Qualita_vita.csv")
-=======
-# QUALITA DELLA VITA
-#clean_rows("dataset_clean/Qualita_vita.csv")
+
 
 ## ----------------------------------------- STORE PROPERLY ----------------------------------
 
@@ -189,5 +135,5 @@ sub_table("dataset_clean\Qualita_vita.csv")
 
 # TODO #
 # Delete the column UNITà DI MISURA
->>>>>>> 543844dbc15ffc508fc2b4a2616e6b98bbc51684
+
 
