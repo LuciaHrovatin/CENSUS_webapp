@@ -1,15 +1,19 @@
 from __future__ import absolute_import, annotations
 import requests
 import pandas as pd
+import json
 
 def get_data(filename: str):
     data = pd.read_csv(filename)
     return print(data.head())
 
+
 get_data("dataset/Tasso_occupazione.csv")
 get_data("dataset/Tasso_disoccupazione.csv")
 
-## -----------------------------------------RENAMING/ DELETING COLUMNS ----------------------------------
+# -----------------------------------------RENAMING/ DELETING COLUMNS ----------------------------------
+
+
 def rename_column(filename: str):
     """
 
@@ -19,7 +23,7 @@ def rename_column(filename: str):
     :return file: a new dataset with columns' names standardized
     """
     data = pd.read_csv(filename)
-    file_n = filename[filename.find("/")+1:] # extract the name
+    file_n = filename[filename.find("/")+1:]  # extract the name
 
     # rename columns
     if file_n == "Qualita_vita.csv":
@@ -32,7 +36,7 @@ def rename_column(filename: str):
                                                 'ETA1': 'AGE'})
     renamed_data.to_csv("dataset_clean/" + file_n, index=None)
 
-    return print(data.head())
+
 
 def delete_column(filename: str, cols_to_remove: list):
     """
@@ -48,22 +52,20 @@ def delete_column(filename: str, cols_to_remove: list):
     delete_column = data.drop(del_col, inplace=False, axis=1)
     delete_column.to_csv(filename, index=None)
 
-    print(data.head())
-
 # OCCUPAZIONE
-#rename_column("dataset/Tasso_occupazione.csv")
-#delete_column("dataset_clean/Tasso_occupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato', 'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'])
+# rename_column("dataset/Tasso_occupazione.csv")
+# delete_column("dataset_clean/Tasso_occupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato', 'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'])
 
 # DISOCCUPAZIONE
-#rename_column("dataset/Tasso_disoccupazione.csv")
-#delete_column("dataset_clean/Tasso_disoccupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato', 'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'])
+# rename_column("dataset/Tasso_disoccupazione.csv")
+# delete_column("dataset_clean/Tasso_disoccupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato', 'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'])
 
 # QUALITA VITA
 # rename_column("dataset/Qualita_vita.csv")
 # delete_column("dataset_clean/Qualita_vita.csv", ['NOME PROVINCIA (ISTAT)', 'CODICE PROVINCIA ISTAT (STORICO)', 'DENOMINAZIONE CORRENTE', 'FONTE ORIGINALE'])
 
 
-## -----------------------------------------CLEANING ROWS ----------------------------------
+# -----------------------------------------CLEANING ROWS ----------------------------------
 
 def clean_rows(filename: str):
     """
@@ -89,7 +91,7 @@ def clean_rows(filename: str):
                 row_lst.append((count, value))
             count += 1
         if 0 < len(row_lst):
-            data.loc[[v[0] for v in row_lst],["TIME"]] = [v[1] for v in row_lst]
+            data.loc[[v[0] for v in row_lst], ["TIME"]] = [v[1] for v in row_lst]
     data.to_csv(filename, index=None)
 
 
@@ -102,19 +104,19 @@ def parse_string(stringa: str):
         print("Oops! Two years have been founded")
 
 # DISOCCUPAZIONE
-#clean_rows("dataset_clean/Tasso_disoccupazione.csv")
+# clean_rows("dataset_clean/Tasso_disoccupazione.csv")
 
 # OCCUPAZIONE
-#clean_rows("dataset_clean/Tasso_occupazione.csv")
+# clean_rows("dataset_clean/Tasso_occupazione.csv")
 
 
 # QUALITA' DELLA VITA
 # clean_rows("dataset_clean/Qualita_vita.csv")
 
 
-## ----------------------------------------- STORE PROPERLY ----------------------------------
+# ----------------------------------------- STORE PROPERLY ----------------------------------
 
-def sub_table(filename:str):
+def sub_table(filename: str):
     data = pd.read_csv(filename)
     table = dict()
     count = 0
@@ -124,7 +126,26 @@ def sub_table(filename:str):
         count += 1
     return table
 
-sub_table("dataset_clean\Qualita_vita.csv")
+# TODO#
+# Better implement the MANAGER
+def save(table: dict):
+    """
+    Save the column of "Unità di misura" together with its inciator
+    :param dict table: dictionary having indicators as keys and description of indicators as values
+    :return: json file
+    """
+    with open("dataset_clean/indicators.json", "w") as f:
+        json.dump(
+            [{indicator: (table[indicator], "INDEX")} for indicator in table],
+            f,
+            indent=4
+            )
+
+save(sub_table("dataset_clean\Qualita_vita.csv"))
+
+
+# sub_table("dataset_clean\Qualita_vita.csv")
+
 
 # TODO #
 # create a table where unit of measure and indicators are reported --> save it as JSON FILE
@@ -135,5 +156,9 @@ sub_table("dataset_clean\Qualita_vita.csv")
 
 # TODO #
 # Delete the column UNITà DI MISURA
+
+# TODO#
+# Generare una stringa o un codice identificativo per ogni indice in
+# maniera da avere una foreign key nella tabella secondaria
 
 
