@@ -1,12 +1,11 @@
 from __future__ import absolute_import, annotations
 
-import itertools
 import uuid
+from datetime import datetime
+from typing import Optional
 
-import requests
 import pandas as pd
 import json
-import operator
 
 def get_data(filename: str):
     data = pd.read_csv(filename)
@@ -66,13 +65,13 @@ def delete_column(filename: str, cols_to_remove: list):
 # delete_column("dataset_clean/Tasso_disoccupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato', 'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'])
 
 # QUALITA VITA
-# rename_column("dataset/Qualita_vita.csv")
-# delete_column("dataset_clean/Qualita_vita.csv", ['NOME PROVINCIA (ISTAT)', 'CODICE PROVINCIA ISTAT (STORICO)', 'DENOMINAZIONE CORRENTE', 'FONTE ORIGINALE'])
+rename_column("dataset/Qualita_vita.csv")
+delete_column("dataset_clean/Qualita_vita.csv", ['NOME PROVINCIA (ISTAT)', 'CODICE PROVINCIA ISTAT (STORICO)', 'DENOMINAZIONE CORRENTE', 'FONTE ORIGINALE'])
 
 
 # -----------------------------------------CLEANING ROWS ----------------------------------
 
-def clean_rows(filename: str):
+def clean_rows(filename: str, ind: Optional[bool] = False):
     """
     The function cleans the dataset from the rows which contains special cases.
     It also updates the value of certain rows
@@ -90,19 +89,28 @@ def clean_rows(filename: str):
             count += 1
         data = data.drop(data.index[row_lst], inplace=False)
     else:
-        for row in data["TIME"]:
-            if not row.isnumeric():
-                value = parse_string(row)
+        if not ind:
+            target = "TIME"
+            for row in data[target]:
+                if not row.isnumeric():
+                    value = parse_date(row)
+                    row_lst.append((count, value))
+                count += 1
+        else:
+            target = "INDICATORE"
+            indicators_lst = list_arg("dataset_clean\indicators.json")
+            for row in data[target]:
+                value = indicators_lst[row][-1]
                 row_lst.append((count, value))
-            count += 1
+                count += 1
         if 0 < len(row_lst):
-            data.loc[[v[0] for v in row_lst], ["TIME"]] = [v[1] for v in row_lst]
+            data.loc[[v[0] for v in row_lst], [target]] = [v[1] for v in row_lst]
     data.to_csv(filename, index=None)
 
 
-def parse_string(stringa: str):
+def parse_date(stringa: str):
     try:
-        value = [v for v in stringa.split() if v.isnumeric()]
+        value = [v for v in stringa.split() if v.isnumeric() and len(v) == 4]
         if len(value) == 1:
             return value[0]
     except Exception:
@@ -116,7 +124,7 @@ def parse_string(stringa: str):
 
 
 # QUALITA' DELLA VITA
-# clean_rows("dataset_clean/Qualita_vita.csv")
+clean_rows("dataset_clean/Qualita_vita.csv")
 
 
 # ----------------------------------------- STORE PROPERLY ----------------------------------
@@ -127,7 +135,7 @@ def sub_table(filename: str):
     count = 0
     for row in data["INDICATORE"]:
         if row not in table:
-            table[row] = data["UNITA' DI MISURA"][count]
+            table[row] = [data["UNITA' DI MISURA"][count], "INDEX" + uuid.uuid4().hex[:6].upper()]
         count += 1
     return table
 
@@ -136,35 +144,39 @@ def sub_table(filename: str):
 def save(table: dict):
     """
     Save the column of "Unità di misura" together with its indicator
-    and add a randomly generated indentifier 
+    and add a randomly generated indentifier
     :param dict table: dictionary having indicators as keys and description of indicators as values
     :return: json file
     """
     with open("dataset_clean/indicators.json", "w") as f:
         json.dump(
-            [{"INDEX" + uuid.uuid4().hex[:6].upper(): [indicator, table[indicator]]} for indicator in table],
+            table,
             f,
             indent=4
             )
 
-save(sub_table("dataset_clean\Qualita_vita.csv"))
+#save(sub_table("dataset_clean\Qualita_vita.csv"))
 
-
-# sub_table("dataset_clean\Qualita_vita.csv")
-
-
-# TODO #
+# TODO # --> done
 # create a table where unit of measure and indicators are reported --> save it as JSON FILE
 # it will correspond to another table having 3 columns
 # --> 1 codice indicatore
 # --> 2 indicatore stesso
 # --> 3 unità di misura
 
-# TODO #
-# Delete the column UNITà DI MISURA
 
-# TODO#
+# TODO# --> done
 # Generare una stringa o un codice identificativo per ogni indice in
 # maniera da avere una foreign key nella tabella secondaria
 
 
+def list_arg(filename: str):
+    with open(filename, "r") as f:
+        rows = json.load(f)
+        return rows
+
+clean_rows("dataset_clean\Qualita_vita.csv", ind=True)
+
+# --------------------------------------------- DELETE UNITA' di MISURA ---------------------------------------------------
+# Delete the column of "unità di misura"
+delete_column("dataset_clean\Qualita_vita.csv", ["UNITA' DI MISURA"])
