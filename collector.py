@@ -1,7 +1,6 @@
 from __future__ import absolute_import, annotations
 
 import uuid
-from datetime import datetime
 from typing import Optional
 
 import pandas as pd
@@ -61,12 +60,12 @@ def delete_column(filename: str, cols_to_remove: list):
 # delete_column("dataset_clean/Tasso_occupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato', 'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'])
 
 # DISOCCUPAZIONE
-# rename_column("dataset/Tasso_disoccupazione.csv")
-# delete_column("dataset_clean/Tasso_disoccupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato', 'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'])
+#rename_column("dataset/Tasso_disoccupazione.csv")
+#delete_column("dataset_clean/Tasso_disoccupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato', 'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'])
 
 # QUALITA VITA
-rename_column("dataset/Qualita_vita.csv")
-delete_column("dataset_clean/Qualita_vita.csv", ['NOME PROVINCIA (ISTAT)', 'CODICE PROVINCIA ISTAT (STORICO)', 'DENOMINAZIONE CORRENTE', 'FONTE ORIGINALE'])
+#rename_column("dataset/Qualita_vita.csv")
+#delete_column("dataset_clean/Qualita_vita.csv", ['NOME PROVINCIA (ISTAT)', 'CODICE PROVINCIA ISTAT (STORICO)', 'DENOMINAZIONE CORRENTE', 'FONTE ORIGINALE'])
 
 
 # -----------------------------------------CLEANING ROWS ----------------------------------
@@ -82,9 +81,8 @@ def clean_rows(filename: str, ind: Optional[bool] = False):
     count = 0
     row_lst = []
     if "occupazione" in filename:
-        data = data.loc[data["SEX"] != 9]
         while count < len(data["NUTS3"]):
-            if (data["NUTS3"][count].isalpha()) or ("Q" in data["TIME"][count]):
+            if (data["NUTS3"][count].isalpha()) or ("Q" in data["TIME"][count]) or (data["SEX"][count] == 9):
                 row_lst.append(count)
             count += 1
         data = data.drop(data.index[row_lst], inplace=False)
@@ -120,12 +118,11 @@ def parse_date(stringa: str):
 # clean_rows("dataset_clean/Tasso_disoccupazione.csv")
 
 # OCCUPAZIONE
-# clean_rows("dataset_clean/Tasso_occupazione.csv")
+#clean_rows("dataset_clean/Tasso_occupazione.csv")
 
 
 # QUALITA' DELLA VITA
-clean_rows("dataset_clean/Qualita_vita.csv")
-
+#clean_rows("dataset_clean/Qualita_vita.csv")
 
 # ----------------------------------------- STORE PROPERLY ----------------------------------
 
@@ -175,8 +172,8 @@ def list_arg(filename: str):
         rows = json.load(f)
         return rows
 
-clean_rows("dataset_clean\Qualita_vita.csv", ind=True)
+#clean_rows("dataset_clean\Qualita_vita.csv", ind=True)
 
 # --------------------------------------------- DELETE UNITA' di MISURA ---------------------------------------------------
 # Delete the column of "unità di misura"
-delete_column("dataset_clean\Qualita_vita.csv", ["UNITA' DI MISURA"])
+#delete_column("dataset_clean\Qualita_vita.csv", ["UNITA' DI MISURA"])
