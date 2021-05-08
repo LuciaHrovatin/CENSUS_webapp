@@ -1,7 +1,12 @@
 from __future__ import absolute_import, annotations
+
+import itertools
+import uuid
+
 import requests
 import pandas as pd
 import json
+import operator
 
 def get_data(filename: str):
     data = pd.read_csv(filename)
@@ -130,13 +135,14 @@ def sub_table(filename: str):
 # Better implement the MANAGER
 def save(table: dict):
     """
-    Save the column of "Unità di misura" together with its inciator
+    Save the column of "Unità di misura" together with its indicator
+    and add a randomly generated indentifier 
     :param dict table: dictionary having indicators as keys and description of indicators as values
     :return: json file
     """
     with open("dataset_clean/indicators.json", "w") as f:
         json.dump(
-            [{indicator: (table[indicator], "INDEX")} for indicator in table],
+            [{"INDEX" + uuid.uuid4().hex[:6].upper(): [indicator, table[indicator]]} for indicator in table],
             f,
             indent=4
             )
