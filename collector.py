@@ -106,9 +106,15 @@ def clean_rows(filename: str, ind: Optional[bool] = False):
     data.to_csv(filename, index=None)
 
 
-def parse_date(stringa: str):
+def parse_date(str_date: str):
+    """
+    Checks wheter a string contains a year and return that year. If more than one year is found,
+    the function yields an exception
+    :param str str_date: string where there is at least one year
+    :return str: a string containing only the year
+    """
     try:
-        value = [v for v in stringa.split() if v.isnumeric() and len(v) == 4]
+        value = [v for v in str_date.split() if v.isnumeric() and len(v) == 4]
         if len(value) == 1:
             return value[0]
     except Exception:
@@ -176,4 +182,4 @@ def list_arg(filename: str):
 
 # --------------------------------------------- DELETE UNITA' di MISURA ---------------------------------------------------
 # Delete the column of "unità di misura"
-#delete_column("dataset_clean\Qualita_vita.csv", ["UNITA' DI MISURA"])
+# delete_column("dataset_clean\Qualita_vita.csv", ["UNITA' DI MISURA"])
