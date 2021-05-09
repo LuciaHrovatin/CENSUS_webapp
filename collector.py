@@ -22,7 +22,6 @@ get_data("dataset/Tasso_disoccupazione.csv")
 
 def rename_column(filename: str):
     """
-
     The function renames the column of pandas dataframes given the file name
     and save it in a new folder
     :param filename: name of the file whose columns' names will be changed
@@ -73,6 +72,24 @@ def delete_column(filename: str, cols_to_remove: list):
 
 # -----------------------------------------CLEANING ROWS ----------------------------------
 
+def parse_date(str_date: str):
+    """
+    Checks whether a string contains a year and return that year. If more than one year is found,
+    the function yields an exception
+    :param str str_date: string where there is at least one year
+    :return str: a string containing only the year
+    """
+#    try:
+    value = [v for v in str_date.split() if (v.isnumeric() and len(v) == 4)]
+    if len(value) == 1:
+        return value[0]
+    else:
+        return 2020 # opzione da controllare! il periodo di riferimento è 2021 - 2050
+#    except Exception:
+#        print("Oops! Two years have been founded")
+
+
+
 def clean_rows(filename: str, ind: Optional[bool] = False):
     """
     The function cleans the dataset from the rows which contains special cases.
@@ -103,25 +120,12 @@ def clean_rows(filename: str, ind: Optional[bool] = False):
             for row in data[target]:
                 value = indicators_lst[row][-1]
                 row_lst.append((count, value))
-                count += 1
+            count += 1
         if 0 < len(row_lst):
             data.loc[[v[0] for v in row_lst], [target]] = [v[1] for v in row_lst]
     data.to_csv(filename, index=None)
 
 
-def parse_date(str_date: str):
-    """
-    Checks wheter a string contains a year and return that year. If more than one year is found,
-    the function yields an exception
-    :param str str_date: string where there is at least one year
-    :return str: a string containing only the year
-    """
-    try:
-        value = [v for v in str_date.split() if v.isnumeric() and len(v) == 4]
-        if len(value) == 1:
-            return value[0]
-    except Exception:
-        print("Oops! Two years have been founded")
 
 # DISOCCUPAZIONE
 # clean_rows("dataset_clean/Tasso_disoccupazione.csv")
@@ -136,6 +140,11 @@ def parse_date(str_date: str):
 # ----------------------------------------- STORE PROPERLY ----------------------------------
 
 def sub_table(filename: str):
+    """
+    The function saves each indicator with the corresponding measure and a randomly generated index
+    :param filename: name of the file
+    :return: a dictionary having as keys the indicators and as values a list with measure and unique index
+    """
     data = pd.read_csv(filename)
     table = dict()
     count = 0
@@ -145,12 +154,10 @@ def sub_table(filename: str):
         count += 1
     return table
 
-# TODO#
-# Better implement the MANAGER
 def save(table: dict):
     """
     Save the column of "Unità di misura" together with its indicator
-    and add a randomly generated indentifier
+    and add a randomly generated index
     :param dict table: dictionary having indicators as keys and description of indicators as values
     :return: json file
     """
@@ -161,7 +168,7 @@ def save(table: dict):
             indent=4
             )
 
-#save(sub_table("dataset_clean\Qualita_vita.csv"))
+save(sub_table("dataset_clean\Qualita_vita.csv"))
 
 # TODO # --> done
 # create a table where unit of measure and indicators are reported --> save it as JSON FILE
@@ -181,24 +188,33 @@ def list_arg(filename: str):
         rows = json.load(f)
         return rows
 
-#clean_rows("dataset_clean\Qualita_vita.csv", ind=True)
+clean_rows("dataset_clean\Qualita_vita.csv", ind=True)
 
 # --------------------------------------------- DELETE UNITA' di MISURA -----------------------------------------------
 # Delete the column of "unità di misura"
 # delete_column("dataset_clean\Qualita_vita.csv", ["UNITA' DI MISURA"])
 
 # ---------------------------------------------CONNECTION WITH SERVER -------------------------------------------------
-saver = MySQLManager(host = "localhost",
-                     port = 3306,
-                     database= "project_bdt",
-                     user = "root",
-                     password = "Pr0tett0.98")
+# saver = MySQLManager(host = "localhost",
+#                      port = 3306,
+#                      database= "project_bdt",
+#                      user = "root",
+#                      password = "Pr0tett0.98")
+#
+# def create_list(filename: str):
+#     data = pd.read_csv(filename)
+#     lst_variables = dict()
+#     for var in data.columns:
+#         lst_variables[var] = data[var][0]
+#     return lst_variables
+#
+# saver.create_table("DB_disoccupazione", create_list("dataset_clean\Tasso_disoccupazione.csv"))
 
-def create_list(filename: str):
-    data = pd.read_csv(filename)
-    lst_variables = dict()
-    for var in data.columns:
-        lst_variables[var] = data[var][0]
-    return lst_variables
+def del_indicators(filename: str, indicators: List):
 
-saver.create_table("DB_disoccupazione", create_list("dataset_clean\Tasso_disoccupazione.csv"))
+    del_lst = []
+    if "CRI" in row:
+        del_lst.append(count)
+
+    if 0 < len(del_lst):
+        data = data.drop(data.index[del_lst], inplace=False)
