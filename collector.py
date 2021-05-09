@@ -6,6 +6,9 @@ from typing import Optional
 import pandas as pd
 import json
 
+from saver import MySQLManager
+
+
 def get_data(filename: str):
     data = pd.read_csv(filename)
     return print(data.head())
@@ -180,6 +183,22 @@ def list_arg(filename: str):
 
 #clean_rows("dataset_clean\Qualita_vita.csv", ind=True)
 
-# --------------------------------------------- DELETE UNITA' di MISURA ---------------------------------------------------
+# --------------------------------------------- DELETE UNITA' di MISURA -----------------------------------------------
 # Delete the column of "unità di misura"
 # delete_column("dataset_clean\Qualita_vita.csv", ["UNITA' DI MISURA"])
+
+# ---------------------------------------------CONNECTION WITH SERVER -------------------------------------------------
+saver = MySQLManager(host = "localhost",
+                     port = 3306,
+                     database= "project_bdt",
+                     user = "root",
+                     password = "Pr0tett0.98")
+
+def create_list(filename: str):
+    data = pd.read_csv(filename)
+    lst_variables = dict()
+    for var in data.columns:
+        lst_variables[var] = data[var][0]
+    return lst_variables
+
+saver.create_table("DB_disoccupazione", create_list("dataset_clean\Tasso_disoccupazione.csv"))

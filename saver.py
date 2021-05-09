@@ -6,7 +6,7 @@ import mysql.connector
 from typing import Optional, List
 
 
-class MySQLStationManager:
+class MySQLManager:
 
     def __init__(self, host: str, port: int, database: str, user: str, password: str) -> None:
         self.connection = mysql.connector.connect(
@@ -19,14 +19,16 @@ class MySQLStationManager:
         self.connection.autocommit = True
 
     def create_table(self, db_table: str, columns: dict) -> None:
-        cursor = self.cursor()
+        cursor = self.connection.cursor()
         table_to_be = []
+        #print(columns)
         for column in columns:
             if type(columns[column]) is str:
-                table_to_be.append(column + "VARCHAR(255)")
-            elif type(columns[column]) is float or type(columns[column]) is int:
-                table_to_be.append(column + "NUMERIC")
-        cursor.execute("CREATE TABLE"+ db_table+ "(id INT AUTO_INCREMENT PRIMARY KEY," + table_to_be.join(",") + ")")
+                table_to_be.append(column + " VARCHAR(255)")
+            else: #isinstance(columns[column], int):
+                table_to_be.append(column + " NUMERIC")
+        #print("CREATE TABLE" + db_table+ "(id INT AUTO_INCREMENT PRIMARY KEY," + ",".join(table_to_be) + ")")
+        cursor.execute("CREATE TABLE " + db_table+ " (id INT AUTO_INCREMENT PRIMARY KEY," + ",".join(table_to_be) + ")")
 
     # def save(self, table_name: str, columns: List) -> None:
     #     cursor = self.connection.cursor()
