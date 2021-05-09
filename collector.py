@@ -66,8 +66,8 @@ def delete_column(filename: str, cols_to_remove: list):
 #delete_column("dataset_clean/Tasso_disoccupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato', 'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'])
 
 # QUALITA VITA
-#rename_column("dataset/Qualita_vita.csv")
-#delete_column("dataset_clean/Qualita_vita.csv", ['NOME PROVINCIA (ISTAT)', 'CODICE PROVINCIA ISTAT (STORICO)', 'DENOMINAZIONE CORRENTE', 'FONTE ORIGINALE'])
+rename_column("dataset/Qualita_vita.csv")
+delete_column("dataset_clean/Qualita_vita.csv", ['NOME PROVINCIA (ISTAT)', 'CODICE PROVINCIA ISTAT (STORICO)', 'DENOMINAZIONE CORRENTE', 'FONTE ORIGINALE'])
 
 
 # -----------------------------------------CLEANING ROWS ----------------------------------
@@ -120,7 +120,7 @@ def clean_rows(filename: str, ind: Optional[bool] = False):
             for row in data[target]:
                 value = indicators_lst[row][-1]
                 row_lst.append((count, value))
-            count += 1
+                count += 1
         if 0 < len(row_lst):
             data.loc[[v[0] for v in row_lst], [target]] = [v[1] for v in row_lst]
     data.to_csv(filename, index=None)
@@ -135,7 +135,7 @@ def clean_rows(filename: str, ind: Optional[bool] = False):
 
 
 # QUALITA' DELLA VITA
-#clean_rows("dataset_clean/Qualita_vita.csv")
+clean_rows("dataset_clean/Qualita_vita.csv")
 
 # ----------------------------------------- STORE PROPERLY ----------------------------------
 
@@ -210,6 +210,8 @@ clean_rows("dataset_clean\Qualita_vita.csv", ind=True)
 #
 # saver.create_table("DB_disoccupazione", create_list("dataset_clean\Tasso_disoccupazione.csv"))
 
+
+#DA CAMBIARE I CODICI!!!!
 indicators = ["INDEX76871E", #Eventi sportivi
               "INDEXB05593", #Indice di lettura dei quotidiani
               "INDEX0491CE", #Spettacoli - Spesa al botteghino
@@ -272,12 +274,15 @@ def del_indicators(filename: str, indicators: List):
     #     data = data.drop(data.index[del_lst], inplace=False)
     data = pd.read_csv(filename)
     row_lst = []
+    count = 0
     for i in data["INDICATORE"]:
         if i in indicators:
-            row_lst.append(i)
-        data = data.drop(data.index[row_lst], inplace=False)
-    # data = data.drop(data.index[row_lst], inplace=False)
+            row_lst.append(count)
+        count += 1
+    data = data.drop(data.index[row_lst], inplace=False)
+    data.to_csv(filename, index=None)
 
-del_indicators("dataset_clean/Qualita_vita.csv", indicators)
+
+# del_indicators("dataset_clean/Qualita_vita.csv", indicators)
 
 
