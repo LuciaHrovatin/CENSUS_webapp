@@ -14,8 +14,8 @@ def get_data(filename: str):
     return print(data.head())
 
 
-get_data("dataset/Tasso_occupazione.csv")
-get_data("dataset/Tasso_disoccupazione.csv")
+# get_data("dataset/Tasso_occupazione.csv")
+# get_data("dataset/Tasso_disoccupazione.csv")
 
 # -----------------------------------------RENAMING/ DELETING COLUMNS ----------------------------------
 
@@ -210,16 +210,6 @@ clean_rows("dataset_clean\Qualita_vita.csv", ind=True)
 #
 # saver.create_table("DB_disoccupazione", create_list("dataset_clean\Tasso_disoccupazione.csv"))
 
-def del_indicators(filename: str, indicators: List):
-
-    del_lst = []
-    if "CRI" in row:
-        del_lst.append(count)
-
-    if 0 < len(del_lst):
-        data = data.drop(data.index[del_lst], inplace=False)
-
-
 indicators = ["INDEX76871E", #Eventi sportivi
               "INDEXB05593", #Indice di lettura dei quotidiani
               "INDEX0491CE", #Spettacoli - Spesa al botteghino
@@ -270,4 +260,24 @@ indicators = ["INDEX76871E", #Eventi sportivi
               "INDEXA41E08", #Spid erogate
               "INDEX125395" #Pos attivi
               ]
-print(indicators[2])
+
+
+def del_indicators(filename: str, indicators: List):
+
+    # del_lst = []
+    # if "CRI" in row:
+    #     del_lst.append(count)
+    #
+    # if 0 < len(del_lst):
+    #     data = data.drop(data.index[del_lst], inplace=False)
+    data = pd.read_csv(filename)
+    row_lst = []
+    for i in data["INDICATORE"]:
+        if i in indicators:
+            row_lst.append(i)
+        data = data.drop(data.index[row_lst], inplace=False)
+    # data = data.drop(data.index[row_lst], inplace=False)
+
+del_indicators("dataset_clean/Qualita_vita.csv", indicators)
+
+
