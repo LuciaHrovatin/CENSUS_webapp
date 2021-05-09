@@ -31,7 +31,7 @@ def rename_column(filename: str):
     file_n = filename[filename.find("/")+1:]  # extract the name
 
     # rename columns
-    if file_n == "Qualita_vita.csv": # INDEX invece che indicatore
+    if file_n == "Qualita_vita.csv":
         renamed_data = data.rename(columns={'CODICE NUTS 3 2021': 'NUTS3',
                                             'RIFERIMENTO TEMPORALE': 'TIME'})
     elif "occupazione" in file_n:
@@ -66,8 +66,8 @@ def delete_column(filename: str, cols_to_remove: list):
 #delete_column("dataset_clean/Tasso_disoccupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato', 'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'])
 
 # QUALITA VITA
-rename_column("dataset/Qualita_vita.csv")
-delete_column("dataset_clean/Qualita_vita.csv", ['NOME PROVINCIA (ISTAT)', 'CODICE PROVINCIA ISTAT (STORICO)', 'DENOMINAZIONE CORRENTE', 'FONTE ORIGINALE'])
+#rename_column("dataset/Qualita_vita.csv")
+#delete_column("dataset_clean/Qualita_vita.csv", ['NOME PROVINCIA (ISTAT)', 'CODICE PROVINCIA ISTAT (STORICO)', 'DENOMINAZIONE CORRENTE', 'FONTE ORIGINALE'])
 
 
 # -----------------------------------------CLEANING ROWS ----------------------------------
@@ -79,11 +79,14 @@ def parse_date(str_date: str):
     :param str str_date: string where there is at least one year
     :return str: a string containing only the year
     """
+#    try:
     value = [v for v in str_date.split() if (v.isnumeric() and len(v) == 4)]
     if len(value) == 1:
         return value[0]
     else:
         return 2020 # opzione da controllare! il periodo di riferimento è 2021 - 2050
+#    except Exception:
+#        print("Oops! Two years have been founded")
 
 
 
@@ -117,7 +120,7 @@ def clean_rows(filename: str, ind: Optional[bool] = False):
             for row in data[target]:
                 value = indicators_lst[row][-1]
                 row_lst.append((count, value))
-                count += 1
+            count += 1
         if 0 < len(row_lst):
             data.loc[[v[0] for v in row_lst], [target]] = [v[1] for v in row_lst]
     data.to_csv(filename, index=None)
@@ -132,7 +135,7 @@ def clean_rows(filename: str, ind: Optional[bool] = False):
 
 
 # QUALITA' DELLA VITA
-# clean_rows("dataset_clean/Qualita_vita.csv")
+#clean_rows("dataset_clean/Qualita_vita.csv")
 
 # ----------------------------------------- STORE PROPERLY ----------------------------------
 
@@ -167,6 +170,18 @@ def save(table: dict):
 
 save(sub_table("dataset_clean\Qualita_vita.csv"))
 
+# TODO # --> done
+# create a table where unit of measure and indicators are reported --> save it as JSON FILE
+# it will correspond to another table having 3 columns
+# --> 1 codice indicatore
+# --> 2 indicatore stesso
+# --> 3 unità di misura
+
+
+# TODO# --> done
+# Generare una stringa o un codice identificativo per ogni indice in
+# maniera da avere una foreign key nella tabella secondaria
+
 
 def list_arg(filename: str):
     with open(filename, "r") as f:
@@ -194,8 +209,6 @@ clean_rows("dataset_clean\Qualita_vita.csv", ind=True)
 #     return lst_variables
 #
 # saver.create_table("DB_disoccupazione", create_list("dataset_clean\Tasso_disoccupazione.csv"))
-
-
 
 indicators = ["INDEX76871E", #Eventi sportivi
               "INDEXB05593", #Indice di lettura dei quotidiani
@@ -251,6 +264,12 @@ indicators = ["INDEX76871E", #Eventi sportivi
 
 def del_indicators(filename: str, indicators: List):
 
+    # del_lst = []
+    # if "CRI" in row:
+    #     del_lst.append(count)
+    #
+    # if 0 < len(del_lst):
+    #     data = data.drop(data.index[del_lst], inplace=False)
     data = pd.read_csv(filename)
     row_lst = []
     for i in data["INDICATORE"]:
@@ -259,13 +278,6 @@ def del_indicators(filename: str, indicators: List):
         data = data.drop(data.index[row_lst], inplace=False)
     # data = data.drop(data.index[row_lst], inplace=False)
 
-# del_indicators("dataset_clean/Qualita_vita.csv", indicators)
-
-
-# TODO#
-# crea un nuovo file definito "runner" per far runnare le funzioni
-# lascia qui le funzioni
-# creare la funzione dell'indicatore
-
+del_indicators("dataset_clean/Qualita_vita.csv", indicators)
 
 
