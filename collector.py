@@ -218,3 +218,56 @@ def del_indicators(filename: str, indicators: List):
 
     if 0 < len(del_lst):
         data = data.drop(data.index[del_lst], inplace=False)
+
+
+indicators = ["INDEX76871E", #Eventi sportivi
+              "INDEXB05593", #Indice di lettura dei quotidiani
+              "INDEX0491CE", #Spettacoli - Spesa al botteghino
+              "INDEXDE3F0F", #Furti
+              "INDEXE11E38", #Furti in abitazione
+              "INDEXA8ECC7", #Furti in esercizi commerciali
+              "INDEXFC3F69", #Estorsioni
+              "INDEXB0650A", #Truffe e frodi informatiche
+              "INDEX6A80DB", #Incendi
+              "INDEX04D681", #Omicidi da incidente stradale
+              "INDEX3C118A", #Violenze sessuali
+              "INDEX63EC14", #Indice di litigiosit\u00e0
+              "INDEXCB2857", #Durata media delle cause civili
+              "INDEX714B87", #Indice di rotazione delle cause
+              "INDEX366745", #Quota cause pendenti ultratriennali
+              "INDEXFAE6DF", #Riciclaggio e impiego di denaro
+              "INDEXD0AFFD", #Incidenti stradali
+              "INDEX3EEFEF", #Cancellazioni anagrafiche
+              "INDEXE4E4B4", #Iscrizioni anagrafiche
+              "INDEX1D0B90", #Consumo di farmaci per asma e Bpco
+              "INDEXDFA4EE", #Consumo di farmaci per diabete
+              "INDEXA6392E", #Consumo di farmaci per ipertensione
+              "INDEXB5A68C", #Consumo di farmaci per la depressione
+              "INDEX010345", #Infermieri
+              "INDEXFE4E12", #Pediatri
+              "INDEX5F7000", #Calmanti e sonniferi
+              "INDEX7DFBB3", #Casi Covid-19
+              "INDEXF16526", #Rata media mensile
+              "INDEXD2282E", #Popolazione con crediti attivi
+              "INDEX57FDFB", #Fatture commerciali ai fornitori oltre i 30 giorni
+              "INDEX374CD6", #Nuovi mutui per l'acquisto di abitazioni
+              "INDEX928F97", #Protesti
+              "INDEX566396", #Imprese in fallimento
+              "INDEX97E1D9", #Imprese che fanno ecommerce
+              "INDEXE71DD5", #Imprese straniere
+              "INDEX3A4097", #Imprese in rete
+              "INDEX50EF15", #Tasso di occupazione
+              "INDEX575B7B", #Quota di export sul Pil
+              "INDEX25CA91", #Banda larga
+              "INDEXB4363E", #Cig ordinaria autorizzata
+              "INDEXCBB68C", #Nuove iscrizioni di imprese
+              "INDEX7CE928", #Indice di Rischio Climatico (CRI)
+              "INDEXD501C1", #Fondi europei 2014-2020 per l'Agenda digitale
+              "INDEX007575", #Fondi europei 2014-2020 per l'ambiente e la prevenzione dei rischi
+              "INDEX3AFA5C", #Pago Pa - enti attivi
+              "INDEX4E38A7", #Partecipazione alla formazione continua
+              "INDEX5E3BEB", #Cie erogate
+              "INDEXA41E08", #Spid erogate
+              "INDEX125395" #Pos attivi
+              ]
+print(indicators[2])
