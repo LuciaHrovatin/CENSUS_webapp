@@ -4,15 +4,18 @@ from collector import *
 
 # OCCUPAZIONE
 #rename_column("dataset/Tasso_occupazione.csv")
-#delete_column("dataset_clean/Tasso_occupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato', 'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'])
+#delete_column("dataset_clean/Tasso_occupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato',
+# 'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'])
 
 # DISOCCUPAZIONE
 #rename_column("dataset/Tasso_disoccupazione.csv")
-#delete_column("dataset_clean/Tasso_disoccupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato', 'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'])
+#delete_column("dataset_clean/Tasso_disoccupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato',
+# 'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'])
 
 # QUALITA VITA
 rename_column("dataset/Qualita_vita.csv")
-delete_column("dataset_clean/Qualita_vita.csv", ['NOME PROVINCIA (ISTAT)', 'CODICE PROVINCIA ISTAT (STORICO)', 'DENOMINAZIONE CORRENTE', 'FONTE ORIGINALE'])
+delete_column("dataset_clean/Qualita_vita.csv", ['NOME PROVINCIA (ISTAT)', 'CODICE PROVINCIA ISTAT (STORICO)',
+                                                 'DENOMINAZIONE CORRENTE', 'FONTE ORIGINALE'])
 
 
 # DISOCCUPAZIONE
@@ -30,6 +33,8 @@ save(sub_table("dataset_clean\Qualita_vita.csv"))
 clean_rows("dataset_clean\Qualita_vita.csv", ind=True)
 
 # --------------------------------------------- DELETE INDECES NOT NEEDED --------------------------------------------
+# ist of indicators that will be deleted due to their inconsistency with the project purpose
+
 lst_index = list_arg("dataset_clean\indicators.json")
 indicators = [lst_index["Eventi sportivi"][1],
               lst_index["Indice di lettura dei quotidiani"][1],
@@ -73,12 +78,15 @@ indicators = [lst_index["Eventi sportivi"][1],
               lst_index["Banda larga"][1],
               lst_index["Cig ordinaria autorizzata"][1],
               lst_index["Ecosistema urbano"][1],
+              lst_index["Assegni sociali"][1],
+              lst_index["Il trend del Pil pro capite"][1],
               lst_index["Riqualificazioni energetiche degli immobili"][1],
               lst_index["Nuove iscrizioni di imprese"][1],
               lst_index["Indice di Rischio Climatico (CRI)"][1],
               lst_index["Fondi europei 2014-2020 per l'Agenda digitale"][1],
               lst_index["Fondi europei 2014-2020 per l'ambiente e la prevenzione dei rischi"][1],
               lst_index["Pago Pa - enti attivi"][1],
+              lst_index["Indice trasormazione digitale"][1],
               lst_index["Partecipazione alla formazione continua"][1],
               lst_index["Cie erogate"][1],
               lst_index["Spid erogate"][1],

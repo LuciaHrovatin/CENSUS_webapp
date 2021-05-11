@@ -1,24 +1,17 @@
 from __future__ import absolute_import, annotations
 
 import uuid
-from typing import Optional
-
 import pandas as pd
 import json
+from typing import Optional, List
 
-from saver import MySQLManager
-
+# ----------------------------------------- GETTING DATA -----------------------------------------------
 
 def get_data(filename: str):
     data = pd.read_csv(filename)
     return print(data.head())
 
-
-# get_data("dataset/Tasso_occupazione.csv")
-# get_data("dataset/Tasso_disoccupazione.csv")
-
 # -----------------------------------------RENAMING/ DELETING COLUMNS ----------------------------------
-
 
 def rename_column(filename: str):
     """
@@ -29,8 +22,6 @@ def rename_column(filename: str):
     """
     data = pd.read_csv(filename)
     file_n = filename[filename.find("/")+1:]  # extract the name
-
-    # rename columns
     if file_n == "Qualita_vita.csv":
         renamed_data = data.rename(columns={'CODICE NUTS 3 2021': 'NUTS3',
                                             'RIFERIMENTO TEMPORALE': 'TIME',
@@ -51,7 +42,6 @@ def delete_column(filename: str, cols_to_remove: list):
     :param list cols_to_remove: list of columns' names that have to be removed
     :return: return the same dataset but updated
     """
-
     data = pd.read_csv(filename)
     del_col = []
     del_col.extend([i for i in cols_to_remove if i in data.columns])
@@ -71,7 +61,7 @@ def parse_date(str_date: str):
     if len(value) == 1:
         return value[0]
     else:
-        return 2020 # opzione da controllare! il periodo di riferimento è 2021 - 2050
+        return 2020
 
 
 def clean_rows(filename: str, ind: Optional[bool] = False):
@@ -142,39 +132,37 @@ def save(table: dict):
             )
 
 def list_arg(filename: str):
+    """
+    The function returns the content of the json file given as input
+    :param filename: name of the json file
+    :return: content of the file
+    """
     with open(filename, "r") as f:
         rows = json.load(f)
         return rows
 
-
-
-# ---------------------------------------------CONNECTION WITH SERVER -------------------------------------------------
-# saver = MySQLManager(host = "localhost",
-#                      port = 3306,
-#                      database= "project_bdt",
-#                      user = "root",
-#                      password = "Pr0tett0.98")
-#
-# def create_list(filename: str):
-#     data = pd.read_csv(filename)
-#     lst_variables = dict()
-#     for var in data.columns:
-#         lst_variables[var] = data[var][0]
-#     return lst_variables
-#
-# saver.create_table("DB_disoccupazione", create_list("dataset_clean\Tasso_disoccupazione.csv"))
-
+# ---------------------------------------------DELETE NOT RELEVANT INDICATORS-----------------------------------------
 
 def del_indicators(filename: str, indicators: List):
+    """
+    The function deletes all rows containing an index not relevant for further analyses
+    :param str filename: name of the file from which deleting the rows
+    :param list indicators: list of indicators not relevant for further analyses
+    :return: cleaned file
+    """
     data = pd.read_csv(filename)
     row_lst = []
     count = 0
     for i in data["INDEX"]:
         if i in indicators:
             row_lst.append(count)
-            count += 1
+        count += 1
     data = data.drop(data.index[row_lst], inplace=False)
-    data.to_csv(filename, index = None)
+    data.to_csv(filename, index=None)
+
+
+
+
 
 
 

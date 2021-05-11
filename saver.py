@@ -21,7 +21,6 @@ class MySQLManager:
     def create_table(self, db_table: str, columns: dict) -> None:
         cursor = self.connection.cursor()
         table_to_be = []
-        #print(columns)
         for column in columns:
             if type(columns[column]) is str:
                 table_to_be.append(column + " VARCHAR(255)")
@@ -30,41 +29,20 @@ class MySQLManager:
         #print("CREATE TABLE" + db_table+ "(id INT AUTO_INCREMENT PRIMARY KEY," + ",".join(table_to_be) + ")")
         cursor.execute("CREATE TABLE " + db_table+ " (id INT AUTO_INCREMENT PRIMARY KEY," + ",".join(table_to_be) + ")")
 
-    # def save(self, table_name: str, columns: List) -> None:
-    #     cursor = self.connection.cursor()
-    #     seq_values = [i for i in columns].join(",")
-    #     query = "INSERT into" + table_name + "(" + seq_values + "VALUES (" + "%s,"*len(columns) + ")"
-    #
-    #     for station in stations:
-    #         cursor.execute(query, (
-    #             station.id,
-    #             station.name,
-    #             station.address,
-    #             station.position.lat,
-    #             station.position.lon,
-    #             station.city,
-    #             station.slots,
-    #             station.bikes,
-    #             station.dt.isoformat()
-    #         ))
-    #
-    #     cursor.close()
-    #
-    # def list(self):
-    #     cursor = self.connection.cursor()
-    #     query = "SELECT station_id, name, address, lat, lon, city, slots, bikes, timestamp from station"
-    #     cursor.execute(query)
-    #
-    #     stations = []
-    #     for station_id, name, address, lat, lon, city, slots, bikes, timestamp in cursor:
-    #         stations.append(Station(
-    #             station_id,
-    #             name,
-    #             address, bikes, slots, city,
-    #             Position(lat, lon),
-    #             datetime.fromisoformat(timestamp)
-    #         ))
-    #
-    #     cursor.close()
-    #
-    #     return stations
+
+# ---------------------------------------------CONNECTION WITH SERVER -------------------------------------------------
+# saver = MySQLManager(host = "localhost",
+#                      port = 3306,
+#                      database= "project_bdt",
+#                      user = "root",
+#                      password = "Pr0tett0.98")
+#
+# def create_list(filename: str):
+#     data = pd.read_csv(filename)
+#     lst_variables = dict()
+#     for var in data.columns:
+#         lst_variables[var] = data[var][0]
+#     return lst_variables
+#
+# saver.create_table("DB_disoccupazione", create_list("dataset_clean\Tasso_disoccupazione.csv"))
+
