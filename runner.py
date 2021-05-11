@@ -12,7 +12,7 @@ from collector import *
 
 # QUALITA VITA
 rename_column("dataset/Qualita_vita.csv")
-# delete_column("dataset_clean/Qualita_vita.csv", ['NOME PROVINCIA (ISTAT)', 'CODICE PROVINCIA ISTAT (STORICO)', 'DENOMINAZIONE CORRENTE', 'FONTE ORIGINALE'])
+delete_column("dataset_clean/Qualita_vita.csv", ['NOME PROVINCIA (ISTAT)', 'CODICE PROVINCIA ISTAT (STORICO)', 'DENOMINAZIONE CORRENTE', 'FONTE ORIGINALE'])
 
 
 # DISOCCUPAZIONE
@@ -23,15 +23,11 @@ rename_column("dataset/Qualita_vita.csv")
 
 
 # QUALITA' DELLA VITA
-#clean_rows("dataset_clean/Qualita_vita.csv")
+clean_rows("dataset_clean/Qualita_vita.csv")
 
-#save(sub_table("dataset_clean\Qualita_vita.csv"))
+save(sub_table("dataset_clean\Qualita_vita.csv"))
 
-#clean_rows("dataset_clean\Qualita_vita.csv", ind=True)
-
-# --------------------------------------------- DELETE "UNITA' di MISURA" -----------------------------------------------
-# Delete the column of "unità di misura"
-# delete_column("dataset_clean\Qualita_vita.csv", ["UNITA' DI MISURA"])
+clean_rows("dataset_clean\Qualita_vita.csv", ind=True)
 
 # --------------------------------------------- DELETE INDECES NOT NEEDED --------------------------------------------
 lst_index = list_arg("dataset_clean\indicators.json")
@@ -67,6 +63,7 @@ indicators = [lst_index["Eventi sportivi"][1],
               lst_index["Fatture commerciali ai fornitori oltre i 30 giorni"][1],
               lst_index["Nuovi mutui per l'acquisto di abitazioni"][1],
               lst_index["Protesti"][1],
+              lst_index["Partecipazione elettorale"][1],
               lst_index["Imprese in fallimento"][1],
               lst_index["Imprese che fanno ecommerce"][1],
               lst_index["Imprese straniere"][1],
@@ -75,6 +72,8 @@ indicators = [lst_index["Eventi sportivi"][1],
               lst_index["Quota di export sul Pil"][1],
               lst_index["Banda larga"][1],
               lst_index["Cig ordinaria autorizzata"][1],
+              lst_index["Ecosistema urbano"][1],
+              lst_index["Riqualificazioni energetiche degli immobili"][1],
               lst_index["Nuove iscrizioni di imprese"][1],
               lst_index["Indice di Rischio Climatico (CRI)"][1],
               lst_index["Fondi europei 2014-2020 per l'Agenda digitale"][1],
@@ -85,4 +84,8 @@ indicators = [lst_index["Eventi sportivi"][1],
               lst_index["Spid erogate"][1],
               lst_index["Pos attivi"][1],
               ]
-#del_indicators("dataset_clean/Qualita_vita.csv", indicators)
+del_indicators("dataset_clean/Qualita_vita.csv", indicators)
+
+# --------------------------------------------- DELETE "UNITA' di MISURA" -----------------------------------------------
+# Delete the column of "unità di misura"
+#delete_column("dataset_clean\Qualita_vita.csv", ["UNITA' DI MISURA"])

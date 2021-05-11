@@ -67,7 +67,6 @@ def parse_date(str_date: str):
     :param str str_date: string where there is at least one year
     :return str: a string containing only the year
     """
-#    try:
     value = [v for v in str_date.split() if (v.isnumeric() and len(v) == 4)]
     if len(value) == 1:
         return value[0]
