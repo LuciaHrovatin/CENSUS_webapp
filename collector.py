@@ -21,13 +21,13 @@ def rename_column(filename: str):
     :return file: a new dataset with columns' names standardized
     """
     data = pd.read_csv(filename)
-    file_n = filename[filename.find("/")+1:]  # extract the name
+    file_n = filename[filename.find("\\")+1:]  # extract the name
     if file_n == "Qualita_vita.csv":
         renamed_data = data.rename(columns={'CODICE NUTS 3 2021': 'NUTS3',
                                             'RIFERIMENTO TEMPORALE': 'TIME',
                                             'INDICATORE': 'INDEX'})
     elif "occupazione" in file_n:
-        renamed_data = data.rename(columns={'Value': ('VALUE UNEMP' if "dis" in file_n else 'VALUE EMP'),
+        renamed_data = data.rename(columns={'Value': ('ValueUNEMP' if "dis" in file_n else 'ValueEMP'),
                                                 'ITTER107': 'NUTS3',
                                                 'SEXISTAT1': 'SEX',
                                                 'ETA1': 'AGE'})
@@ -159,6 +159,40 @@ def del_indicators(filename: str, indicators: List):
         count += 1
     data = data.drop(data.index[row_lst], inplace=False)
     data.to_csv(filename, index=None)
+
+# ------------------------------------------------ CREATE a LIST --------------------------------------------
+
+def create_list(filename:str):
+    """
+    The function returns a dictionary whose keys are the columns names and the values the first row of the dataset
+    :param str filename: name of the dataset
+    :return: dictionary of columns names and first rows value
+    """
+    data = pd.read_csv(filename)
+    row_lst = dict()
+    for d in data.columns:
+        row_lst[d] = data[d].values[0]
+    return row_lst
+
+# ---------------------------------------------- CREATE LIST OF TABLES ---------------------------------------
+
+def lst_tables(filename: str) -> tuple:
+    """
+    The function prepares the SQL command to insert a new table into the chosen database
+    :param str filename: name of the dataset to be inserted
+    :return: tuple having as first element the name of the new table and as second element the SQL command
+    """
+    name = filename[filename.find("\\")+1:filename.find(".")]
+    table = "CREATE TABLE `" + name + "` ( `id` int NOT NULL AUTO_INCREMENT, \n"
+    table_to_be = []
+    columns = create_list(filename)
+    for column in columns:
+        if type(columns[column]) is str:
+            table_to_be.append("`" + column.lower() + "` VARCHAR(255) NOT NULL")
+        elif isinstance(abs(columns[column]), (float, int)):
+            table_to_be.append("`" + column.lower() + "` NUMERIC NOT NULL")
+    data_set = table + ", \n".join(table_to_be) + ", PRIMARY KEY(`id`))"
+    return name, data_set
 
 
 

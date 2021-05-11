@@ -1,5 +1,6 @@
 from __future__ import absolute_import, annotations
 from collector import *
+from saver import MySQLManager
 
 
 # OCCUPAZIONE
@@ -13,9 +14,9 @@ from collector import *
 # 'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'])
 
 # QUALITA VITA
-rename_column("dataset/Qualita_vita.csv")
-delete_column("dataset_clean/Qualita_vita.csv", ['NOME PROVINCIA (ISTAT)', 'CODICE PROVINCIA ISTAT (STORICO)',
-                                                 'DENOMINAZIONE CORRENTE', 'FONTE ORIGINALE'])
+#rename_column("dataset/Qualita_vita.csv")
+#delete_column("dataset_clean/Qualita_vita.csv", ['NOME PROVINCIA (ISTAT)', 'CODICE PROVINCIA ISTAT (STORICO)
+# 'DENOMINAZIONE CORRENTE', 'FONTE ORIGINALE'])
 
 
 # DISOCCUPAZIONE
@@ -26,14 +27,15 @@ delete_column("dataset_clean/Qualita_vita.csv", ['NOME PROVINCIA (ISTAT)', 'CODI
 
 
 # QUALITA' DELLA VITA
-clean_rows("dataset_clean/Qualita_vita.csv")
-
-save(sub_table("dataset_clean\Qualita_vita.csv"))
-
-clean_rows("dataset_clean\Qualita_vita.csv", ind=True)
+# clean_rows("dataset_clean/Qualita_vita.csv")
+#
+# save(sub_table("dataset_clean\Qualita_vita.csv"))
+#
+# clean_rows("dataset_clean\Qualita_vita.csv", ind=True)
 
 # --------------------------------------------- DELETE INDECES NOT NEEDED --------------------------------------------
 # ist of indicators that will be deleted due to their inconsistency with the project purpose
+
 
 lst_index = list_arg("dataset_clean\indicators.json")
 indicators = [lst_index["Eventi sportivi"][1],
@@ -92,8 +94,19 @@ indicators = [lst_index["Eventi sportivi"][1],
               lst_index["Spid erogate"][1],
               lst_index["Pos attivi"][1],
               ]
-del_indicators("dataset_clean/Qualita_vita.csv", indicators)
+#del_indicators("dataset_clean/Qualita_vita.csv", indicators)
 
 # --------------------------------------------- DELETE "UNITA' di MISURA" -----------------------------------------------
 # Delete the column of "unità di misura"
 #delete_column("dataset_clean\Qualita_vita.csv", ["UNITA' DI MISURA"])
+
+
+# ---------------------------------------------CONNECTION WITH MYSQL -------------------------------------------------
+saver = MySQLManager(host="localhost",
+                      port=3306,
+                      user="root",
+                      password="Pr0tett0.98")
+
+saver.check_database("project_bdt")
+# saver.check_database("EXAMPLE")
+saver.create_table(lst_tables("dataset_clean\Tasso_disoccupazione.csv"))

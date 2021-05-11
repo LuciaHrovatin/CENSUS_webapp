@@ -1,48 +1,72 @@
 from __future__ import absolute_import, annotations
 
-import json
-import os
 import mysql.connector
-from typing import Optional, List
+from mysql.connector import errorcode, Error
 
 
 class MySQLManager:
 
-    def __init__(self, host: str, port: int, database: str, user: str, password: str) -> None:
+    def __init__(self, host: str, port: int, user: str, password: str) -> None:
         self.connection = mysql.connector.connect(
             host=host,
             port=port,
-            database=database,
             user=user,
             password=password
         )
         self.connection.autocommit = True
 
-    def create_table(self, db_table: str, columns: dict) -> None:
+    def create_database(self, DB_name: str):
+        """
+        Creates a new database if the called one does not exist
+        :param str DB_name: name of the database
+        """
         cursor = self.connection.cursor()
-        table_to_be = []
-        for column in columns:
-            if type(columns[column]) is str:
-                table_to_be.append(column + " VARCHAR(255)")
-            else: #isinstance(columns[column], int):
-                table_to_be.append(column + " NUMERIC")
-        #print("CREATE TABLE" + db_table+ "(id INT AUTO_INCREMENT PRIMARY KEY," + ",".join(table_to_be) + ")")
-        cursor.execute("CREATE TABLE " + db_table+ " (id INT AUTO_INCREMENT PRIMARY KEY," + ",".join(table_to_be) + ")")
+        try:
+            cursor.execute(
+                "CREATE DATABASE {} DEFAULT CHARACTER SET 'utf8'".format(DB_name))
+        except Error as err:
+            print("Failed creating database: {}".format(err))
+            exit(1)
 
 
-# ---------------------------------------------CONNECTION WITH SERVER -------------------------------------------------
-# saver = MySQLManager(host = "localhost",
-#                      port = 3306,
-#                      database= "project_bdt",
-#                      user = "root",
-#                      password = "Pr0tett0.98")
-#
-# def create_list(filename: str):
-#     data = pd.read_csv(filename)
-#     lst_variables = dict()
-#     for var in data.columns:
-#         lst_variables[var] = data[var][0]
-#     return lst_variables
-#
-# saver.create_table("DB_disoccupazione", create_list("dataset_clean\Tasso_disoccupazione.csv"))
+    def check_database(self, DB_name: str):
+        """
+        Checks whether the called database exists or not
+        :param str DB_name: name of the database involved in further analyses
+        """
+        cursor = self.connection.cursor()
+        try:
+            cursor.execute("USE {}".format(DB_name))
+            print("Database {} exists.".format(DB_name))
+        except mysql.connector.Error as err:
+            print("Database {} does not exists.".format(DB_name))
+            if err.errno == errorcode.ER_BAD_DB_ERROR:
+                self.create_database(DB_name)
+                print("Database {} created successfully.".format(DB_name))
+                self.connection.database = DB_name
+            else:
+                print(err)
+                exit(1)
+
+    def create_table(self, new_table: tuple) -> None:
+        """
+        The function creates a new table if it is not already present in the database
+        :param tuple new_table: tuple having as first element the name of the
+        table and as second one its schema as SQL command
+        :return: a new table inside the chosen database
+        """
+        cursor = self.connection.cursor()
+        try:
+            print("Creating table {}: ".format(new_table[0]), end='')
+            cursor.execute(new_table[1])
+        except mysql.connector.Error as err:
+            if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
+                print("Table {} already exists.".format(new_table[0]))
+            else:
+                print(err.msg)
+        else:
+            print("DONE")
+        cursor.close()
+
+
 
