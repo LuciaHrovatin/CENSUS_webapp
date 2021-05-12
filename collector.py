@@ -1,6 +1,8 @@
 from __future__ import absolute_import, annotations
 
 import uuid
+from datetime import datetime
+
 import pandas as pd
 import json
 from typing import Optional, List
@@ -104,7 +106,9 @@ def clean_rows(filename: str, ind: Optional[bool] = False):
                 count += 1
         if 0 < len(row_lst):
             data.loc[[v[0] for v in row_lst], [target]] = [v[1] for v in row_lst]
+    data["TIME"] = pd.to_datetime(data['TIME'], format='%Y')
     data.to_csv(filename, index=None)
+
 
 
 # ----------------------------------------- STORE PROPERLY ----------------------------------
@@ -198,6 +202,8 @@ def lst_tables(filename: str) -> tuple:
             table_to_be.append("`" + column.lower() + "` VARCHAR(255) NOT NULL")
         elif isinstance(abs(columns[column]), (float, np.int64)):
             table_to_be.append("`" + column.lower() + "` NUMERIC NOT NULL")
+        elif isinstance(columns[column], datetime.year):
+            table_to_be.append("`" + column.lower() + "` DATETIME")
     data_set = table + ", \n".join(table_to_be) + ", PRIMARY KEY(`id`))"
     return name, data_set
 
@@ -215,7 +221,6 @@ def insert_table(filename: str) -> tuple:
         table_to_be.append(column.lower())
         values.append("%s")
     data_set = insert + ", ".join(table_to_be) + ") \n VALUES (" + ", ".join(values) + ");"
-    print(data_set)
     return name, data_set
 
 

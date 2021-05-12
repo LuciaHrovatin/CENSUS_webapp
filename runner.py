@@ -7,14 +7,14 @@ from saver import MySQLManager
 # file.get_data()
 
 # OCCUPAZIONE
-# rename_column("dataset/Tasso_occupazione.csv")
-# delete_column("dataset_clean/Tasso_occupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato',
-# 'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'])
+#rename_column("dataset/Tasso_occupazione.csv")
+#delete_column("dataset_clean/Tasso_occupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato',
+#'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'])
 
 # DISOCCUPAZIONE
-# rename_column("dataset/Tasso_disoccupazione.csv")
-# delete_column("dataset_clean/Tasso_disoccupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato',
-# 'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'])
+#rename_column("dataset/Tasso_disoccupazione.csv")
+#delete_column("dataset_clean/Tasso_disoccupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato',
+#'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'])
 
 # QUALITA VITA
 #rename_column("dataset/Qualita_vita.csv")
@@ -23,10 +23,10 @@ from saver import MySQLManager
 
 
 # DISOCCUPAZIONE
-# clean_rows("dataset_clean/Tasso_disoccupazione.csv")
+#clean_rows("dataset_clean/Tasso_disoccupazione.csv")
 
 # OCCUPAZIONE
-# clean_rows("dataset_clean/Tasso_occupazione.csv")
+#clean_rows("dataset_clean/Tasso_occupazione.csv")
 
 
 # QUALITA' DELLA VITA
@@ -118,8 +118,9 @@ indicators = [lst_index["Eventi sportivi"][1],
 saver = MySQLManager(host="localhost",
                       port=3306,
                       user="root",
-                      password="luca0405")
+                      password="Pr0tett0.98")
 
-saver.check_database("project_bdt")
-# saver.create_table(lst_tables("dataset_clean\Tasso_disoccupazione.csv"))
-saver.insert_data(insert_table("dataset_clean\Tasso_disoccupazione.csv"), "dataset_clean\Tasso_disoccupazione.csv")
+#saver.check_database("project_bdt")
+#saver.create_table(lst_tables("dataset_clean\Tasso_disoccupazione.csv"))
+print(lst_tables("dataset_clean\Tasso_disoccupazione.csv"))
+#saver.insert_data(insert_table("dataset_clean\Tasso_disoccupazione.csv"), "dataset_clean\Tasso_disoccupazione.csv")
