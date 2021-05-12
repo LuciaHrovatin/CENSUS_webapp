@@ -5,11 +5,17 @@ import pandas as pd
 import json
 from typing import Optional, List
 
-# ----------------------------------------- GETTING DATA -----------------------------------------------
 
-def get_data(filename: str):
-    data = pd.read_csv(filename)
-    return print(data.head())
+class File:
+
+    def __init__(self, filename: str):
+        self.filename = filename
+
+    # ----------------------------------------- GETTING DATA -----------------------------------------------
+
+    def get_data(self):
+        data = pd.read_csv(self.filename)
+        return print(data.head())
 
 # -----------------------------------------RENAMING/ DELETING COLUMNS ----------------------------------
 
