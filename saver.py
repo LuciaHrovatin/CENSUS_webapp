@@ -67,7 +67,11 @@ class MySQLManager:
                 print(err.msg)
         cursor.close()
 
-    def save_SQL(self, filename: str):
+    def save_SQL(self, filename: str) -> None:
+        """
+        Inserting the records in the appropriate table
+        :param str filename: name of the  file
+        """
         cursor = self.connection.cursor()
         name = filename[filename.find("\\") + 1:filename.find(".")].lower()
         data = pd.read_csv(filename)

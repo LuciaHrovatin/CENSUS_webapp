@@ -13,7 +13,9 @@ import numpy as np
 #
 #     def __init__(self, filename: str):
 #         self.filename = filename
-
+# TODO #
+# inserire in __init__ la possibilità di inserire il nome corto del file ex: filename[filename.find("/")+1:]
+# così da poterlo richiamare in futuro
 
     # ----------------------------------------- GETTING DATA -----------------------------------------------
 
@@ -53,10 +55,9 @@ def delete_column(filename: str, cols_to_remove: list):
     :return: return the same dataset but updated
     """
     data = pd.read_csv(filename)
-    del_col = []
-    del_col.extend([i for i in cols_to_remove if i in data.columns])
-    delete_column = data.drop(del_col, inplace=False, axis=1)
-    delete_column.to_csv(filename, index=None)
+    del_col = [i for i in cols_to_remove if i in data.columns]
+    data = data.drop(del_col, inplace=False, axis=1)
+    data.to_csv(filename, index=None)
 
 # -----------------------------------------CLEANING ROWS ----------------------------------
 
@@ -91,30 +92,32 @@ def clean_rows(filename: str, ind: Optional[bool] = False):
             count += 1
         data = data.drop(data.index[row_lst], inplace=False)
     else:
+        target = "INDEX"
+        indicators_lst = list_arg("dataset_clean/indicators.json")
         if not ind:
             target = "TIME"
-            for row in data[target]:
+        for row in data[target]:
+            if not ind:
                 if not row.isnumeric():
                     value = parse_date(row)
                     row_lst.append((count, value))
-                count += 1
-        else:
-            target = "INDEX"
-            indicators_lst = list_arg("dataset_clean\indicators.json")
-            for row in data[target]:
+            else:
                 value = indicators_lst[row][-1]
                 row_lst.append((count, value))
-                count += 1
+            count += 1
         if 0 < len(row_lst):
             data.loc[[v[0] for v in row_lst], [target]] = [v[1] for v in row_lst]
     data.to_csv(filename, index=None)
 
 def change_time(filename: str):
+    """
+    Changes the records of the column "TIME" from numeric or string to datetime
+    :param str filename: name of the dataset
+    """
     data = pd.read_csv(filename)
-    # data["TIME"] = data["TIME"].astype('datetime64[ns]')
     data["TIME"] = pd.to_datetime(data['TIME'])
     data.to_csv(filename, index=None)
-    return print(type(data["TIME"]))
+
 
 # ----------------------------------------- STORE PROPERLY ----------------------------------
 
@@ -176,45 +179,7 @@ def del_indicators(filename: str, indicators: List):
     data = data.drop(data.index[row_lst], inplace=False)
     data.to_csv(filename, index=None)
 
-# ------------------------------------------------ CREATE a LIST --------------------------------------------
-
-def create_list(filename:str):
-    """
-    The function returns a dictionary whose keys are the columns names and the values the first row of the dataset
-    :param str filename: name of the dataset
-    :return: dictionary of columns names and first rows value
-    """
-    data = pd.read_csv(filename)
-    cols = "`,`".join([str(i) for i in data.columns.tolist()])
-    row_lst = dict()
-    for d in data.columns:
-        row_lst[d] = data[d].values[0]
-    return row_lst
-
 # ---------------------------------------------- CREATE LIST OF TABLES ---------------------------------------
-
-# def lst_tables(filename: str) -> tuple:
-#     """
-#     The function prepares the SQL command to insert a new table into the chosen database
-#     :param str filename: name of the dataset to be inserted
-#     :return: tuple having as first element the name of the new table and as second element the SQL command
-#     """
-#     name = filename[filename.find("/")+1:filename.find(".")].lower()
-#     table = "CREATE TABLE `" + name + "` ( `id` int NOT NULL AUTO_INCREMENT, \n"
-#     table_to_be = []
-#     data = pd.read_csv(filename)
-#     columns = create_list(filename)
-#     for column in columns:
-#         if type(columns[column]) is pd._libs.tslibs.timestamps.Timestamp.year:
-#             table_to_be.append("`" + column.lower() + "` DATETIME")
-#         elif type(columns[column]) is str:
-#             table_to_be.append("`" + column.lower() + "` VARCHAR(255) NOT NULL")
-#         elif isinstance(abs(columns[column]), np.int64):
-#             table_to_be.append("`" + column.lower() + "` INT NOT NULL")
-#         elif isinstance(abs(columns[column]), np.float64):
-#             table_to_be.append("`" + column.lower() + "` FLOAT NOT NULL")
-#     data_set = table + ", \n".join(table_to_be) + ", PRIMARY KEY(`id`))"
-#     return name, data_set
 
 def lst_tables(filename: str) -> tuple:
     """
@@ -223,7 +188,6 @@ def lst_tables(filename: str) -> tuple:
     :return: tuple having as first element the name of the new table and as second element the SQL command
     """
     name = filename[filename.find("\\")+1:filename.find(".")].lower()
-    table = "CREATE TABLE `" + name + "` ( `id` int NOT NULL AUTO_INCREMENT, \n"
     data = pd.read_csv(filename)
     table_to_be = []
     cols = [str(i) for i in data.columns.tolist()]
@@ -235,8 +199,8 @@ def lst_tables(filename: str) -> tuple:
             table_to_be.append("`" + cols[i].lower() + "` INT NOT NULL")
         elif isinstance(pointer, float):
             table_to_be.append("`" + cols[i].lower() + "` FLOAT NOT NULL")
-    data_set = table + ", \n".join(table_to_be) + ", PRIMARY KEY(`id`))"
-    print(data_set)
+    data_set = "CREATE TABLE `" + name + "` ( `id` int NOT NULL AUTO_INCREMENT, \n" +\
+               ", \n".join(table_to_be) + ", PRIMARY KEY(`id`))"
     return name, data_set
 
 
