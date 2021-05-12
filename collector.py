@@ -106,10 +106,16 @@ def clean_rows(filename: str, ind: Optional[bool] = False):
                 count += 1
         if 0 < len(row_lst):
             data.loc[[v[0] for v in row_lst], [target]] = [v[1] for v in row_lst]
-    data["TIME"] = pd.to_datetime(data['TIME'], format='%Y')
+    # data["TIME"] = pd.to_datetime(data['TIME'])
+    # data["TIME"] = data["TIME"].astype('datetime64[ns]')
     data.to_csv(filename, index=None)
 
-
+def change_time(filename: str):
+    data = pd.read_csv(filename)
+    # data["TIME"] = data["TIME"].astype('datetime64[ns]')
+    data["TIME"] = pd.to_datetime(data['TIME'])
+    data.to_csv(filename, index=None)
+    return print(type(data["TIME"]))
 
 # ----------------------------------------- STORE PROPERLY ----------------------------------
 
@@ -198,12 +204,14 @@ def lst_tables(filename: str) -> tuple:
     table_to_be = []
     columns = create_list(filename)
     for column in columns:
-        if type(columns[column]) is str:
-            table_to_be.append("`" + column.lower() + "` VARCHAR(255) NOT NULL")
-        elif isinstance(abs(columns[column]), (float, np.int64)):
-            table_to_be.append("`" + column.lower() + "` NUMERIC NOT NULL")
-        elif isinstance(columns[column], datetime.year):
+        if type(columns[column]) is pd._libs.tslibs.timestamps.Timestamp.year:
             table_to_be.append("`" + column.lower() + "` DATETIME")
+        elif type(columns[column]) is str:
+            table_to_be.append("`" + column.lower() + "` VARCHAR(255) NOT NULL")
+        elif isinstance(abs(columns[column]), np.int64):
+            table_to_be.append("`" + column.lower() + "` INT NOT NULL")
+        elif isinstance(abs(columns[column]), np.float64):
+            table_to_be.append("`" + column.lower() + "` FLOAT NOT NULL")
     data_set = table + ", \n".join(table_to_be) + ", PRIMARY KEY(`id`))"
     return name, data_set
 
@@ -219,8 +227,9 @@ def insert_table(filename: str) -> tuple:
     columns = create_list(filename)
     for column in columns:
         table_to_be.append(column.lower())
-        values.append("%s")
+        values.append("8")
     data_set = insert + ", ".join(table_to_be) + ") \n VALUES (" + ", ".join(values) + ");"
+    print(data_set)
     return name, data_set
 
 
