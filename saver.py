@@ -15,35 +15,35 @@ class MySQLManager:
         )
         self.connection.autocommit = True
 
-    def create_database(self, DB_name: str):
+    def create_database(self, name_DB: str):
         """
         Creates a new database if the called one does not exist
-        :param str DB_name: name of the database
+        :param str name_DB: name of the database
         """
         cursor = self.connection.cursor()
         try:
             cursor.execute(
-                "CREATE DATABASE {} DEFAULT CHARACTER SET 'utf8'".format(DB_name))
+                "CREATE DATABASE {} DEFAULT CHARACTER SET 'utf8'".format(name_DB))
         except Error as err:
-            print("Failed creating database: {}".format(err))
+            print("Failed in creation database: {}".format(err))
             exit(1)
 
 
-    def check_database(self, DB_name: str):
+    def check_database(self, name_DB: str):
         """
         Checks whether the called database exists or not
-        :param str DB_name: name of the database involved in further analyses
+        :param str name_DB: name of the database involved in further analyses
         """
         cursor = self.connection.cursor()
         try:
-            cursor.execute("USE {}".format(DB_name))
-            print("Database {} exists.".format(DB_name))
+            cursor.execute("USE {}".format(name_DB))
+            print("Database {} exists.".format(name_DB))
         except mysql.connector.Error as err:
-            print("Database {} does not exists.".format(DB_name))
+            print("Database {} does not exists.".format(name_DB))
             if err.errno == errorcode.ER_BAD_DB_ERROR:
-                self.create_database(DB_name)
-                print("Database {} created successfully.".format(DB_name))
-                self.connection.database = DB_name
+                self.create_database(name_DB)
+                print("Database {} created successfully.".format(name_DB))
+                self.connection.database = name_DB
             else:
                 print(err)
                 exit(1)
@@ -57,16 +57,27 @@ class MySQLManager:
         """
         cursor = self.connection.cursor()
         try:
-            print("Creating table {}: ".format(new_table[0]), end='')
+            print("Table {} will be created: ".format(new_table[0]), end='')
             cursor.execute(new_table[1])
         except mysql.connector.Error as err:
             if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
                 print("Table {} already exists.".format(new_table[0]))
             else:
                 print(err.msg)
-        else:
-            print("DONE")
         cursor.close()
+
+    def insert_data(self, add_str: str, table_name: str) -> None:
+        cursor = self.connection.cursor()
+        try:
+            cursor.execute(add_str)
+            print("Data have been sucessfully insertedd in table {}".format(table_name))
+        except mysql.connector.Error as err:
+            if err.errno == errorcode.ER_BAD_TABLE_ERROR:
+                print("Table {} does not exists.". format(table_name))
+            else:
+                print(err.msg)
+        cursor.close()
+
 
 
 
