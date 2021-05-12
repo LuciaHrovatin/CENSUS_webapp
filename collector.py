@@ -6,16 +6,16 @@ import json
 from typing import Optional, List
 
 
-class File:
-
-    def __init__(self, filename: str):
-        self.filename = filename
+# class File:
+#
+#     def __init__(self, filename: str):
+#         self.filename = filename
 
     # ----------------------------------------- GETTING DATA -----------------------------------------------
 
-    def get_data(self):
-        data = pd.read_csv(self.filename)
-        return print(data.head())
+    # def get_data(self):
+    #     data = pd.read_csv(self.filename)
+    #     return print(data.head())
 
 # -----------------------------------------RENAMING/ DELETING COLUMNS ----------------------------------
 
@@ -199,6 +199,24 @@ def lst_tables(filename: str) -> tuple:
             table_to_be.append("`" + column.lower() + "` NUMERIC NOT NULL")
     data_set = table + ", \n".join(table_to_be) + ", PRIMARY KEY(`id`))"
     return name, data_set
+
+def insert_table(filename: str) -> tuple:
+    """
+    :param filename:
+    :return:
+    """
+    name = filename[filename.find("\\") + 1:filename.find(".")].lower()
+    insert = "INSERT INTO " + name + " ("
+    table_to_be = []
+    values = []
+    columns = create_list(filename)
+    for column in columns:
+        table_to_be.append(column.lower())
+        values.append("%s")
+    data_set = insert + ", ".join(table_to_be) + ") \n VALUES (" + ", ".join(values) + ");"
+    print(data_set)
+    return name, data_set
+
 
 
 

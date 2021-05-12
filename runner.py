@@ -2,8 +2,9 @@ from __future__ import absolute_import, annotations
 from collector import *
 from saver import MySQLManager
 
-file = File("dataset/Tasso_occupazione.csv")
-file.get_data()
+
+# file = File("dataset/Tasso_occupazione.csv")
+# file.get_data()
 
 # OCCUPAZIONE
 #rename_column("dataset/Tasso_occupazione.csv")
@@ -112,3 +113,13 @@ indicators = [lst_index["Eventi sportivi"][1],
 # saver.check_database("project_bdt")
 # # saver.check_database("EXAMPLE")
 # saver.create_table(lst_tables("dataset_clean\Tasso_disoccupazione.csv"))
+# insert_table("dataset_clean\Tasso_disoccupazione.csv")
+
+saver = MySQLManager(host="localhost",
+                      port=3306,
+                      user="root",
+                      password="luca0405")
+
+saver.check_database("project_bdt")
+# saver.create_table(lst_tables("dataset_clean\Tasso_disoccupazione.csv"))
+saver.insert_data(insert_table("dataset_clean\Tasso_disoccupazione.csv"), "dataset_clean\Tasso_disoccupazione.csv")

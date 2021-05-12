@@ -66,14 +66,14 @@ class MySQLManager:
                 print(err.msg)
         cursor.close()
 
-    def insert_data(self, add_str: str, filename: str, table_name: str) -> None:
+    def insert_data(self, add_str: tuple, filename: str) -> None:
         cursor = self.connection.cursor()
         try:
-            cursor.execute(add_str, filename)
-            print("Data have been sucessfully insertedd in table {}".format(table_name))
+            cursor.execute(add_str[1], filename)
+            print("Data have been sucessfully insertedd in table {}".format(add_str[0]))
         except mysql.connector.Error as err:
             if err.errno == errorcode.ER_BAD_TABLE_ERROR:
-                print("Table {} does not exists.". format(table_name))
+                print("Table {} does not exists.". format(add_str[0]))
             else:
                 print(err.msg)
         cursor.close()
