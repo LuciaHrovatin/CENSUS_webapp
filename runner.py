@@ -119,7 +119,7 @@ indicators = [lst_index["Eventi sportivi"][1],
 saver = MySQLManager(host="localhost",
                       port=3306,
                       user="root",
-                      password="luca0405")
+                      password="Pr0tett0.98")
 
 
 saver.check_database("project_bdt")
@@ -127,7 +127,6 @@ saver.check_database("project_bdt")
 # saver.create_table(lst_tables("dataset_clean\Qualita_vita.csv"))
 saver.create_table(lst_tables("dataset_clean\Tasso_occupazione.csv"))
 
-# print(lst_tables("dataset_clean\Tasso_disoccupazione.csv"))
 # saver.save_SQL("dataset_clean\Tasso_disoccupazione.csv")
 # saver.save_SQL("dataset_clean\Qualita_vita.csv")
 saver.save_SQL("dataset_clean\Tasso_occupazione.csv")

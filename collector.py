@@ -14,6 +14,7 @@ import numpy as np
 #     def __init__(self, filename: str):
 #         self.filename = filename
 
+
     # ----------------------------------------- GETTING DATA -----------------------------------------------
 
     # def get_data(self):
@@ -106,8 +107,6 @@ def clean_rows(filename: str, ind: Optional[bool] = False):
                 count += 1
         if 0 < len(row_lst):
             data.loc[[v[0] for v in row_lst], [target]] = [v[1] for v in row_lst]
-    # data["TIME"] = pd.to_datetime(data['TIME'])
-    # data["TIME"] = data["TIME"].astype('datetime64[ns]')
     data.to_csv(filename, index=None)
 
 def change_time(filename: str):
@@ -186,12 +185,36 @@ def create_list(filename:str):
     :return: dictionary of columns names and first rows value
     """
     data = pd.read_csv(filename)
+    cols = "`,`".join([str(i) for i in data.columns.tolist()])
     row_lst = dict()
     for d in data.columns:
         row_lst[d] = data[d].values[0]
     return row_lst
 
 # ---------------------------------------------- CREATE LIST OF TABLES ---------------------------------------
+
+# def lst_tables(filename: str) -> tuple:
+#     """
+#     The function prepares the SQL command to insert a new table into the chosen database
+#     :param str filename: name of the dataset to be inserted
+#     :return: tuple having as first element the name of the new table and as second element the SQL command
+#     """
+#     name = filename[filename.find("/")+1:filename.find(".")].lower()
+#     table = "CREATE TABLE `" + name + "` ( `id` int NOT NULL AUTO_INCREMENT, \n"
+#     table_to_be = []
+#     data = pd.read_csv(filename)
+#     columns = create_list(filename)
+#     for column in columns:
+#         if type(columns[column]) is pd._libs.tslibs.timestamps.Timestamp.year:
+#             table_to_be.append("`" + column.lower() + "` DATETIME")
+#         elif type(columns[column]) is str:
+#             table_to_be.append("`" + column.lower() + "` VARCHAR(255) NOT NULL")
+#         elif isinstance(abs(columns[column]), np.int64):
+#             table_to_be.append("`" + column.lower() + "` INT NOT NULL")
+#         elif isinstance(abs(columns[column]), np.float64):
+#             table_to_be.append("`" + column.lower() + "` FLOAT NOT NULL")
+#     data_set = table + ", \n".join(table_to_be) + ", PRIMARY KEY(`id`))"
+#     return name, data_set
 
 def lst_tables(filename: str) -> tuple:
     """
@@ -201,34 +224,18 @@ def lst_tables(filename: str) -> tuple:
     """
     name = filename[filename.find("\\")+1:filename.find(".")].lower()
     table = "CREATE TABLE `" + name + "` ( `id` int NOT NULL AUTO_INCREMENT, \n"
+    data = pd.read_csv(filename)
     table_to_be = []
-    columns = create_list(filename)
-    for column in columns:
-        if type(columns[column]) is pd._libs.tslibs.timestamps.Timestamp.year:
-            table_to_be.append("`" + column.lower() + "` DATETIME")
-        elif type(columns[column]) is str:
-            table_to_be.append("`" + column.lower() + "` VARCHAR(255) NOT NULL")
-        elif isinstance(abs(columns[column]), np.int64):
-            table_to_be.append("`" + column.lower() + "` INT NOT NULL")
-        elif isinstance(abs(columns[column]), np.float64):
-            table_to_be.append("`" + column.lower() + "` FLOAT NOT NULL")
+    cols = [str(i) for i in data.columns.tolist()]
+    for i in range(len(cols)):
+        pointer = data.loc[0, cols[i]]
+        if isinstance(pointer, str):
+            table_to_be.append("`" + cols[i].lower() + "` VARCHAR(255) NOT NULL")
+        elif isinstance(pointer, np.int64):
+            table_to_be.append("`" + cols[i].lower() + "` INT NOT NULL")
+        elif isinstance(pointer, float):
+            table_to_be.append("`" + cols[i].lower() + "` FLOAT NOT NULL")
     data_set = table + ", \n".join(table_to_be) + ", PRIMARY KEY(`id`))"
-    return name, data_set
-
-def insert_table(filename: str) -> tuple:
-    """
-    :param filename:
-    :return:
-    """
-    name = filename[filename.find("\\") + 1:filename.find(".")].lower()
-    insert = "INSERT INTO " + name + " ("
-    table_to_be = []
-    values = []
-    columns = create_list(filename)
-    for column in columns:
-        table_to_be.append(column.lower())
-        values.append("8")
-    data_set = insert + ", ".join(table_to_be) + ") \n VALUES (" + ", ".join(values) + ");"
     print(data_set)
     return name, data_set
 

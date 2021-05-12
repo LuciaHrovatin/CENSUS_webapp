@@ -67,38 +67,16 @@ class MySQLManager:
                 print(err.msg)
         cursor.close()
 
-    # def insert_data(self, add_str: tuple, filename: str) -> None:
-    #     cursor = self.connection.cursor()
-    #     try:
-    #         cursor.execute(add_str[1], filename)
-    #         print("Data have been sucessfully insertedd in table {}".format(add_str[0]))
-    #     except mysql.connector.Error as err:
-    #         if err.errno == errorcode.ER_BAD_TABLE_ERROR:
-    #             print("Table {} does not exists.". format(add_str[0]))
-    #         else:
-    #             print(err.msg)
-    #     cursor.close()
-
     def save_SQL(self, filename: str):
-        # # Create SQLAlchemy engine to connect to MySQL Database
-        # engine = create_engine("mysql+pymysql://{root}:{luca0405}@{localhost}/{project_bdt}"
-        #                        .format(host=hostname, db=dbname, user=uname, pw=pwd))
-        #
-        # # Convert dataframe to sql table
-        # df.to_sql('users', engine, index=False)
         cursor = self.connection.cursor()
-
-        data = pd.read_csv(filename)
-        # creating column list for insertion
-        cols = "`,`".join([str(i) for i in data.columns.tolist()])
         name = filename[filename.find("\\") + 1:filename.find(".")].lower()
-
-        # Insert DataFrame recrds one by one.
+        data = pd.read_csv(filename)
+        cols = "`, `".join([str(i).lower() for i in data.columns.tolist()])
         for i, row in data.iterrows():
-            sql = "INSERT INTO " + name + "(`" + cols + "`) VALUES (" + "%s," * (len(row) - 1) + "%s)"
+            sql = "INSERT INTO " + name + "(`" + cols + "`) VALUES (" + "%s,"*(len(row) - 1) + "%s)"
             cursor.execute(sql, tuple(row))
+        print("Data have been successfully inserted in table {}".format(name))
 
-            # the connection is not autocommitted by default, so we must commit to save our changes
 
 
 
