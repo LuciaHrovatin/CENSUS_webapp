@@ -7,13 +7,13 @@ from saver import MySQLManager
 # file.get_data()
 
 # OCCUPAZIONE
-#rename_column("dataset/Tasso_occupazione.csv")
-#delete_column("dataset_clean/Tasso_occupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato',
+# rename_column("dataset/Tasso_occupazione.csv")
+# delete_column("dataset_clean/Tasso_occupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato',
 # 'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'])
 
 # DISOCCUPAZIONE
-#rename_column("dataset/Tasso_disoccupazione.csv")
-#delete_column("dataset_clean/Tasso_disoccupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato',
+# rename_column("dataset/Tasso_disoccupazione.csv")
+# delete_column("dataset_clean/Tasso_disoccupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato',
 # 'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'])
 
 # QUALITA VITA
@@ -26,7 +26,7 @@ from saver import MySQLManager
 # clean_rows("dataset_clean/Tasso_disoccupazione.csv")
 
 # OCCUPAZIONE
-#clean_rows("dataset_clean/Tasso_occupazione.csv")
+# clean_rows("dataset_clean/Tasso_occupazione.csv")
 
 
 # QUALITA' DELLA VITA

@@ -4,6 +4,7 @@ import uuid
 import pandas as pd
 import json
 from typing import Optional, List
+import numpy as np
 
 
 # class File:
@@ -27,13 +28,13 @@ def rename_column(filename: str):
     :return file: a new dataset with columns' names standardized
     """
     data = pd.read_csv(filename)
-    file_n = filename[filename.find("\\")+1:]  # extract the name
+    file_n = filename[filename.find("/")+1:]  # extract the name
     if file_n == "Qualita_vita.csv":
         renamed_data = data.rename(columns={'CODICE NUTS 3 2021': 'NUTS3',
                                             'RIFERIMENTO TEMPORALE': 'TIME',
                                             'INDICATORE': 'INDEX'})
     elif "occupazione" in file_n:
-        renamed_data = data.rename(columns={'Value': ('ValueUNEMP' if "dis" in file_n else 'ValueEMP'),
+        renamed_data = data.rename(columns={'Value': ('Value_UNEMP' if "dis" in file_n else 'Value_EMP'),
                                                 'ITTER107': 'NUTS3',
                                                 'SEXISTAT1': 'SEX',
                                                 'ETA1': 'AGE'})
@@ -188,14 +189,14 @@ def lst_tables(filename: str) -> tuple:
     :param str filename: name of the dataset to be inserted
     :return: tuple having as first element the name of the new table and as second element the SQL command
     """
-    name = filename[filename.find("\\")+1:filename.find(".")]
+    name = filename[filename.find("\\")+1:filename.find(".")].lower()
     table = "CREATE TABLE `" + name + "` ( `id` int NOT NULL AUTO_INCREMENT, \n"
     table_to_be = []
     columns = create_list(filename)
     for column in columns:
         if type(columns[column]) is str:
             table_to_be.append("`" + column.lower() + "` VARCHAR(255) NOT NULL")
-        elif isinstance(abs(columns[column]), (float, int)):
+        elif isinstance(abs(columns[column]), (float, np.int64)):
             table_to_be.append("`" + column.lower() + "` NUMERIC NOT NULL")
     data_set = table + ", \n".join(table_to_be) + ", PRIMARY KEY(`id`))"
     return name, data_set
