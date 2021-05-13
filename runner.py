@@ -7,18 +7,18 @@ from saver import MySQLManager
 # file.get_data()
 
 # OCCUPAZIONE
-rename_column("dataset/Tasso_occupazione.csv")
-delete_column("dataset_clean/Tasso_occupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato',
-'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'])
-
-# DISOCCUPAZIONE
-rename_column("dataset/Tasso_disoccupazione.csv")
-delete_column("dataset_clean/Tasso_disoccupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato',
-'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'])
+# rename_column("dataset/Tasso_occupazione.csv")
+# delete_column("dataset_clean/Tasso_occupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato',
+# 'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'])
+#
+# # DISOCCUPAZIONE
+# rename_column("dataset/Tasso_disoccupazione.csv")
+# delete_column("dataset_clean/Tasso_disoccupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato',
+# 'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'])
 
 # QUALITA VITA
-rename_column("dataset/Qualita_vita.csv")
-delete_column("dataset_clean/Qualita_vita.csv", ['NOME PROVINCIA (ISTAT)', 'CODICE PROVINCIA ISTAT (STORICO)', 'DENOMINAZIONE CORRENTE', 'FONTE ORIGINALE'])
+#rename_column("dataset/Qualita_vita.csv")
+#delete_column("dataset_clean/Qualita_vita.csv", ['NOME PROVINCIA (ISTAT)', 'CODICE PROVINCIA ISTAT (STORICO)', 'DENOMINAZIONE CORRENTE', 'FONTE ORIGINALE'])
 
 
 # DISOCCUPAZIONE
@@ -29,11 +29,11 @@ delete_column("dataset_clean/Qualita_vita.csv", ['NOME PROVINCIA (ISTAT)', 'CODI
 
 
 # QUALITA' DELLA VITA -> save indicators
-save(sub_table("dataset_clean/Qualita_vita.csv"))
+#save(sub_table("dataset_clean/Qualita_vita.csv"))
 
 # QUALITA' DELLA VITA -> clean rows
-clean_rows("dataset_clean/Qualita_vita.csv")
-clean_rows("dataset_clean/Qualita_vita.csv", ind=True)
+#clean_rows("dataset_clean/Qualita_vita.csv")
+#clean_rows("dataset_clean/Qualita_vita.csv", ind=True)
 
 # --------------------------------------------- DELETE INDECES NOT NEEDED --------------------------------------------
 # ist of indicators that will be deleted due to their inconsistency with the project purpose
@@ -96,7 +96,7 @@ indicators = [lst_index["Eventi sportivi"][1],
               lst_index["Spid erogate"][1],
               lst_index["Pos attivi"][1],
               ]
-del_indicators("dataset_clean/Qualita_vita.csv", indicators)
+#del_indicators("dataset_clean/Qualita_vita.csv", indicators)
 
 # --------------------------------------------- DELETE "UNITA' di MISURA" -----------------------------------------------
 # Delete the column of "unità di misura"
@@ -121,11 +121,12 @@ saver = MySQLManager(host="localhost",
                       password="Pr0tett0.98")
 
 
-#saver.check_database("project_bdt")
+saver.check_database("project_bdt")
 # saver.create_table(lst_tables("dataset_clean\Tasso_disoccupazione.csv"))
-# saver.create_table(lst_tables("dataset_clean\Qualita_vita.csv"))
+#saver.create_table(lst_tables("dataset_clean\Qualita_vita.csv"))
 #saver.create_table(lst_tables("dataset_clean\Tasso_occupazione.csv"))
-
+#lst_tables("dataset_clean\Tasso_disoccupazione.csv")
 # saver.save_SQL("dataset_clean\Tasso_disoccupazione.csv")
-# saver.save_SQL("dataset_clean\Qualita_vita.csv")
+saver.save_SQL("dataset_clean\Qualita_vita.csv")
 #saver.save_SQL("dataset_clean\Tasso_occupazione.csv")
+

@@ -3,6 +3,7 @@ from __future__ import absolute_import, annotations
 import uuid
 from datetime import datetime
 
+import ns as ns
 import pandas as pd
 import json
 from typing import Optional, List
@@ -13,9 +14,11 @@ import numpy as np
 #
 #     def __init__(self, filename: str):
 #         self.filename = filename
+
 # TODO #
 # inserire in __init__ la possibilità di inserire il nome corto del file ex: filename[filename.find("/")+1:]
 # così da poterlo richiamare in futuro
+# Inserire funzione GET_NAME (solo nome senza dataet... e csv)
 
     # ----------------------------------------- GETTING DATA -----------------------------------------------
 
@@ -24,6 +27,8 @@ import numpy as np
     #     return print(data.head())
 
 # -----------------------------------------RENAMING/ DELETING COLUMNS ----------------------------------
+from numpy import datetime64
+
 
 def rename_column(filename: str):
     """
@@ -72,7 +77,7 @@ def parse_date(str_date: str):
     if len(value) == 1:
         return value[0]
     else:
-        return 2020
+        return 2020  # inserted due to rows 2021-2050
 
 
 def clean_rows(filename: str, ind: Optional[bool] = False):
@@ -93,7 +98,7 @@ def clean_rows(filename: str, ind: Optional[bool] = False):
         data = data.drop(data.index[row_lst], inplace=False)
     else:
         target = "INDEX"
-        indicators_lst = list_arg("dataset_clean/indicators.json")
+        indicators_lst = list_arg("dataset_clean/indicators.json")  # problem in running functions ?
         if not ind:
             target = "TIME"
         for row in data[target]:
@@ -107,15 +112,6 @@ def clean_rows(filename: str, ind: Optional[bool] = False):
             count += 1
         if 0 < len(row_lst):
             data.loc[[v[0] for v in row_lst], [target]] = [v[1] for v in row_lst]
-    data.to_csv(filename, index=None)
-
-def change_time(filename: str):
-    """
-    Changes the records of the column "TIME" from numeric or string to datetime
-    :param str filename: name of the dataset
-    """
-    data = pd.read_csv(filename)
-    data["TIME"] = pd.to_datetime(data['TIME'])
     data.to_csv(filename, index=None)
 
 
@@ -188,12 +184,14 @@ def lst_tables(filename: str) -> tuple:
     :return: tuple having as first element the name of the new table and as second element the SQL command
     """
     name = filename[filename.find("\\")+1:filename.find(".")].lower()
-    data = pd.read_csv(filename)
+    data = pd.read_csv(filename, parse_dates=["TIME"])
     table_to_be = []
     cols = [str(i) for i in data.columns.tolist()]
     for i in range(len(cols)):
         pointer = data.loc[0, cols[i]]
-        if isinstance(pointer, str):
+        if isinstance(pointer, datetime):
+            table_to_be.append("`" + cols[i].lower() + "` DATETIME NOT NULL")
+        elif isinstance(pointer, str):
             table_to_be.append("`" + cols[i].lower() + "` VARCHAR(255) NOT NULL")
         elif isinstance(pointer, np.int64):
             table_to_be.append("`" + cols[i].lower() + "` INT NOT NULL")
@@ -201,7 +199,7 @@ def lst_tables(filename: str) -> tuple:
             table_to_be.append("`" + cols[i].lower() + "` FLOAT NOT NULL")
     data_set = "CREATE TABLE `" + name + "` ( `id` int NOT NULL AUTO_INCREMENT, \n" +\
                ", \n".join(table_to_be) + ", PRIMARY KEY(`id`))"
-    return name, data_set
+    return print(name, data_set)
 
 
 
