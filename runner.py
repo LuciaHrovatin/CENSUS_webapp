@@ -112,7 +112,6 @@ indicators = [lst_index["Eventi sportivi"][1],
 # saver.check_database("project_bdt")
 # # saver.check_database("EXAMPLE")
 # saver.create_table(lst_tables("dataset_clean\Tasso_disoccupazione.csv"))
-# insert_table("dataset_clean\Tasso_disoccupazione.csv")
 
 
 saver = MySQLManager(host="localhost",
@@ -122,11 +121,10 @@ saver = MySQLManager(host="localhost",
 
 
 saver.check_database("project_bdt")
-# saver.create_table(lst_tables("dataset_clean\Tasso_disoccupazione.csv"))
+saver.create_table(lst_tables("dataset_clean\Tasso_disoccupazione.csv"))
 #saver.create_table(lst_tables("dataset_clean\Qualita_vita.csv"))
 #saver.create_table(lst_tables("dataset_clean\Tasso_occupazione.csv"))
-#lst_tables("dataset_clean\Tasso_disoccupazione.csv")
-# saver.save_SQL("dataset_clean\Tasso_disoccupazione.csv")
-saver.save_SQL("dataset_clean\Qualita_vita.csv")
+saver.save_SQL("dataset_clean\Tasso_disoccupazione.csv")
+#saver.save_SQL("dataset_clean\Qualita_vita.csv")
 #saver.save_SQL("dataset_clean\Tasso_occupazione.csv")
 

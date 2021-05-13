@@ -184,14 +184,12 @@ def lst_tables(filename: str) -> tuple:
     :return: tuple having as first element the name of the new table and as second element the SQL command
     """
     name = filename[filename.find("\\")+1:filename.find(".")].lower()
-    data = pd.read_csv(filename, parse_dates=["TIME"])
+    data = pd.read_csv(filename)
     table_to_be = []
     cols = [str(i) for i in data.columns.tolist()]
     for i in range(len(cols)):
         pointer = data.loc[0, cols[i]]
-        if isinstance(pointer, datetime):
-            table_to_be.append("`" + cols[i].lower() + "` DATETIME NOT NULL")
-        elif isinstance(pointer, str):
+        if isinstance(pointer, str):
             table_to_be.append("`" + cols[i].lower() + "` VARCHAR(255) NOT NULL")
         elif isinstance(pointer, np.int64):
             table_to_be.append("`" + cols[i].lower() + "` INT NOT NULL")
@@ -199,7 +197,7 @@ def lst_tables(filename: str) -> tuple:
             table_to_be.append("`" + cols[i].lower() + "` FLOAT NOT NULL")
     data_set = "CREATE TABLE `" + name + "` ( `id` int NOT NULL AUTO_INCREMENT, \n" +\
                ", \n".join(table_to_be) + ", PRIMARY KEY(`id`))"
-    return print(name, data_set)
+    return name, data_set
 
 
 
