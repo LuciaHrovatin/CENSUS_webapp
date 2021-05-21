@@ -6,12 +6,12 @@ from saver import MySQLManager
 
 class Backup:
 
-    def __init__(self, saver: MySQLManager, DB_NAME: str, BACKUP_PATH: str):
+    def __init__(self, saver: MySQLManager, db_name: str, backup_path: str):
         self.DB_HOST = saver.connection.server_host
         self.DB_USER = saver.connection.user
         self.DB_PASSWORD = saver.connection._password
-        self.DB_NAME = DB_NAME
-        self.BACKUP_PATH = BACKUP_PATH
+        self.DB_NAME = db_name
+        self.BACKUP_PATH = backup_path
 
     # DB_USER = 'root'
     # DB_USER_PASSWORD = '_mysql_user_password_'
