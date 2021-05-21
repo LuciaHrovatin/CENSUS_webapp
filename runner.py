@@ -1,42 +1,47 @@
 from __future__ import absolute_import, annotations
+
+import os
+from datetime import datetime, timedelta
+
 from collector import *
 from saver import MySQLManager
+from backup import Backup
 
 
 # file = File("dataset/Tasso_occupazione.csv")
 # file.get_data()
 
 # OCCUPAZIONE
-# rename_column("dataset/Tasso_occupazione.csv")
-# delete_column("dataset_clean/Tasso_occupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato',
-# 'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'])
+rename_column("dataset/Tasso_occupazione.csv")
+delete_column("dataset_clean/Tasso_occupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato',
+'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'])
 #
 # # DISOCCUPAZIONE
-# rename_column("dataset/Tasso_disoccupazione.csv")
-# delete_column("dataset_clean/Tasso_disoccupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato',
-# 'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'])
+rename_column("dataset/Tasso_disoccupazione.csv")
+delete_column("dataset_clean/Tasso_disoccupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato',
+ 'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'])
 
 # QUALITA VITA
-#rename_column("dataset/Qualita_vita.csv")
-#delete_column("dataset_clean/Qualita_vita.csv", ['NOME PROVINCIA (ISTAT)', 'CODICE PROVINCIA ISTAT (STORICO)', 'DENOMINAZIONE CORRENTE', 'FONTE ORIGINALE'])
+rename_column("dataset/Qualita_vita.csv")
+delete_column("dataset_clean/Qualita_vita.csv", ['NOME PROVINCIA (ISTAT)', 'CODICE PROVINCIA ISTAT (STORICO)', 'DENOMINAZIONE CORRENTE', 'FONTE ORIGINALE'])
 
 
 # DISOCCUPAZIONE
-#clean_rows("dataset_clean/Tasso_disoccupazione.csv")
+clean_rows("dataset_clean/Tasso_disoccupazione.csv")
 
 # OCCUPAZIONE
-#clean_rows("dataset_clean/Tasso_occupazione.csv")
+clean_rows("dataset_clean/Tasso_occupazione.csv")
 
 
 # QUALITA' DELLA VITA -> save indicators
-#save(sub_table("dataset_clean/Qualita_vita.csv"))
+save(sub_table("dataset_clean/Qualita_vita.csv"))
 
 # QUALITA' DELLA VITA -> clean rows
-#clean_rows("dataset_clean/Qualita_vita.csv")
-#clean_rows("dataset_clean/Qualita_vita.csv", ind=True)
+clean_rows("dataset_clean/Qualita_vita.csv")
+clean_rows("dataset_clean/Qualita_vita.csv", ind=True)
 
 # --------------------------------------------- DELETE INDECES NOT NEEDED --------------------------------------------
-# ist of indicators that will be deleted due to their inconsistency with the project purpose
+# List of indicators that will be deleted due to their inconsistency with the project purpose
 
 
 lst_index = list_arg("dataset_clean/indicators.json")
@@ -96,35 +101,41 @@ indicators = [lst_index["Eventi sportivi"][1],
               lst_index["Spid erogate"][1],
               lst_index["Pos attivi"][1],
               ]
-#del_indicators("dataset_clean/Qualita_vita.csv", indicators)
+del_indicators("dataset_clean/Qualita_vita.csv", indicators)
 
 # --------------------------------------------- DELETE "UNITA' di MISURA" -----------------------------------------------
 # Delete the column of "unità di misura"
-#delete_column("dataset_clean\Qualita_vita.csv", ["UNITA' DI MISURA"])
+delete_column("dataset_clean\Qualita_vita.csv", ["UNITA' DI MISURA"])
 
 
 # --------------------------------------------- CONNECTION WITH MYSQL -------------------------------------------------
-# saver = MySQLManager(host="localhost",
-#                       port=3306,
-#                       user="root",
-#                       password="Pr0tett0.98")
-#
-# saver.check_database("project_bdt")
-# # saver.check_database("EXAMPLE")
-# saver.create_table(lst_tables("dataset_clean\Tasso_disoccupazione.csv"))
-
+password = "Pr0tett0.98"
 
 saver = MySQLManager(host="localhost",
                       port=3306,
                       user="root",
-                      password="Pr0tett0.98")
+                      password=password)
 
 
 saver.check_database("project_bdt")
+
+# Create table
 saver.create_table(lst_tables("dataset_clean\Tasso_disoccupazione.csv"))
 #saver.create_table(lst_tables("dataset_clean\Qualita_vita.csv"))
 #saver.create_table(lst_tables("dataset_clean\Tasso_occupazione.csv"))
+
+# Load data
+
 saver.save_SQL("dataset_clean\Tasso_disoccupazione.csv")
 #saver.save_SQL("dataset_clean\Qualita_vita.csv")
 #saver.save_SQL("dataset_clean\Tasso_occupazione.csv")
+
+backup = Backup(saver, "project_bdt", "C:/Users/lucia/Desktop")
+backup.set_backup()
+
+
+
+
+
+
 
