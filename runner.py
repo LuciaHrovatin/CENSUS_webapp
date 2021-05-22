@@ -130,7 +130,7 @@ saver.check_database("project_bdt")
 #saver.save_SQL("dataset_clean\Qualita_vita.csv")
 #saver.save_SQL("dataset_clean\Tasso_occupazione.csv")
 
-backup = Backup(saver,  "C:/Users/lucia/Desktop")
+backup = Backup(saver, "C:/Users/lucia/Desktop") # set here your local path
 backup.set_backup("project_bdt")
 
 
