@@ -120,18 +120,18 @@ saver = MySQLManager(host="localhost",
 saver.check_database("project_bdt")
 
 # Create table
-saver.create_table(lst_tables("dataset_clean\Tasso_disoccupazione.csv"))
+#saver.create_table(lst_tables("dataset_clean\Tasso_disoccupazione.csv"))
 #saver.create_table(lst_tables("dataset_clean\Qualita_vita.csv"))
 #saver.create_table(lst_tables("dataset_clean\Tasso_occupazione.csv"))
 
 # Load data
 
-saver.save_SQL("dataset_clean\Tasso_disoccupazione.csv")
+#saver.save_SQL("dataset_clean\Tasso_disoccupazione.csv")
 #saver.save_SQL("dataset_clean\Qualita_vita.csv")
 #saver.save_SQL("dataset_clean\Tasso_occupazione.csv")
 
-backup = Backup(saver, "project_bdt", "C:/Users/lucia/Desktop")
-backup.set_backup()
+backup = Backup(saver,  "C:/Users/lucia/Desktop")
+backup.set_backup("project_bdt")
 
 
 
