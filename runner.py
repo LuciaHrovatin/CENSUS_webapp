@@ -134,7 +134,7 @@ saver.check_database("project_bdt")
 #saver.create_table(lst_tables("dataset_clean\Qualita_vita.csv"))
 #saver.create_table(lst_tables("dataset_clean\Tasso_occupazione.csv"))
 #saver.create_table(lst_tables("dataset_clean/carcom16.csv"))
-saver.create_table(lst_tables("dataset_clean/rfam16.csv"))
+#saver.create_table(lst_tables("dataset_clean/rfam16.csv"))
 
 #Load data
 
@@ -142,12 +142,13 @@ saver.create_table(lst_tables("dataset_clean/rfam16.csv"))
 #saver.save_SQL("dataset_clean\Qualita_vita.csv")
 #saver.save_SQL("dataset_clean\Tasso_occupazione.csv")
 #saver.save_SQL("dataset_clean/carcom16.csv")
-saver.save_SQL("dataset_clean/rfam16.csv")
+#saver.save_SQL("dataset_clean/rfam16.csv")
+
+saver.join_SQL("carcom16", "rfam16")
 
 
-
-backup = Backup(saver, "C:/Users/lucia/Desktop") # set here your local path
-backup.set_backup("project_bdt")
+#backup = Backup(saver, "C:/Users/lucia/Desktop") # set here your local path
+#backup.set_backup("project_bdt")
 
 
 

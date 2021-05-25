@@ -17,4 +17,8 @@
 #                                            password="Pr0tett0.98").load()
 # print(df)
 
+# TODO#
+#1. use apache airflow to create a sequence for pushing things in SQL
+#2. databricks to search in the data
+
 

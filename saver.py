@@ -81,6 +81,18 @@ class MySQLManager:
             cursor.execute(sql, tuple(row))
         print("Data have been successfully inserted in table {}".format(name))
 
+    def join_SQL(self, table_1: str, table_2: str):
+        cursor = self.connection.cursor()
+        try:
+            cursor.execute("""CREATE TABLE data_2016 
+            as SELECT * from {} join {}
+            on {}.nquest = {}.nquest""".format(table_1, table_2, table_1, table_2))
+            print("hi")
+        except:
+            print("ciao")
+            self.connection.rollback()
+
+        cursor.close()
 
 
 
