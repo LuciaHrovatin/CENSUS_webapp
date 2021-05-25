@@ -26,9 +26,12 @@ import numpy as np
     #     data = pd.read_csv(self.filename)
     #     return print(data.head())
 
-# -----------------------------------------RENAMING/ DELETING COLUMNS ----------------------------------
-from numpy import datetime64
+def save_file(filename: str):
+    data = pd.read_csv(filename)
+    file_n = filename.split("/")[-1]
+    data.to_csv("dataset_clean/" + file_n, index=None)
 
+# -----------------------------------------RENAMING/ DELETING COLUMNS ----------------------------------
 
 def rename_column(filename: str):
     """
@@ -50,7 +53,9 @@ def rename_column(filename: str):
                                                 'ETA1': 'AGE'})
     renamed_data.to_csv("dataset_clean/" + file_n, index=None)
 
-
+def name_column(filename: str):
+    data = pd.read_csv(filename)
+    return data.columns
 
 def delete_column(filename: str, cols_to_remove: list):
     """
@@ -183,7 +188,7 @@ def lst_tables(filename: str) -> tuple:
     :param str filename: name of the dataset to be inserted
     :return: tuple having as first element the name of the new table and as second element the SQL command
     """
-    name = filename[filename.find("\\")+1:filename.find(".")].lower()
+    name = filename[filename.find("/")+1:filename.find(".")].lower()
     data = pd.read_csv(filename)
     table_to_be = []
     cols = [str(i) for i in data.columns.tolist()]
@@ -198,6 +203,8 @@ def lst_tables(filename: str) -> tuple:
     data_set = "CREATE TABLE `" + name + "` ( `id` int NOT NULL AUTO_INCREMENT, \n" +\
                ", \n".join(table_to_be) + ", PRIMARY KEY(`id`))"
     return name, data_set
+
+
 
 
 

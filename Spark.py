@@ -9,8 +9,7 @@
 # sqlContext = SQLContext(sc)
 #
 # #spark = SparkSession.builder.getOrCreate()
-# print("CIAO")
-# # Enable hive support means that it will be stored in the Hive metastore and not in - memory
+# Enable hive support means that it will be stored in the Hive metastore and not in - memory
 # df = sqlContext.read.format("jdbc").option(url="jdbc:mysql://localhost:3306/project_bdt",
 #                                            driver = "com.mysql.jdbc.Driver",
 #                                            dbtable = "tasso_disoccupazione",

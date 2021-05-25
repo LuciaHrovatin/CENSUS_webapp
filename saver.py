@@ -73,7 +73,7 @@ class MySQLManager:
         :param str filename: name of the  file
         """
         cursor = self.connection.cursor()
-        name = filename[filename.find("\\") + 1:filename.find(".")].lower()
+        name = filename[filename.find("/") + 1:filename.find(".")].lower()
         data = pd.read_csv(filename)
         cols = "`, `".join([str(i).lower() for i in data.columns.tolist()])
         for i, row in data.iterrows():

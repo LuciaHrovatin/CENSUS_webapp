@@ -25,13 +25,23 @@ delete_column("dataset_clean/Tasso_disoccupazione.csv", ['Territorio', 'TIPO_DAT
 rename_column("dataset/Qualita_vita.csv")
 delete_column("dataset_clean/Qualita_vita.csv", ['NOME PROVINCIA (ISTAT)', 'CODICE PROVINCIA ISTAT (STORICO)', 'DENOMINAZIONE CORRENTE', 'FONTE ORIGINALE'])
 
+# DATA 2016
+#save_file("dataset/ind16_ascii/carcom16.csv")
+# delete_column("dataset_clean/carcom16.csv", ["parent", "isco", "aningr", "motiv", "tipolau", "votoedu", "suedu", "selode", "annoedu", "tipodip",
+#                                                    "univer", "apqual", "asnonoc", "nace", "nordp", "motent", "annoenus", "NASCREG", "ireg", "CLETA5",
+#                                                    "Q", "SETT", "PESOFIT", "CFRED", "PERL", "NPERL", "NPERC", "AREA3", "ACOM4C"])
+
+#save_file("dataset/ind16_ascii/rfam16.csv")
+# delete_column("dataset_clean/rfam16.csv", ['YL', 'YL1', 'YL2', 'YT', 'YTP', 'YTP1', 'YTP2', 'YTA','YTA1',
+#                                            'YTA2', 'YTA3', 'YTA31', 'YTA32', 'YM', 'YMA1', 'YMA2', 'YC',
+#                                            'YCA', 'YCA1', 'YCA2', 'YCF', 'YCF1', 'YCF2', 'YCF3', 'YCF4', 'CLY',
+#                                            'CLY2'])
 
 # DISOCCUPAZIONE
 clean_rows("dataset_clean/Tasso_disoccupazione.csv")
 
 # OCCUPAZIONE
 clean_rows("dataset_clean/Tasso_occupazione.csv")
-
 
 # QUALITA' DELLA VITA -> save indicators
 save(sub_table("dataset_clean/Qualita_vita.csv"))
@@ -109,7 +119,7 @@ delete_column("dataset_clean\Qualita_vita.csv", ["UNITA' DI MISURA"])
 
 
 # --------------------------------------------- CONNECTION WITH MYSQL -------------------------------------------------
-password = "Pr0tett0.98"
+password = "Pr0tett0.98" # change with your password
 
 saver = MySQLManager(host="localhost",
                       port=3306,
@@ -123,12 +133,18 @@ saver.check_database("project_bdt")
 #saver.create_table(lst_tables("dataset_clean\Tasso_disoccupazione.csv"))
 #saver.create_table(lst_tables("dataset_clean\Qualita_vita.csv"))
 #saver.create_table(lst_tables("dataset_clean\Tasso_occupazione.csv"))
+#saver.create_table(lst_tables("dataset_clean/carcom16.csv"))
+saver.create_table(lst_tables("dataset_clean/rfam16.csv"))
 
-# Load data
+#Load data
 
 #saver.save_SQL("dataset_clean\Tasso_disoccupazione.csv")
 #saver.save_SQL("dataset_clean\Qualita_vita.csv")
 #saver.save_SQL("dataset_clean\Tasso_occupazione.csv")
+#saver.save_SQL("dataset_clean/carcom16.csv")
+saver.save_SQL("dataset_clean/rfam16.csv")
+
+
 
 backup = Backup(saver, "C:/Users/lucia/Desktop") # set here your local path
 backup.set_backup("project_bdt")
