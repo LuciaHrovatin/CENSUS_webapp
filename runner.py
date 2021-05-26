@@ -119,7 +119,7 @@ delete_column("dataset_clean\Qualita_vita.csv", ["UNITA' DI MISURA"])
 
 
 # --------------------------------------------- CONNECTION WITH MYSQL -------------------------------------------------
-password = "Pr0tett0.98" # change with your password
+password = "luca0405" # change with your password
 
 saver = MySQLManager(host="localhost",
                       port=3306,
