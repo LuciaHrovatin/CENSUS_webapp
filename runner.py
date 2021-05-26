@@ -37,6 +37,15 @@ delete_column("dataset_clean/Qualita_vita.csv", ['NOME PROVINCIA (ISTAT)', 'CODI
 #                                            'YCA', 'YCA1', 'YCA2', 'YCF', 'YCF1', 'YCF2', 'YCF3', 'YCF4', 'CLY',
 #                                            'CLY2'])
 
+save_file("dataset/dataset_samples/isf_w2.csv")
+delete_column("dataset_clean/isf_w2.csv", ["A06","A08","A11","A12","A13","A14","A15","A16_1","A16A_1","A16_2","A16A_2",
+                                           "A16_3","A16A_3","A16A_4","A16A_5","A16A_6","A17","A18","A19","A20","A21","A22",
+                                           "A24","A25","A26","A27","A29","A30","A31","A32","A33","A34","A35","A36","A37","A38",
+                                           "A39","A41","A42","A43","A44_1","A44_2","A44_3","A44_4","A44_5","A45_1_1",
+                                           "A45_2_1","A45_3_1","A45_4_1","A45_5_1","A45_1_2","A45_2_2","A45_3_2","A45_4_2",
+                                           "A45_5_2","A45_1_3","A45_2_3","A45_3_3","A45_4_3","A45_5_3","A45_1_4","A45_2_4",
+                                           "A45_3_4","A45_4_4","A45_5_4","PESO","pesopanel","TITOLO","A07"])
+
 # DISOCCUPAZIONE
 clean_rows("dataset_clean/Tasso_disoccupazione.csv")
 

@@ -120,6 +120,7 @@ def clean_rows(filename: str, ind: Optional[bool] = False):
     data.to_csv(filename, index=None)
 
 
+
 # ----------------------------------------- STORE PROPERLY ----------------------------------
 
 def sub_table(filename: str):
