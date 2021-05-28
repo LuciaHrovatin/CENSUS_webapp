@@ -133,16 +133,16 @@ def sub_table(filename: str, col_name: str):
             if row not in table:
                 table[row] = [data["UNITA' DI MISURA"][count], "INDEX" + uuid.uuid4().hex[:6].upper()]
         else:
-            table[row] = str(row) + uuid.uuid4().hex[:3].upper()
+            table[row] = str(row) + "A" + str(count)
         count += 1
     return table
 
 def change_nquest(filename: str):
     data = pd.read_csv(filename)
-    changes = sub_table(filename, col_name = "nquest")
+    changes = sub_table(filename, col_name="nquest")
     actual = [x for x in changes]
     future = [changes[x] for x in changes]
-    data["nquest"].replace(to_replace= actual, value=future, inplace=False)
+    data["nquest"].replace(to_replace=actual, value=future, inplace=False)
     data.to_csv(filename, index=None)
 
 
