@@ -165,7 +165,7 @@ saver = MySQLManager(host="localhost",
 
 
 #backup = Backup(saver, "C:/Users/lucia/Desktop") # set here your local path
-#backup.set_backup("project_bdt")
+#backup.set_backup()
 
 
 
