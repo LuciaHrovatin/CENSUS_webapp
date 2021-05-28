@@ -1,8 +1,5 @@
 from __future__ import absolute_import, annotations
 
-import os
-from datetime import datetime, timedelta
-
 from collector import *
 from saver import MySQLManager
 from backup import Backup
