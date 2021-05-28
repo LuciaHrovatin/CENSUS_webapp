@@ -138,11 +138,17 @@ def sub_table(filename: str, col_name: str):
     return table
 
 def change_nquest(filename: str):
+    """
+    Function that introduces an unique primary key changing the nquest value
+
+    :param filename: name of the dataset that will be interested by this change
+    :return: the same dataset whose column nquest contains unique values
+    """
     data = pd.read_csv(filename)
     changes = sub_table(filename, col_name="nquest")
     actual = [x for x in changes]
     future = [changes[x] for x in changes]
-    data["nquest"].replace(to_replace=actual, value=future, inplace=False)
+    data["nquest"].replace(to_replace=actual, value=future, inplace=True)
     data.to_csv(filename, index=None)
 
 
