@@ -117,3 +117,6 @@ urllib3==1.26.4
 Werkzeug==1.0.1
 whistle==1.0.1
 WTForms==2.3.3
+
+pip~=21.1.2
+setuptools~=56.1.0
