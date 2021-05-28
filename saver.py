@@ -1,6 +1,5 @@
 from __future__ import absolute_import, annotations
 
-import MySQLdb
 import mysql.connector
 from mysql.connector import errorcode, Error
 import pandas as pd

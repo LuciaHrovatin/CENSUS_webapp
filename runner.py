@@ -150,7 +150,7 @@ saver = MySQLManager(host="localhost",
 #saver.create_table(lst_tables("dataset_clean\Tasso_occupazione.csv"))
 #saver.create_table(lst_tables("dataset_clean/carcom16.csv"))
 #saver.create_table(lst_tables("dataset_clean/rper16.csv"))
-change_nquest("dataset_clean/rper16.csv")
+# change_nquest("dataset_clean/rper16.csv")
 #Load data
 
 #saver.save_SQL("dataset_clean\Tasso_disoccupazione.csv")
