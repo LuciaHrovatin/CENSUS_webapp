@@ -1,5 +1,6 @@
 from __future__ import absolute_import, annotations
 
+import MySQLdb
 import mysql.connector
 from mysql.connector import errorcode, Error
 import pandas as pd
@@ -7,16 +8,17 @@ import pandas as pd
 
 class MySQLManager:
 
-    def __init__(self, host: str, port: int, user: str, password: str) -> None:
+    def __init__(self, host: str, port: int, user: str, password: str, database: str) -> None:
         self.connection = mysql.connector.connect(
             host=host,
             port=port,
             user=user,
-            password=password
+            password=password,
+            database=database
         )
         self.connection.autocommit = True
 
-    def create_database(self, name_DB: str):
+    def create_database(self):
         """
         Creates a new database if the called one does not exist
         :param str name_DB: name of the database
@@ -24,27 +26,27 @@ class MySQLManager:
         cursor = self.connection.cursor()
         try:
             cursor.execute(
-                "CREATE DATABASE {} DEFAULT CHARACTER SET 'utf8'".format(name_DB))
+                "CREATE DATABASE {} DEFAULT CHARACTER SET 'utf8'".format(self.connection.database))
         except Error as err:
             print("Failed in creation database: {}".format(err))
             exit(1)
 
 
-    def check_database(self, name_DB: str):
+    def check_database(self):
         """
         Checks whether the called database exists or not
         :param str name_DB: name of the database involved in further analyses
         """
         cursor = self.connection.cursor()
         try:
-            cursor.execute("USE {}".format(name_DB))
-            print("Database {} exists.".format(name_DB))
+            cursor.execute("USE {}".format(self.connection.database))
+            print("Database {} exists.".format(self.connection.database))
         except mysql.connector.Error as err:
-            print("Database {} does not exists.".format(name_DB))
+            print("Database {} does not exists.".format(self.connection.database))
             if err.errno == errorcode.ER_BAD_DB_ERROR:
-                self.create_database(name_DB)
-                print("Database {} created successfully.".format(name_DB))
-                self.connection.database = name_DB
+                self.create_database(self.connection.database)
+                print("Database {} created successfully.".format(self.connection.database))
+                self.connection.database = self.connection.database
             else:
                 print(err)
                 exit(1)
@@ -81,18 +83,18 @@ class MySQLManager:
             cursor.execute(sql, tuple(row))
         print("Data have been successfully inserted in table {}".format(name))
 
-    def join_SQL(self, table_1: str, table_2: str):
+    def join_SQL(self, table_1: str, table_2: str, table_name: str):
         cursor = self.connection.cursor()
         try:
-            cursor.execute("""CREATE TABLE data_2016 
-            as SELECT * from {} join {}
-            on {}.nquest = {}.nquest""".format(table_1, table_2, table_1, table_2))
-            print("hi")
-        except:
-            print("ciao")
-            self.connection.rollback()
-
+            query = "CREATE TABLE {} as (SELECT n.*, s.Y from {} as n join {} as s on n.nquest = s.nquest)".format(table_name, table_1, table_2)
+            cursor.execute(query)
+        except mysql.connector.Error as err:
+            if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
+                print("Table {} already exists.".format(table_name))
+            else:
+                print(err.msg)
         cursor.close()
+
 
 
 

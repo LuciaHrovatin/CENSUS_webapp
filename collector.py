@@ -205,7 +205,9 @@ def lst_tables(filename: str) -> tuple:
                ", \n".join(table_to_be) + ", PRIMARY KEY(`id`))"
     return name, data_set
 
-
+def data_description(filename: str):
+    data_set  = pd.read_csv(filename)
+    return data_set.describe()
 
 
 

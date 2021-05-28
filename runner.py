@@ -118,8 +118,8 @@ indicators = [lst_index["Eventi sportivi"][1],
               lst_index["Partecipazione alla formazione continua"][1],
               lst_index["Cie erogate"][1],
               lst_index["Spid erogate"][1],
-              lst_index["Pos attivi"][1],
-              ]
+              lst_index["Pos attivi"][1]]
+
 del_indicators("dataset_clean/Qualita_vita.csv", indicators)
 
 # --------------------------------------------- DELETE "UNITA' di MISURA" -----------------------------------------------
@@ -133,10 +133,11 @@ password = "Pr0tett0.98"
 saver = MySQLManager(host="localhost",
                       port=3306,
                       user="root",
-                      password=password)
+                      password=password,
+                      database = "project_bdt")
 
 
-saver.check_database("project_bdt")
+#saver.check_database("project_bdt")
 
 # Create table
 #saver.create_table(lst_tables("dataset_clean\Tasso_disoccupazione.csv"))
@@ -153,12 +154,12 @@ saver.check_database("project_bdt")
 #saver.save_SQL("dataset_clean/carcom16.csv")
 #saver.save_SQL("dataset_clean/rfam16.csv")
 
-saver.join_SQL("carcom16", "rfam16")
+saver.join_SQL(table_1= "carcom16",table_2= "rfam16", table_name="data_2016")
+
 
 
 #backup = Backup(saver, "C:/Users/lucia/Desktop") # set here your local path
 #backup.set_backup("project_bdt")
-
 
 
 
