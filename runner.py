@@ -58,7 +58,7 @@ clean_rows("dataset_clean/Tasso_disoccupazione.csv")
 clean_rows("dataset_clean/Tasso_occupazione.csv")
 
 # QUALITA' DELLA VITA -> save indicators
-save(sub_table("dataset_clean/Qualita_vita.csv"))
+save(sub_table("dataset_clean/Qualita_vita.csv", "INDEX"))
 
 # QUALITA' DELLA VITA -> clean rows
 clean_rows("dataset_clean/Qualita_vita.csv")
@@ -149,18 +149,18 @@ saver = MySQLManager(host="localhost",
 #saver.create_table(lst_tables("dataset_clean\Qualita_vita.csv"))
 #saver.create_table(lst_tables("dataset_clean\Tasso_occupazione.csv"))
 #saver.create_table(lst_tables("dataset_clean/carcom16.csv"))
-saver.create_table(lst_tables("dataset_clean/rper16.csv"))
-
+#saver.create_table(lst_tables("dataset_clean/rper16.csv"))
+change_nquest("dataset_clean/rper16.csv")
 #Load data
 
 #saver.save_SQL("dataset_clean\Tasso_disoccupazione.csv")
 #saver.save_SQL("dataset_clean\Qualita_vita.csv")
 #saver.save_SQL("dataset_clean\Tasso_occupazione.csv")
 #saver.save_SQL("dataset_clean/carcom16.csv")
-saver.save_SQL("dataset_clean/rper16.csv")
+#saver.save_SQL("dataset_clean/rper16.csv")
 
 # -------------------------------------------JOIN TABLES ------------------------------------------------
-saver.join_SQL(table_1= "carcom16", table_2="rper16", table_name="data_2016")
+#saver.join_SQL(table_1= "carcom16", table_2="rper16", table_name="data_2016")
 
 
 
