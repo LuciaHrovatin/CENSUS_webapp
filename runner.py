@@ -37,6 +37,11 @@ delete_column("dataset_clean/Qualita_vita.csv", ['NOME PROVINCIA (ISTAT)', 'CODI
 #                                            'YCA', 'YCA1', 'YCA2', 'YCF', 'YCF1', 'YCF2', 'YCF3', 'YCF4', 'CLY',
 #                                            'CLY2'])
 
+save_file("dataset/ind16_ascii/rper16.csv")
+delete_column("dataset_clean/rper16.csv", ['YL1','YL2','YTP1','YTP2','YTA1','YTA2','YTA31','YTA32',
+                                           'YL','YTP','YTA3','YTA','YT','YM','YCA1','YCA2','YCA','YCF1','YCF2','YCF3',
+                                           'YCF4','YCF','YC','YMA1','YMA2'])
+
 save_file("dataset/dataset_samples/isf_w2.csv")
 delete_column("dataset_clean/isf_w2.csv", ["A06","A08","A11","A12","A13","A14","A15","A16_1","A16A_1","A16_2","A16A_2",
                                            "A16_3","A16A_3","A16A_4","A16A_5","A16A_6","A17","A18","A19","A20","A21","A22",
@@ -144,7 +149,7 @@ saver = MySQLManager(host="localhost",
 #saver.create_table(lst_tables("dataset_clean\Qualita_vita.csv"))
 #saver.create_table(lst_tables("dataset_clean\Tasso_occupazione.csv"))
 #saver.create_table(lst_tables("dataset_clean/carcom16.csv"))
-#saver.create_table(lst_tables("dataset_clean/rfam16.csv"))
+saver.create_table(lst_tables("dataset_clean/rper16.csv"))
 
 #Load data
 
@@ -152,9 +157,10 @@ saver = MySQLManager(host="localhost",
 #saver.save_SQL("dataset_clean\Qualita_vita.csv")
 #saver.save_SQL("dataset_clean\Tasso_occupazione.csv")
 #saver.save_SQL("dataset_clean/carcom16.csv")
-#saver.save_SQL("dataset_clean/rfam16.csv")
+saver.save_SQL("dataset_clean/rper16.csv")
 
-saver.join_SQL(table_1= "carcom16",table_2= "rfam16", table_name="data_2016")
+# -------------------------------------------JOIN TABLES ------------------------------------------------
+saver.join_SQL(table_1= "carcom16", table_2="rper16", table_name="data_2016")
 
 
 

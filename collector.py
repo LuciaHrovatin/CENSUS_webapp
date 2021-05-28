@@ -103,7 +103,7 @@ def clean_rows(filename: str, ind: Optional[bool] = False):
         data = data.drop(data.index[row_lst], inplace=False)
     else:
         target = "INDEX"
-        indicators_lst = list_arg("dataset_clean/indicators.json")  # problem in running functions ?
+        indicators_lst = list_arg("dataset_clean/indicators.json")
         if not ind:
             target = "TIME"
         for row in data[target]:
@@ -123,7 +123,7 @@ def clean_rows(filename: str, ind: Optional[bool] = False):
 
 # ----------------------------------------- STORE PROPERLY ----------------------------------
 
-def sub_table(filename: str):
+def sub_table(filename: str, col_name: str):
     """
     The function saves each indicator with the corresponding measure and a randomly generated index
     :param filename: name of the file
@@ -132,9 +132,12 @@ def sub_table(filename: str):
     data = pd.read_csv(filename)
     table = dict()
     count = 0
-    for row in data["INDEX"]:
-        if row not in table:
-            table[row] = [data["UNITA' DI MISURA"][count], "INDEX" + uuid.uuid4().hex[:6].upper()]
+    for row in data[col_name]:
+        if col_name == "INDEX":
+            if row not in table:
+                table[row] = [data["UNITA' DI MISURA"][count], "INDEX" + uuid.uuid4().hex[:6].upper()]
+        else:
+            table[row] = row + count
         count += 1
     return table
 
@@ -151,6 +154,8 @@ def save(table: dict):
             f,
             indent=4
             )
+
+
 
 def list_arg(filename: str):
     """
@@ -205,9 +210,7 @@ def lst_tables(filename: str) -> tuple:
                ", \n".join(table_to_be) + ", PRIMARY KEY(`id`))"
     return name, data_set
 
-def data_description(filename: str):
-    data_set  = pd.read_csv(filename)
-    return data_set.describe()
+
 
 
 
