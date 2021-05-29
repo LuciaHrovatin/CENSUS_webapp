@@ -1,15 +1,53 @@
 {% extends "layout.html" %}
 {% block content %}
-    {% for post in posts %}
-        <article class="media content-section">
-          <div class="media-body">
-            <div class="article-metadata">
-              <a class="mr-2" href="#">{{ post.author }}</a>
-              <small class="text-muted">{{ post.date_posted }}</small>
+    <div class="content-section">
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Predizione del benessere</legend>
+                <div class="form-group">
+                    {{ form.eta.label(class="form-control-label") }}
+                    {% if form.eta.errors %}
+                        {{ form.eta(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.eta.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.eta(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div>
+                {% for subfield in form.genere %}
+                  <tr>
+                      <td>{{ subfield }}</td>
+                      <td>{{ subfield.label }}</td>
+                  </tr>
+                {% endfor %}
+                </div>
+                <div class="form-group">
+                    {{ form.residenza2.label }}
+                    <small class="text-muted">{{ form.residenza2.description }}</small>
+                    {{ form.residenza2(class_="form-control") }}
+
+                    {% for error in form.residenza2.errors %}
+                    <span class="label label-danger">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div>
+                    {{ form.eta2.label }}
+                    {% if form.eta2.errors %}
+                     {% for error in form.eta2.errors %}
+                        <p class="error-message">{{ error }}</p>
+                      {% endfor %}
+                    {%  endif %}
+                {{ form.eta2 }}
+                </div>
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
             </div>
-            <h2><a class="article-title" href="#">{{ post.title }}</a></h2>
-            <p class="article-content">{{ post.content }}</p>
-          </div>
-        </article>
-    {% endfor %}
+        </form>
+    </div>
 {% endblock content %}
