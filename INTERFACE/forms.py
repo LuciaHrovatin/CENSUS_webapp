@@ -24,7 +24,7 @@ class LoginForm(FlaskForm):
 HOUR_CHOICES = [('1', '8am'), ('2', '10am')]
 class CensusData(FlaskForm):
     eta = IntegerField('Anno di nascita', validators=[DataRequired()])
-    genere = RadioField('Genere', choices = ['machile', 'femminile'])
+    genere = RadioField('Genere', choices = ['maschile', 'femminile'])
     residenza2= SelectField('Provincia di residenza', choices=HOUR_CHOICES) 
     eta2 = DateField('Start Date', format='%Y')   
     submit = SubmitField('Vai!')
