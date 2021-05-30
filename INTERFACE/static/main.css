@@ -79,7 +79,7 @@ body {
     font-size: 2.5rem;
   }
 
-  .radio-item label {
+  .form-check-input {
     color: #17a2b8;
-    font-weight: normal;
   }
+ 

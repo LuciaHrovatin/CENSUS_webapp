@@ -21,10 +21,9 @@ class LoginForm(FlaskForm):
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
 
-HOUR_CHOICES = [('1', '8am'), ('2', '10am')]
+province = [('1', 'Trento'), ('2', 'Trieste')]
 class CensusData(FlaskForm):
-    eta = IntegerField('Anno di nascita', validators=[DataRequired()])
     genere = RadioField('Genere', choices = ['maschile', 'femminile'])
-    residenza2= SelectField('Provincia di residenza', choices=HOUR_CHOICES) 
-    eta2 = DateField('Start Date', format='%Y')   
+    residenza2= SelectField('Provincia di residenza', choices=province) 
+    eta2 = DateField('Anno di nascita', format='%Y')   
     submit = SubmitField('Vai!')
