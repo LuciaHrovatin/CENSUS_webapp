@@ -1,7 +1,6 @@
-# TENTATIVO DI AVVIARE AIRFLOW
 
-from airflow.models.dag import DAG
-from airflow.operators.bash import BashOperator
+from airflow import DAG
+from airflow.operators.bash_operator import BashOperator
 from datetime import timedelta
 from airflow.utils.dates import days_ago
 from textwrap import dedent
@@ -16,9 +15,9 @@ default_args = {
 }
 
 with DAG(
-    'tutorial',
+    'bdt_project_2021',
     default_args=default_args,
-    description='A simple tutorial DAG',
+    description='ETL part of the project',
     schedule_interval=timedelta(days=1),
     start_date=days_ago(2),
     tags=['example'],
@@ -52,10 +51,10 @@ with DAG(
     """
     )
 
-    dag.doc_md = __doc__  # providing that you have a docstring at the beggining of the DAG
+    dag.doc_md = __doc__  # providing that you have a docstring at the beginning of the DAG
     dag.doc_md = """
     This is a documentation placed anywhere
-    """  # otherwise, type it like this
+    """
     # [END documentation]
 
     # [START jinja_template]
