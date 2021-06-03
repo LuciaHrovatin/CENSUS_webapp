@@ -23,9 +23,10 @@ class LoginForm(FlaskForm):
 
 years = [('1', '2002'), ('2', '2001'), ('2', '2000'), ('2', '1999')]
 province = [('1', 'Trento'), ('2', 'Trieste')]
+sex = ['maschile', 'femminile', 'preferisco non specificare']
 class CensusData(FlaskForm):
     eta = SelectField('Anno di nascita', choices=years)
-    genere = RadioField('Genere', choices = ['maschile', 'femminile'])
+    genere = RadioField('Genere', choices=sex)
     residenza2= SelectField('Provincia di residenza', choices=province) 
     eta2 = DateField('Anno di nascita', format='%Y')   
     submit = SubmitField('Vai!')
