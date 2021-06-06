@@ -4,6 +4,7 @@ from airflow.operators.bash_operator import BashOperator
 from datetime import timedelta
 from airflow.utils.dates import days_ago
 from textwrap import dedent
+from collector import * 
 
 default_args = {
     'owner': 'airflow',

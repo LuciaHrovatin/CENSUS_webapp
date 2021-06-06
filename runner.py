@@ -23,10 +23,10 @@ rename_column("dataset/Qualita_vita.csv")
 delete_column("dataset_clean/Qualita_vita.csv", ['NOME PROVINCIA (ISTAT)', 'CODICE PROVINCIA ISTAT (STORICO)', 'DENOMINAZIONE CORRENTE', 'FONTE ORIGINALE'])
 
 # DATA 2016
-#save_file("dataset/ind16_ascii/carcom16.csv")
-# delete_column("dataset_clean/carcom16.csv", ["parent", "isco", "aningr", "motiv", "tipolau", "votoedu", "suedu", "selode", "annoedu", "tipodip",
-#                                                    "univer", "apqual", "asnonoc", "nace", "nordp", "motent", "annoenus", "NASCREG", "ireg", "CLETA5",
-#                                                    "Q", "SETT", "PESOFIT", "CFRED", "PERL", "NPERL", "NPERC", "AREA3", "ACOM4C"])
+save_file("dataset/ind16_ascii/carcom16.csv")
+delete_column("dataset_clean/carcom16.csv", ["parent", "eta", "cit", "isco", "aningr", "motiv", "tipolau", "votoedu", "suedu", "selode", "annoedu", "tipodip",
+                                                    "univer", "apqual", "asnonoc", "nascarea", "nace", "nordp", "motent", "annoenus", "NASCREG", "ireg", "CLETA5",
+                                                    "Q", "SETT", "PESOFIT", "CFRED", "PERL", "NPERL", "NPERC", "AREA3", "ACOM4C"])
 
 #save_file("dataset/ind16_ascii/rfam16.csv")
 # delete_column("dataset_clean/rfam16.csv", ['YL', 'YL1', 'YL2', 'YT', 'YTP', 'YTP1', 'YTP2', 'YTA','YTA1',
