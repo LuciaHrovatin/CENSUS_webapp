@@ -124,6 +124,16 @@ class MySQLManager:
                 print(err.msg)
         cursor.close()
 
+    def execute_read_query(self, table_name: str):
+        cursor = self.connection.cursor()
+        result = None
+        try:
+            query = "SELECT * FROM {}".format(table_name)
+            cursor.execute(query)
+            result = cursor.fetchall()
+            return pd.DataFrame(result)
+        except Error as e:
+            print(f"The error '{e}' occurred")
 
 
 

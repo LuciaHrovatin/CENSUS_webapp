@@ -26,3 +26,6 @@ WTForms==2.3.3
 pip~=21.1.2
 setuptools~=56.1.0
 tornado~=6.1
+pyodbc~=4.0.30
+sklearn~=0.0
+scikit-learn~=0.24.2

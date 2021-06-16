@@ -2,7 +2,9 @@ from __future__ import absolute_import, annotations
 
 from collector import *
 from saver import MySQLManager
+from sklearn.model_selection import train_test_split
 from backup import Backup
+
 
 
 # file = File("dataset/Tasso_occupazione.csv")
@@ -167,6 +169,8 @@ saver = MySQLManager(host="localhost",
 
 #backup = Backup(saver, "C:/Users/lucia/Desktop") # set here your local path
 #backup.set_backup()
+
+
 
 
 
