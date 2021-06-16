@@ -103,8 +103,7 @@ class MySQLManager:
 
     def label_irpef(self, table_name: str):
         """
-        Creates the 5 classes based on census data.
-        The indicators correspond to the 5 Irpef categories.
+        Creates census classes following the 5 Irpef categories.
         :param table_name: Name of the table whose census data will be modified
         :return: modified table having the attribute "Y" standardized
         """
@@ -124,6 +123,8 @@ class MySQLManager:
             else:
                 print(err.msg)
         cursor.close()
+
+
 
 
 

@@ -14,7 +14,7 @@ Jinja2==2.11.3
 MarkupSafe==1.1.1
 mysql==0.0.2
 mysql-connector-python==8.0.24
-numpy==1.20.2
+numpy~=1.19.5
 pandas==1.2.4
 PyMySQL==1.0.2
 python-dateutil==2.8.1
@@ -25,3 +25,4 @@ WTForms==2.3.3
 
 pip~=21.1.2
 setuptools~=56.1.0
+tornado~=6.1
