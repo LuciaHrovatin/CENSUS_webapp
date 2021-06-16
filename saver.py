@@ -92,7 +92,7 @@ class MySQLManager:
         """
         cursor = self.connection.cursor()
         try:
-            query = "CREATE TABLE {} as (SELECT n.*, s.Y from {} as n join {} as s on n.nquest = s.nquest), PRIMARY KEY(`nquest`)".format(table_name, table_1, table_2)
+            query = "CREATE TABLE {} as (SELECT n.*, s.Y from {} as n join {} as s on n.nquest = s.nquest)".format(table_name, table_1, table_2)
             cursor.execute(query)
         except mysql.connector.Error as err:
             if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
@@ -100,6 +100,32 @@ class MySQLManager:
             else:
                 print(err.msg)
         cursor.close()
+
+    def label_irpef(self, table_name: str):
+        """
+        Creates the 5 classes based on census data.
+        The indicators correspond to the 5 Irpef categories.
+        :param table_name: Name of the table whose census data will be modified
+        :return: modified table having the attribute "Y" standardized
+        """
+        cursor = self.connection.cursor(buffered=True)
+        try:
+            query = " UPDATE {} SET Y = CASE" \
+                    " WHEN Y < 15000 THEN '1'" \
+                    " WHEN Y BETWEEN 15001 AND 28000 THEN '2'" \
+                    " WHEN Y BETWEEN 28001 AND 55000 THEN '3'" \
+                    " WHEN Y BETWEEN 55001 AND 75000 THEN '4'" \
+                    " ELSE '5'"\
+                    " END".format(table_name)
+            cursor.execute(query)
+        except mysql.connector.Error as err:
+            if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
+                print("Table {} already exists.".format(table_name))
+            else:
+                print(err.msg)
+        cursor.close()
+
+
 
 
 

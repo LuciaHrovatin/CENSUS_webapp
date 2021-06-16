@@ -157,12 +157,18 @@ saver = MySQLManager(host="localhost",
 #saver.save_SQL("dataset_clean/rper16.csv")
 
 # -------------------------------------------JOIN TABLES ------------------------------------------------
-#saver.join_SQL(table_1= "carcom16", table_2="rper16", table_name="data_2016")
 
+saver.join_SQL(table_1= "carcom16", table_2="rfam16", table_name="data_2016_fam")
+saver.join_SQL(table_1= "carcom16", table_2="rper16", table_name="data_2016")
+
+saver.label_irpef(table_name="data_2016")
+saver.label_irpef(table_name="data_2016_fam")
 
 
 #backup = Backup(saver, "C:/Users/lucia/Desktop") # set here your local path
 #backup.set_backup()
+
+
 
 
 

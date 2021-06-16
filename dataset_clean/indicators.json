@@ -1,362 +1,362 @@
 {
     "Sportivit\u00e0 2020 - \"effetto Covid-19\"": [
         "Indice elaborato in base a 4 indicatori che misurano l'impatto sullo sport",
-        "INDEXC0C593"
+        "INDEX79C97F"
     ],
     "Eventi sportivi": [
         "Attratti e annullati, di rilievo internazionale",
-        "INDEXACEF92"
+        "INDEX26F916"
     ],
     "Internet \u2265 100 Mbit/s - abbonamenti": [
         "Accessi broadband - In % sulla popolazione residente",
-        "INDEX22DE80"
+        "INDEX760F2C"
     ],
     "Partecipazione elettorale": [
         "In percentuale",
-        "INDEX90F91E"
+        "INDEXC5B0B9"
     ],
     "Fondi europei 2014-2020 per l'attrazione culturale, naturale e turistica": [
         "Spesa pubblica sul territorio (incluse risorse attratte) - In euro pro capite",
-        "INDEXABC7E0"
+        "INDEX154457"
     ],
     "Biblioteche": [
         "Ogni 1000 abitanti",
-        "INDEXC59650"
+        "INDEX065679"
     ],
     "Indice di lettura dei quotidiani": [
         "Copie diffuse al giorno - Ogni mille abitanti",
-        "INDEXBAFA5B"
+        "INDEX3EE89E"
     ],
     "Librerie": [
         "Numero ogni mille abitanti",
-        "INDEX9ED2D2"
+        "INDEXA88BFE"
     ],
     "Ristoranti": [
         "Numero ogni mille abitanti (inclusa la ristorazione mobile)",
-        "INDEX57258A"
+        "INDEX4FA564"
     ],
     "Bar": [
         "Numero ogni mille abitanti",
-        "INDEX7D0B41"
+        "INDEX462B13"
     ],
     "Cinema": [
         "Numero ogni mille abitanti",
-        "INDEX52C7DE"
+        "INDEX48A87E"
     ],
     "Palestre ogni 100mila abitanti": [
         "Numero ogni mille abitanti",
-        "INDEXBA414A"
+        "INDEXBC3289"
     ],
     "Piscine": [
         "Numero ogni mille abitanti",
-        "INDEX4514F5"
+        "INDEX961D33"
     ],
     "Offerta culturale": [
         "Numero di spettacoli ogni mille abitanti",
-        "INDEX227433"
+        "INDEX9DC223"
     ],
     "Spettacoli - Spesa al botteghino": [
         "In euro pro capite all'anno",
-        "INDEX56D67A"
+        "INDEX09155D"
     ],
     "Indice di criminalit\u00e0 - totale dei delitti denunciati": [
         "Denunce ogni 100mila abitanti",
-        "INDEXD044AC"
+        "INDEX46FD34"
     ],
     "Furti": [
         "Denunce ogni 100mila abitanti",
-        "INDEX7DD89C"
+        "INDEX27D82C"
     ],
     "Furti in abitazione": [
         "Denunce ogni 100mila abitanti",
-        "INDEX360016"
+        "INDEXBE5B18"
     ],
     "Furti in esercizi commerciali": [
         "Denunce ogni 100mila abitanti",
-        "INDEXCF9A91"
+        "INDEX6F9F64"
     ],
     "Estorsioni": [
         "Denunce ogni 100mila abitanti",
-        "INDEX3DA587"
+        "INDEX7688C8"
     ],
     "Truffe e frodi informatiche": [
         "Denunce ogni 100mila abitanti",
-        "INDEX210286"
+        "INDEX4CE94B"
     ],
     "Incendi": [
         "Denunce ogni 100mila abitanti",
-        "INDEX145CD3"
+        "INDEX3BCD8F"
     ],
     "Omicidi da incidente stradale": [
         "Denunce ogni 100mila abitanti",
-        "INDEXCB8F0A"
+        "INDEX612B99"
     ],
     "Violenze sessuali": [
         "Denunce ogni 100mila abitanti",
-        "INDEX8A62A8"
+        "INDEX65D20E"
     ],
     "Indice di litigiosit\u00e0": [
         "Cause civili iscritte ogni 100mila abitanti",
-        "INDEXBEA290"
+        "INDEX6688F5"
     ],
     "Durata media delle cause civili": [
         "In giorni",
-        "INDEX352041"
+        "INDEX8DBF45"
     ],
     "Indice di rotazione delle cause": [
         "Procedimenti definiti su nuovi iscritti",
-        "INDEX4EB840"
+        "INDEX6130D6"
     ],
     "Quota cause pendenti ultratriennali": [
         "In percentuale sul totale delle pendenze",
-        "INDEX89C767"
+        "INDEXA82264"
     ],
     "Riciclaggio e impiego di denaro": [
         "Denunce ogni 100mila abitanti",
-        "INDEX03A4C1"
+        "INDEX90EE91"
     ],
     "Incidenti stradali": [
         "Morti e feriti ogni mille abitanti",
-        "INDEXA7BE37"
+        "INDEX0908FD"
     ],
     "Indice di vecchiaia": [
         "Popolazione di 65 anni e pi\u00f9/popolazione di et\u00e0 0-14 anni, moltiplicato per 100",
-        "INDEX73F6A5"
+        "INDEX804016"
     ],
     "Densit\u00e0 abitativa": [
         "abitanti/Kmq",
-        "INDEX3AB9BB"
+        "INDEX7D6B79"
     ],
     "Tasso di natalit\u00e0": [
         "Ogni 1000 abitanti",
-        "INDEX60330C"
+        "INDEXC0815F"
     ],
     "Cancellazioni anagrafiche": [
         "Nuove cancellazioni ogni 1000 abitanti",
-        "INDEX6610CA"
+        "INDEXB66A33"
     ],
     "Iscrizioni anagrafiche": [
         "Nuove iscrizioni ogni 1000 abitanti",
-        "INDEX6A3BA3"
+        "INDEXE5C5F4"
     ],
     "Consumo di farmaci per asma e Bpco": [
         "unit\u00e0 minime pro-capite",
-        "INDEXA63739"
+        "INDEX45403C"
     ],
     "Consumo di farmaci per diabete": [
         "unit\u00e0 minime pro-capite",
-        "INDEX6C3CED"
+        "INDEXACFE3C"
     ],
     "Consumo di farmaci per ipertensione": [
         "unit\u00e0 minime pro-capite",
-        "INDEX2FBA72"
+        "INDEX5B6E3D"
     ],
     "Consumo di farmaci per la depressione": [
         "unit\u00e0 minime pro-capite",
-        "INDEX836BC9"
+        "INDEXEC9EA0"
     ],
     "Infermieri": [
         "Numero ogni 100mila abitanti",
-        "INDEX203B1D"
+        "INDEX52B453"
     ],
     "Pediatri": [
         "Professionisti attivi ogni 1000 abitanti 0-14 annni",
-        "INDEXB3523D"
+        "INDEX32C0A8"
     ],
     "Medici di medicina generale": [
         "Professionisti attivi ogni 1000 abitanti",
-        "INDEX1A71C6"
+        "INDEXEB7C45"
     ],
     "Calmanti e sonniferi": [
         "unit\u00e0 minime pro-capite",
-        "INDEX26F28F"
+        "INDEXBC653C"
     ],
     "Tasso di mortalit\u00e0": [
         "Standardizzato per 10mila abitanti",
-        "INDEX395450"
+        "INDEX2521B1"
     ],
     "Casi Covid-19": [
         "Ogni mille abitanti",
-        "INDEXEF4C06"
+        "INDEX8BA40E"
     ],
     "Pensioni di vecchiaia (settore privato)": [
         "Importo medio - In euro all'anno",
-        "INDEXABF944"
+        "INDEX2D2FDB"
     ],
     "Rata media mensile": [
         "Rimborsata per finanziamenti in essere - In euro",
-        "INDEXC51095"
+        "INDEXE25CFA"
     ],
     "Popolazione con crediti attivi": [
         "In percentuale\u00a0 sul totale dei maggiorenni residenti",
-        "INDEXE29015"
+        "INDEXE0E960"
     ],
     "Fatture commerciali ai fornitori oltre i 30 giorni": [
         "In percentuale sul totale",
-        "INDEX082EA4"
+        "INDEX40DE57"
     ],
     "Assorbimento del settore residenziale": [
         "Mq compravenduti su mq offerti sul mercato nell'anno - In %",
-        "INDEXAD144E"
+        "INDEX763088"
     ],
     "Prezzo medio di vendita delle case": [
         "Per appartamenti nuovi di 100 mq in zona semicentrale nei capoluoghi",
-        "INDEXCD6E80"
+        "INDEX110332"
     ],
     "Canoni medi di locazione": [
         "Per appartamenti nuovi di 100 mq in zona semicentrale nei capoluoghi",
-        "INDEXD6ECFF"
+        "INDEXFF93C0"
     ],
     "Spazio abitativo medio": [
         "Mq medi delle abitazioni/componenti medi per famiglia",
-        "INDEX7A17F2"
+        "INDEX5AA5B2"
     ],
     "Spesa delle famiglie": [
         "Per il consumo di beni durevoli - In euro all'anno",
-        "INDEXDFB0F4"
+        "INDEX6BD301"
     ],
     "Reddito disponibile": [
         "In euro pro capite all'anno",
-        "INDEX217C3E"
+        "INDEXDD13D0"
     ],
     "Assegni sociali": [
         "Importo medio - In euro al mese",
-        "INDEX081780"
+        "INDEX5150CB"
     ],
     "Nuovi mutui per l'acquisto di abitazioni": [
         "Nuovi contratti a famiglie consumatrici per 10mila abitanti",
-        "INDEXF42555"
+        "INDEX45F076"
     ],
     "Il trend del Pil pro capite": [
         "Variazione 2020/2019 - In percentuale",
-        "INDEX45CDF1"
+        "INDEX569D07"
     ],
     "Protesti": [
         "In euro per mille abitanti",
-        "INDEX97A6B6"
+        "INDEX3AFBA5"
     ],
     "Depositi bancari": [
         "Di famiglie consumatrici - In euro pro capite",
-        "INDEXAC0641"
+        "INDEX6186D2"
     ],
     "Diffusione del reddito di cittadinanza": [
         "Assegni ogni 1000 abitanti",
-        "INDEX656FDE"
+        "INDEXFF1F4A"
     ],
     "Imprese in fallimento": [
         "In % su imprese registrate",
-        "INDEXD19FC8"
+        "INDEX333427"
     ],
     "Imprese che fanno ecommerce": [
         "In % su imprese che fanno commercio al dettaglio",
-        "INDEX427A0F"
+        "INDEXA2476A"
     ],
     "Imprenditorialit\u00e0 giovanile": [
         "Imprese con titolare under 35 - In % su imprese registrate",
-        "INDEX56E1F5"
+        "INDEXC16605"
     ],
     "Imprese femminili": [
         "In % su imprese registrate",
-        "INDEXDA1CF4"
+        "INDEX84CF84"
     ],
     "Imprese straniere": [
         "In % su imprese registrate",
-        "INDEXEC8F7A"
+        "INDEXA80F5E"
     ],
     "Startup innovative": [
         "Ogni mille societ\u00e0 di capitale",
-        "INDEX25A056"
+        "INDEX7047D6"
     ],
     "Imprese in rete": [
         "Ogni mille imprese registrate",
-        "INDEX7DA141"
+        "INDEX428B6F"
     ],
     "Tasso di occupazione": [
         "In percentuale",
-        "INDEXA3B85A"
+        "INDEX453DA0"
     ],
     "Gap occupazionale tra maschi e femmine": [
         "Differenza tra tasso di occupazione maschile e femminile (et\u00e0 15-64 anni) - In %",
-        "INDEXDA8C3E"
+        "INDEXC0A8C8"
     ],
     "Quota di export sul Pil": [
         "Esportazioni di beni verso l'estero/valore aggiunto nel 2019 - In %",
-        "INDEX17B176"
+        "INDEX4074EF"
     ],
     "Banda larga": [
         "Edifici coperti da infrastruttura Ftth - In percentuale sul totale",
-        "INDEXF3BDE8"
+        "INDEXCA9684"
     ],
     "Cig ordinaria autorizzata": [
         "Ore medie per impresa registrata",
-        "INDEX709C1B"
+        "INDEXB45950"
     ],
     "Nuove iscrizioni di imprese": [
         "In % su imprese registrate",
-        "INDEX465116"
+        "INDEX69AFA6"
     ],
     "Cessazioni di imprese": [
         "In % su imprese registrate",
-        "INDEX88CFF6"
+        "INDEXB1E8A5"
     ],
     "Ecosistema urbano": [
         "Riferito alle citt\u00e0 capoluogo in base a 18 indicatori",
-        "INDEX9F5588"
+        "INDEX8C62A1"
     ],
     "Tasso di motorizzazione": [
         "Auto ogni 100 abitanti",
-        "INDEX640AFA"
+        "INDEX43B123"
     ],
     "Indice di Rischio Climatico (CRI)": [
         "Scenario ad emissioni contenute rispetto al periodo di riferimento 1961-1990",
-        "INDEXADAE78"
+        "INDEX3346C0"
     ],
     "Riqualificazioni energetiche degli immobili": [
         "Investimenti in euro per abitante",
-        "INDEXC2DC3E"
+        "INDEX2A1477"
     ],
     "Spesa sociale degli enti locali": [
         "Per assistenza sociale domiciliare, residenziale e semiresidenziale, trasporto di disabili e anziani - In euro pro capite",
-        "INDEX89D8E2"
+        "INDEX9442A4"
     ],
     "Fondi europei 2014-2020 per l'Agenda digitale": [
         "Spesa pubblica sul territorio (incluse risorse attratte) - In euro pro capite",
-        "INDEX1CE9E6"
+        "INDEX2E0580"
     ],
     "Fondi europei 2014-2020 per l'ambiente e la prevenzione dei rischi": [
         "Spesa pubblica sul territorio (incluse risorse attratte) - In euro pro capite",
-        "INDEX050E59"
+        "INDEX88C126"
     ],
     "Pago Pa - enti attivi": [
         "In percentuale sul totale",
-        "INDEXDEBDEC"
+        "INDEXBC4A7C"
     ],
     "Persone con almeno il diploma": [
         "In percentuale su popolazione 25-64 anni",
-        "INDEX022921"
+        "INDEX98BF66"
     ],
     "Giovani che non lavorano e non studiano (Neet)": [
         "In percentuale",
-        "INDEXD8F2D8"
+        "INDEX5B5C8F"
     ],
     "Partecipazione alla formazione continua": [
         "In percentuale",
-        "INDEX6D5115"
+        "INDEXD18B7F"
     ],
     "Indice trasormazione digitale": [
         "Riferito ai Comuni capoluogo in base a 8 indicatori",
-        "INDEXDF25E5"
+        "INDEXB7EF40"
     ],
     "Cie erogate": [
         "Ogni 100 abitanti",
-        "INDEXACF698"
+        "INDEX4504FD"
     ],
     "Spid erogate": [
         "Ogni mille abitanti",
-        "INDEX4370DB"
+        "INDEXB87C65"
     ],
     "Pos attivi": [
         "Numero per mille abitanti",
-        "INDEX38DE34"
+        "INDEX466F23"
     ]
 }
