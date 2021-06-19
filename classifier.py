@@ -36,6 +36,7 @@ X_test = X_test.to_numpy()
 print(X_train.shape, X_test.shape)
 
 # --------------------------------------------- LDA ----------------------------------------
+
 print("LDA: ")
 clf = LDA()
 clf.fit(X_train, y_train)
@@ -50,12 +51,14 @@ print(clf.score(X_test, y_test)) # mean accuracy
 
 
 # ---------------------------------------------- KNN ---------------------------------------
+
 print("KNN: ")
 clf = KNN(n_neighbors=5)
 clf.fit(X_train, y_train)
 print(clf.score(X_test, y_test))
 
 # ---------------------------------------------- RandomForests -----------------------------
+
 print("Random Forests: ")
 clf = RandomForestClassifier(max_depth=5, random_state=1, bootstrap=True)
 clf.fit(X_train, y_train)
