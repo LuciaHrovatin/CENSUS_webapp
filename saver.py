@@ -74,8 +74,9 @@ class MySQLManager:
         :param str filename: name of the  file
         """
         cursor = self.connection.cursor()
-        name = filename[filename.find("/") + 1:filename.find(".")].lower()
+        name = filename[filename.find("\\") + 1:filename.find(".")].lower()
         data = pd.read_csv(filename)
+        data.dropna(inplace=True)
         cols = "`, `".join([str(i).lower() for i in data.columns.tolist()])
         for i, row in data.iterrows():
             sql = "INSERT INTO " + name + "(`" + cols + "`) VALUES (" + "%s,"*(len(row) - 1) + "%s)"
@@ -101,6 +102,7 @@ class MySQLManager:
                 print(err.msg)
         cursor.close()
 
+# TODO: to be finisced
     def label_irpef(self, table_name: str):
         """
         Creates census classes following the 5 Irpef categories.
@@ -109,7 +111,30 @@ class MySQLManager:
         """
         cursor = self.connection.cursor(buffered=True)
         try:
-            query = " UPDATE {} SET Y = CASE" \
+            query = " UPDATE {} SET ireg = CASE" \
+                    " WHEN ireg = 15000 THEN '1'" \
+                    " WHEN Y BETWEEN 15001 AND 28000 THEN '2'" \
+                    " WHEN Y BETWEEN 28001 AND 55000 THEN '3'" \
+                    " WHEN Y BETWEEN 55001 AND 75000 THEN '4'" \
+                    " ELSE '5'"\
+                    " END".format(table_name)
+            cursor.execute(query)
+        except mysql.connector.Error as err:
+            if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
+                print("Table {} already exists.".format(table_name))
+            else:
+                print(err.msg)
+        cursor.close()
+
+    def label_nuts1(self, table_name: str):
+        """
+        Creates census classes following the 5 Irpef categories.
+        :param table_name: Name of the table whose census data will be modified
+        :return: modified table having the attribute "Y" standardized
+        """
+        cursor = self.connection.cursor(buffered=True)
+        try:
+            query = " UPDATE {} SET  = CASE" \
                     " WHEN Y < 15000 THEN '1'" \
                     " WHEN Y BETWEEN 15001 AND 28000 THEN '2'" \
                     " WHEN Y BETWEEN 28001 AND 55000 THEN '3'" \

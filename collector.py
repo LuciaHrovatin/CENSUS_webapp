@@ -17,16 +17,17 @@ import numpy as np
 # così da poterlo richiamare in futuro
 # Inserire funzione GET_NAME (solo nome senza dataet... e csv)
 
-    # ----------------------------------------- GETTING DATA -----------------------------------------------
+# ----------------------------------------- GETTING DATA -----------------------------------------------
 
-    # def get_data(self):
-    #     data = pd.read_csv(self.filename)
-    #     return print(data.head())
+# def get_data(self):
+#     data = pd.read_csv(self.filename)
+#     return print(data.head())
 
 def save_file(filename: str):
     data = pd.read_csv(filename)
     file_n = filename.split("/")[-1]
     data.to_csv("dataset_clean/" + file_n, index=None)
+
 
 # -----------------------------------------RENAMING/ DELETING COLUMNS ----------------------------------
 
@@ -38,17 +39,18 @@ def rename_column(filename: str):
     :return file: a new dataset with columns' names standardized
     """
     data = pd.read_csv(filename)
-    file_n = filename[filename.find("/")+1:]  # extract the name
+    file_n = filename[filename.find("/") + 1:]  # extract the name
     if file_n == "Qualita_vita.csv":
         renamed_data = data.rename(columns={'CODICE NUTS 3 2021': 'NUTS3',
                                             'RIFERIMENTO TEMPORALE': 'TIME',
                                             'INDICATORE': 'INDEX'})
     elif "occupazione" in file_n:
         renamed_data = data.rename(columns={'Value': ('Value_UNEMP' if "dis" in file_n else 'Value_EMP'),
-                                                'ITTER107': 'NUTS3',
-                                                'SEXISTAT1': 'SEX',
-                                                'ETA1': 'AGE'})
+                                            'ITTER107': 'NUTS3',
+                                            'SEXISTAT1': 'SEX',
+                                            'ETA1': 'AGE'})
     renamed_data.to_csv("dataset_clean/" + file_n, index=None)
+
 
 def delete_column(filename: str, cols_to_remove: list):
     """
@@ -61,6 +63,7 @@ def delete_column(filename: str, cols_to_remove: list):
     del_col = [i for i in cols_to_remove if i in data.columns]
     data = data.drop(del_col, inplace=False, axis=1)
     data.to_csv(filename, index=None)
+
 
 # -----------------------------------------CLEANING ROWS ----------------------------------
 
@@ -113,7 +116,6 @@ def clean_rows(filename: str, ind: Optional[bool] = False):
     data.to_csv(filename, index=None)
 
 
-
 # ----------------------------------------- STORE PROPERLY ----------------------------------
 
 def sub_table(filename: str, col_name: str):
@@ -134,6 +136,7 @@ def sub_table(filename: str, col_name: str):
         count += 1
     return table
 
+
 def change_nquest(filename: str):
     """
     Function that introduces an unique primary key changing the nquest value
@@ -149,8 +152,6 @@ def change_nquest(filename: str):
     data.to_csv(filename, index=None)
 
 
-
-
 def save(table: dict):
     """
     Save the column of "Unità di misura" together with its indicator
@@ -163,7 +164,7 @@ def save(table: dict):
             table,
             f,
             indent=4
-            )
+        )
 
 
 def list_arg(filename: str):
@@ -175,6 +176,7 @@ def list_arg(filename: str):
     with open(filename, "r") as f:
         rows = json.load(f)
         return rows
+
 
 # ---------------------------------------------DELETE NOT RELEVANT INDICATORS-----------------------------------------
 
@@ -195,6 +197,7 @@ def del_indicators(filename: str, indicators: List):
     data = data.drop(data.index[row_lst], inplace=False)
     data.to_csv(filename, index=None)
 
+
 # ---------------------------------------------- CREATE LIST OF TABLES ---------------------------------------
 
 def lst_tables(filename: str) -> tuple:
@@ -203,7 +206,7 @@ def lst_tables(filename: str) -> tuple:
     :param str filename: name of the dataset to be inserted
     :return: tuple having as first element the name of the new table and as second element the SQL command
     """
-    name = filename[filename.find("/")+1:filename.find(".")].lower()
+    name = filename[filename.find("/") + 1:filename.find(".")].lower()
     data = pd.read_csv(filename)
     table_to_be = []
     cols = [str(i) for i in data.columns.tolist()]
@@ -215,17 +218,6 @@ def lst_tables(filename: str) -> tuple:
             table_to_be.append("`" + cols[i].lower() + "` INT NOT NULL")
         elif isinstance(pointer, float):
             table_to_be.append("`" + cols[i].lower() + "` FLOAT NOT NULL")
-    data_set = "CREATE TABLE `" + name + "` ( `id` int NOT NULL AUTO_INCREMENT, \n" +\
+    data_set = "CREATE TABLE `" + name + "` ( `id` int NOT NULL AUTO_INCREMENT, \n" + \
                ", \n".join(table_to_be) + ", PRIMARY KEY(`id`))"
     return name, data_set
-
-
-
-
-
-
-
-
-
-
-
