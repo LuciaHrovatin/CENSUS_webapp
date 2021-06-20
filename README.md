@@ -25,11 +25,23 @@ Big Data Technologies project
 19=Sicilia, 
 20=Sardegna
 
-# VARIABILI 
+# VARIABILI nella tabella "FINAL" ovvero l'unione di 2016-2014 (dal 2014 provengono solo le fam che poi hanno abbandonato il questionario) 
+ 
 NQUEST and NORD: The primary key to merge household level information is NQUEST (household ID). 
 NQUEST must be considered together with NORD (ID of each household member) to merge individual level 
 information. 
 
 NCOMP: numero di componenti per famiglia 
 
-SEX: genere MASCHIO --> 
+SEX: maschio 1, femmina 2 
+
+ANASC: anno di nascita 
+
+STACIV: stato civile 
+Stato civile del rispondente STACIV
+> Celibe/nubile 1
+> Convivente 2
+> Sposato/sposata 3
+> Vedovo/vedova 4
+> Separato/separata 5
+> Divorziato/Divorziata 6
