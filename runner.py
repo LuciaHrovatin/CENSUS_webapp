@@ -6,10 +6,6 @@ from sklearn.model_selection import train_test_split
 from backup import Backup
 
 
-
-# file = File("dataset/Tasso_occupazione.csv")
-# file.get_data()
-
 # OCCUPAZIONE
 #rename_column("dataset/Tasso_occupazione.csv")
 #delete_column("dataset_clean/Tasso_occupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato',
@@ -27,8 +23,20 @@ from backup import Backup
 # DATA 2016
 #save_file("dataset/ind16_ascii/carcom16.csv")
 #delete_column("dataset_clean/carcom16.csv", ["parent", "ETA", "cit", "isco", "aningr", "motiv", "tipolau", "votoedu", "suedu", "selode", "annoedu", "tipodip",
-#                                             "univer", "apqual", "asnonoc", "NASCAREA", "nace", "nordp", "motent", "annoenus", "NASCREG", "area5",
-#                                             "QUAL","ISCO","CLETA5", "STUDIO", "Q", "SETT", "PESOFIT", "CFRED", "PERL", "NPERL", "NPERC", "AREA3", "ACOM4C"])
+#                                              "univer", "apqual", "asnonoc", "NASCAREA", "nace", "nordp", "motent", "annoenus", "NASCREG", "ACOM5",
+#                                              "QUAL","ISCO","CLETA5", "studio", "Q", "SETT", "PESOFIT", "CFRED", "PERL", "NPERL", "NPERC", "AREA3", "ACOM4C"])
+#
+save_file("dataset/ind14_ascii/carcom14.csv")
+delete_column("dataset_clean/carcom14.csv", ["parent", "ETA", "cit", "isco", "aningr", "motiv", "tipolau", "VOTOEDU", "SUEDU", "selode", "annoedu", "tipodip",
+                                              "univer", "apqual", "asnonoc", "NASCAREA", "nace", "nordp", "motent", "annoenus", "NASCREG", "ACOM5",
+                                              "QUAL","ISCO","CLETA5", "studio", "Q", "SETT", "PESOFIT", "CFRED", "PERL", "NPERL", "NPERC", "AREA3", "ACOM4C"])
+#
+#
+# save_file("dataset/ind14_ascii/rfam14.csv")
+# delete_column("dataset_clean/rfam14.csv", ['YL', 'YL1', 'YL2', 'YT', 'YTP', 'YTP1', 'YTP2', 'YTA','YTA1',
+#                                             'YTA2', 'YTA3', 'YTA31', 'YTA32', 'YM', 'YMA1', 'YMA2', 'YC',
+#                                             'YCA', 'YCA1', 'YCA2', 'YCF', 'YCF1', 'YCF2', 'YCF3', 'YCF4', 'CLY',
+#                                             'CLY2'])
 
 #save_file("dataset/ind16_ascii/rfam16.csv")
 # delete_column("dataset_clean/rfam16.csv", ['YL', 'YL1', 'YL2', 'YT', 'YTP', 'YTP1', 'YTP2', 'YTA','YTA1',
@@ -49,6 +57,8 @@ from backup import Backup
 #                                           "A45_2_1","A45_3_1","A45_4_1","A45_5_1","A45_1_2","A45_2_2","A45_3_2","A45_4_2",
 #                                           "A45_5_2","A45_1_3","A45_2_3","A45_3_3","A45_4_3","A45_5_3","A45_1_4","A45_2_4",
 #                                           "A45_3_4","A45_4_4","A45_5_4","PESO","pesopanel","TITOLO","A07"])
+
+#save_file("dataset/dataset_samples/isf_w3.csv")
 
 # DISOCCUPAZIONE
 #clean_rows("dataset_clean/Tasso_disoccupazione.csv")
@@ -124,11 +134,11 @@ indicators = [lst_index["Eventi sportivi"][1],
               lst_index["Spid erogate"][1],
               lst_index["Pos attivi"][1]]
 
-del_indicators("dataset_clean/Qualita_vita.csv", indicators)
+#del_indicators("dataset_clean/Qualita_vita.csv", indicators)
 
 # --------------------------------------------- DELETE "UNITA' di MISURA" -----------------------------------------------
 # Delete the column of "unità di misura"
-delete_column("dataset_clean\Qualita_vita.csv", ["UNITA' DI MISURA"])
+#delete_column("dataset_clean\Qualita_vita.csv", ["UNITA' DI MISURA"])
 
 
 # --------------------------------------------- CONNECTION WITH MYSQL -------------------------------------------------
@@ -147,7 +157,11 @@ saver = MySQLManager(host="localhost",
 #saver.create_table(lst_tables("dataset_clean\Tasso_disoccupazione.csv"))
 #saver.create_table(lst_tables("dataset_clean\Qualita_vita.csv"))
 #saver.create_table(lst_tables("dataset_clean\Tasso_occupazione.csv"))
-saver.create_table(lst_tables("dataset_clean/carcom16.csv"))
+#saver.create_table(lst_tables("dataset_clean/carcom16.csv"))
+#saver.create_table(lst_tables("dataset_clean\carcom14.csv"))
+#saver.create_table(lst_tables("dataset_clean/isf_w2.csv"))
+#saver.create_table(lst_tables("dataset_clean/isf_w3.csv"))
+#saver.create_table(lst_tables("dataset_clean/rfam14.csv"))
 #saver.create_table(lst_tables("dataset_clean/rper16.csv"))
 
 #Load data
@@ -157,15 +171,27 @@ saver.create_table(lst_tables("dataset_clean/carcom16.csv"))
 #saver.save_SQL("dataset_clean\Tasso_occupazione.csv")
 #saver.save_SQL("dataset_clean\carcom16.csv")
 #saver.save_SQL("dataset_clean/rper16.csv")
+#saver.save_SQL("dataset_clean/carcom14.csv")
+#saver.save_SQL("dataset_clean/isf_w2.csv")
+#saver.save_SQL("dataset_clean/isf_w3.csv")
+#saver.save_SQL("dataset_clean/rfam14.csv")
+
+
+
 
 # -------------------------------------------JOIN TABLES ------------------------------------------------
 
-saver.join_SQL(table_1= "carcom16", table_2="rfam16", table_name="data_2016_fam")
+#saver.join_SQL(table_1= "carcom16", table_2="rfam16", table_name="data_2016_fam")
+#saver.join_SQL(table_1= "carcom14", table_2="rfam14", table_name="data_2014_fam")
 #saver.join_SQL(table_1= "carcom16", table_2="rper16", table_name="data_2016")
 
 #saver.label_irpef(table_name="data_2016")
-saver.label_irpef(table_name="data_2016_fam")
+#saver.label_irpef(table_name="data_2016_fam")
+#saver.label_irpef(table_name="data_2014_fam")
 
+
+# FINAL TABLE
+saver.union_SQL(table_name = "final", table_1="data_2016_fam", table_2="data_2014_fam")
 
 #backup = Backup(saver, "C:/Users/lucia/Desktop") # set here your local path
 #backup.set_backup()
