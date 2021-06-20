@@ -22,15 +22,16 @@ saver = MySQLManager(host="localhost",
                       database = "project_bdt")
 
 
-df = saver.execute_read_query(table_name="data_2016_fam")
+df = saver.execute_read_query(table_name="final")
 
 # train - test splitting procedure
-X_train, X_test, y_train, y_test = train_test_split(df, np.array([x for x in df[16]]), test_size=0.40, random_state=1)
-
-X_train = X_train.drop([0, 1, 16], axis=1)
+X_train, X_test, y_train, y_test = train_test_split(df, np.array([x for x in df[df.shape[1]-1]]), test_size=0.40, random_state=1)
+#
+last = df.shape[1]-1
+X_train = X_train.drop([0, 1, 3, 8, 9, 10], axis=1)
 X_train = X_train.to_numpy()
 
-X_test = X_test.drop([0, 1, 16], axis=1)
+X_test = X_test.drop([0, 1, 3, 8, 9, 10], axis=1)
 X_test = X_test.to_numpy()
 
 print(X_train.shape, X_test.shape)
@@ -49,7 +50,6 @@ clf = QDA()
 clf.fit(X_train, y_train)
 print(clf.score(X_test, y_test)) # mean accuracy
 
-
 # ---------------------------------------------- KNN ---------------------------------------
 
 print("KNN: ")
@@ -57,12 +57,15 @@ clf = KNN(n_neighbors=5)
 clf.fit(X_train, y_train)
 print(clf.score(X_test, y_test))
 
+
 # ---------------------------------------------- RandomForests -----------------------------
 
 print("Random Forests: ")
-clf = RandomForestClassifier(max_depth=5, random_state=1, bootstrap=True)
+clf = RandomForestClassifier(max_depth=6, random_state=1, bootstrap=True)
 clf.fit(X_train, y_train)
 print(clf.score(X_test, y_test)) # mean accuracy
 
 
 
+X = [[6, 1, 1973, 3, 6]]
+print(clf.predict(X)[0])

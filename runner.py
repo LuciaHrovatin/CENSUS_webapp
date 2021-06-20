@@ -2,7 +2,6 @@ from __future__ import absolute_import, annotations
 
 from collector import *
 from saver import MySQLManager
-from sklearn.model_selection import train_test_split
 from backup import Backup
 
 
@@ -181,13 +180,13 @@ saver = MySQLManager(host="localhost",
 
 # -------------------------------------------JOIN TABLES ------------------------------------------------
 
-#saver.join_SQL(table_1= "carcom16", table_2="rfam16", table_name="data_2016_fam")
-#saver.join_SQL(table_1= "carcom14", table_2="rfam14", table_name="data_2014_fam")
+saver.join_SQL(table_1= "carcom16", table_2="rfam16", table_name="data_2016_fam")
+saver.join_SQL(table_1= "carcom14", table_2="rfam14", table_name="data_2014_fam")
 #saver.join_SQL(table_1= "carcom16", table_2="rper16", table_name="data_2016")
 
 #saver.label_irpef(table_name="data_2016")
-#saver.label_irpef(table_name="data_2016_fam")
-#saver.label_irpef(table_name="data_2014_fam")
+saver.label_irpef(table_name="data_2016_fam")
+saver.label_irpef(table_name="data_2014_fam")
 
 
 # FINAL TABLE

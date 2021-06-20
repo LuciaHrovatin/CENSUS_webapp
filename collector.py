@@ -7,21 +7,8 @@ from typing import Optional, List
 import numpy as np
 
 
-# class File:
-#
-#     def __init__(self, filename: str):
-#         self.filename = filename
-
-# TODO #
-# inserire in __init__ la possibilità di inserire il nome corto del file ex: filename[filename.find("/")+1:]
-# così da poterlo richiamare in futuro
-# Inserire funzione GET_NAME (solo nome senza dataet... e csv)
 
 # ----------------------------------------- GETTING DATA -----------------------------------------------
-
-# def get_data(self):
-#     data = pd.read_csv(self.filename)
-#     return print(data.head())
 
 def save_file(filename: str):
     data = pd.read_csv(filename)
