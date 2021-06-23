@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, flash, redirect, Markup
+from flask import Flask, render_template, url_for, flash, redirect, Markup, request 
 from forms import RegistrationForm, LoginForm, CensusData
 
 app = Flask(__name__)
@@ -27,9 +27,10 @@ colors = [
 def home():
     form = CensusData()
     if form.validate_on_submit():
-        flash(f'Account created for {form.eta.data}!', 'success')
-        return redirect(url_for('home'))
-    return render_template('home.html', form=form)
+        age = request.args.get('eta')
+        gender = request.args.get('genere')
+        place = request.args.get('residenza2')
+    return render_template('home.html', form=form, age=request.args.get('eta'), gender=request.args.get('genere'), place=request.args.get('residenza2'))
 
 
 @app.route("/about")
