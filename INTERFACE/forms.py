@@ -42,11 +42,17 @@ province = [('Agrigento'), ('Alessandria'), ('Ancona'), ('Aosta'), ('Arezzo'), (
 ('Siracusa'), ('Sondrio'), ('Taranto'), ('Teramo'), ('Terni'), ('Torino'), ('Ogliastra'), ('Trapani'), ('Trento'), ('Treviso'),
 ('Trieste'), ('Udine'), ('Varese'), ('Venezia'), ('Verbano-Cusio-Ossola'), ('Vercelli'), ('Verona'), ('Vibo Valentia'), ('Vicenza'), ('Viterbo')]
 
+n_componenti = [('1'), ('2'), ('3'), ('4'), ('5'), ('6'), ('7'), ('8'), ('9'), ('10'), ('11'), ('12'), ('13'), ('14')]
+
+stato = [('celibe/nubile'), ('convivente'), ('sposato/a'), ('vedovo/a'), ('separato/a'), ('divorziato/a')]
+
 sex = ['maschile', 'femminile', 'preferisco non specificare']
 class CensusData(FlaskForm):
-    eta = SelectField('Anno di nascita', choices=years, validators=[DataRequired()])
-    genere = RadioField('Genere', choices=sex, default='preferisco non specificare', validators=[DataRequired()])
-    residenza2 = SelectField('Provincia di residenza', choices=province, validators=[DataRequired()])   
+    eta = SelectField('Anno di nascita:', choices=years, validators=[DataRequired()])
+    genere = RadioField('Genere:', choices=sex, default='preferisco non specificare', validators=[DataRequired()])
+    residenza2 = SelectField('Provincia di residenza:', choices=province, validators=[DataRequired()])   
+    componenti = SelectField('Numero di componenti del nucleo familiare:', choices=n_componenti, validators=[DataRequired()])
+    stato_civile = RadioField('Stato civile:', choices=stato, default='celibe/nubile', validators=[DataRequired()])
     submit = SubmitField('Vai!')
 
 

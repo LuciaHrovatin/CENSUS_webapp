@@ -41,6 +41,33 @@
                     <span class="label label-danger">{{ error }}</span>
                     {% endfor %}
                 </div>
+                <div class="form-group">
+                    {{ form.componenti.label }}
+                    <small class="text-muted">{{ form.componenti.description }}</small>
+                    {{ form.componenti(class_="form-control") }}
+
+                    {% for error in form.componenti.errors %}
+                    <span class="label label-danger">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                {{ form.stato_civile.label }}
+                <br>
+                <table>
+                {% for subfield in form.stato_civile %}
+                  <tr>
+                      <td>{{ subfield }}</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>{{ subfield.label }}</td>
+                  </tr>
+                  <tr>
+                      
+                  </tr>
+                {% endfor %}
+                </table>
+                </div>
             </fieldset>
             <div class="form-group">
                 {{ form.submit(class="btn btn-outline-info") }}
@@ -54,6 +81,8 @@
             <th scope="col">Anno di nascita</th>
             <th scope="col">Genere</th>
             <th scope="col">Residenza</th>
+            <th scope="col">Componenti</th>
+            <th scope="col">Stato civile</th>
             <th scope="col">Predizione</th>
             
         </tr>
@@ -67,6 +96,20 @@
             <td>maschile</td>
             {% endif %}
             <td>{{ place }}</td>
+            <td>{{ componenti }}</td>
+            {% if stato_civile == 1 %}
+            <td>celibe/nubile</td>
+            {% elif stato_civile == 2 %}
+            <td>convivente</td>
+            {% elif stato_civile == 3 %}
+            <td>sposato/a</td>
+            {% elif stato_civile == 4 %}
+            <td>vedovo/a</td>
+            {% elif stato_civile == 5 %}
+            <td>separato/a</td>
+            {% else %}
+            <td>divorziato/a</td>
+            {% endif %}
             <td><b>prob<b></td>
             </tr>
         </tbody>

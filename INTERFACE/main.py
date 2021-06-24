@@ -30,11 +30,28 @@ def home():
     age=request.args.get('eta')
     gender=request.args.get('genere')
     place=request.args.get('residenza2')
+    componenti=request.args.get('componenti')
+    stato_civile=request.args.get('stato_civile')
     if gender == "femminile":
         gender = 2
     else:
         gender = 1
-    return render_template('home.html', form=form, age=age, gender=gender, place=place)
+    
+    if isinstance(age, str) == True:
+        age = int(age)
+    if stato_civile == "celibe/nubile":
+        stato_civile = 1
+    elif stato_civile == "convivente":
+        stato_civile = 2
+    elif stato_civile == "sposato/a":
+        stato_civile = 3
+    elif stato_civile == "vedovo/a":
+        stato_civile = 4
+    elif stato_civile == "separato/a":
+        stato_civile = 5
+    else:
+        gender = 6
+    return render_template('home.html', form=form, age=age, gender=gender, place=place, componenti=componenti, stato_civile=stato_civile)
 
 
 @app.route("/about")
