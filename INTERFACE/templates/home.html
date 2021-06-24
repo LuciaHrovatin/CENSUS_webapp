@@ -61,7 +61,11 @@
         <tbody>
             <tr>
             <td>{{ age }}</td>
-            <td>{{ gender }}</td>
+            {% if gender == 2 %}
+            <td>femminile</td>
+            {% else %}
+            <td>maschile</td>
+            {% endif %}
             <td>{{ place }}</td>
             <td><b>prob<b></td>
             </tr>

@@ -45,9 +45,10 @@ province = [('Agrigento'), ('Alessandria'), ('Ancona'), ('Aosta'), ('Arezzo'), (
 sex = ['maschile', 'femminile', 'preferisco non specificare']
 class CensusData(FlaskForm):
     eta = SelectField('Anno di nascita', choices=years, validators=[DataRequired()])
-    genere = RadioField('Genere', choices=sex, validators=[DataRequired()])
+    genere = RadioField('Genere', choices=sex, default='preferisco non specificare', validators=[DataRequired()])
     residenza2 = SelectField('Provincia di residenza', choices=province, validators=[DataRequired()])   
     submit = SubmitField('Vai!')
+
 
 
 

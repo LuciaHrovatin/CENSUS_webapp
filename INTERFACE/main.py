@@ -1,5 +1,6 @@
 from flask import Flask, render_template, url_for, flash, redirect, Markup, request 
 from forms import RegistrationForm, LoginForm, CensusData
+# from classifier import RandomForest
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
@@ -26,11 +27,14 @@ colors = [
 @app.route("/home", methods=['GET', 'POST'])
 def home():
     form = CensusData()
-    if form.validate_on_submit():
-        age = request.args.get('eta')
-        gender = request.args.get('genere')
-        place = request.args.get('residenza2')
-    return render_template('home.html', form=form, age=request.args.get('eta'), gender=request.args.get('genere'), place=request.args.get('residenza2'))
+    age=request.args.get('eta')
+    gender=request.args.get('genere')
+    place=request.args.get('residenza2')
+    if gender == "femminile":
+        gender = 2
+    else:
+        gender = 1
+    return render_template('home.html', form=form, age=age, gender=gender, place=place)
 
 
 @app.route("/about")
