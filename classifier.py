@@ -78,11 +78,15 @@ def RandomForest(saver: MySQLManager, sex: int, age: int, statciv: int, place: i
     # If a person is less than 18 years old, he/she will not have a REDDITO!  --> ritornare 1 o 0
     if (i.year - age) <= 18:
         return 1.0
-    # If statciv is 1, then the dataset containing the insidivual census data will be considered
+
+    # If statciv is 1, then the dataset containing the individual census data will be considered
     if statciv == 1:
         table = "final_individual"
+
     df = saver.execute_read_query(table_name=table)
     y_train = np.array([x for x in df[df.shape[1] - 1]])
+
+    # If the choice was "Preferisco non dirlo" then, data will not include "sex" information
     if not sex:
         X_train = df.drop([0, 1, 2, 3, 4, 8, 9, 10], axis=1)
     else:
