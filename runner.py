@@ -168,7 +168,7 @@ saver = MySQLManager(host="localhost",
 #saver.create_table(lst_tables("dataset_clean/isf_w3.csv"))
 #saver.create_table(lst_tables("dataset_clean/rfam14.csv"))
 #saver.create_table(lst_tables("dataset_clean/rper16.csv"))
-saver.create_table(lst_tables("dataset_clean/rper14.csv"))
+#saver.create_table(lst_tables("dataset_clean/rper14.csv"))
 
 #Load data
 
@@ -177,38 +177,35 @@ saver.create_table(lst_tables("dataset_clean/rper14.csv"))
 #saver.save_SQL("dataset_clean\Tasso_occupazione.csv")
 #saver.save_SQL("dataset_clean\carcom16.csv")
 #saver.save_SQL("dataset_clean/rper16.csv")
-saver.save_SQL("dataset_clean/rper14.csv")
+#saver.save_SQL("dataset_clean/rper14.csv")
 #saver.save_SQL("dataset_clean/carcom14.csv")
 #saver.save_SQL("dataset_clean/isf_w2.csv")
 #saver.save_SQL("dataset_clean/isf_w3.csv")
 #saver.save_SQL("dataset_clean/rfam14.csv")
 
-
-
-
 # -------------------------------------------JOIN TABLES ------------------------------------------------
 
 #saver.join_SQL(table_1= "carcom16", table_2="rfam16", table_name="data_2016_fam")
 #saver.join_SQL(table_1= "carcom14", table_2="rfam14", table_name="data_2014_fam")
-saver.join_SQL(table_1= "carcom16", table_2="rper16", table_name="data_2016")
-saver.join_SQL(table_1= "carcom14", table_2="rper14", table_name="data_2014")
+# saver.join_SQL(table_1= "carcom16", table_2="rper16", table_name="data_2016")
+# saver.join_SQL(table_1= "carcom14", table_2="rper14", table_name="data_2014")
 
 
 
-saver.label_irpef(table_name="data_2016")
-saver.label_irpef(table_name="data_2014")
+# saver.label_irpef(table_name="data_2016")
+# saver.label_irpef(table_name="data_2014")
 #saver.label_irpef(table_name="data_2016_fam")
 #saver.label_irpef(table_name="data_2014_fam")
 
 
 # FINAL TABLE
 #saver.union_SQL(table_name = "final", table_1="data_2016_fam", table_2="data_2014_fam")
-saver.union_SQL(table_name = "final_individual", table_1="data_2016", table_2="data_2014")
+#saver.union_SQL(table_name = "final_individual", table_1="data_2016", table_2="data_2014")
 
 #backup = Backup(saver, "C:/Users/lucia/Desktop") # set here your local path
 #backup.set_backup()
 
-
+number_regions("province-ita.json", province="Aosta")
 
 
 
