@@ -251,7 +251,8 @@ def number_regions(filename: str, province: str) -> int:
             for prov in data[region]:
                 if province in prov["nome"]:
                     region = region.split("-")[0]
-                    return print(regions_n[region])
+                    return regions_n[region]
+def se
 
 
 
