@@ -48,6 +48,12 @@ delete_column("dataset_clean/carcom14.csv", ["parent", "ETA", "cit", "isco", "an
 #                                           'YL','YTP','YTA3','YTA','YT','YM','YCA1','YCA2','YCA','YCF1','YCF2','YCF3',
 #                                           'YCF4','YCF','YC','YMA1','YMA2'])
 
+save_file("dataset/ind14_ascii/rper14.csv")
+delete_column("dataset_clean/rper14.csv", ['YL1','YL2','YTP1','YTP2','YTA1','YTA2','YTA31','YTA32',
+                                           'YL','YTP','YTA3','YTA','YT','YM','YCA1','YCA2','YCA','YCF1','YCF2','YCF3',
+                                           'YCF4','YCF','YC','YMA1','YMA2'])
+
+
 #save_file("dataset/dataset_samples/isf_w2.csv")
 #delete_column("dataset_clean/isf_w2.csv", ["A06","A08","A11","A12","A13","A14","A15","A16_1","A16A_1","A16_2","A16A_2",
 #                                           "A16_3","A16A_3","A16A_4","A16A_5","A16A_6","A17","A18","A19","A20","A21","A22",
@@ -162,6 +168,7 @@ saver = MySQLManager(host="localhost",
 #saver.create_table(lst_tables("dataset_clean/isf_w3.csv"))
 #saver.create_table(lst_tables("dataset_clean/rfam14.csv"))
 #saver.create_table(lst_tables("dataset_clean/rper16.csv"))
+saver.create_table(lst_tables("dataset_clean/rper14.csv"))
 
 #Load data
 
@@ -170,6 +177,7 @@ saver = MySQLManager(host="localhost",
 #saver.save_SQL("dataset_clean\Tasso_occupazione.csv")
 #saver.save_SQL("dataset_clean\carcom16.csv")
 #saver.save_SQL("dataset_clean/rper16.csv")
+saver.save_SQL("dataset_clean/rper14.csv")
 #saver.save_SQL("dataset_clean/carcom14.csv")
 #saver.save_SQL("dataset_clean/isf_w2.csv")
 #saver.save_SQL("dataset_clean/isf_w3.csv")
@@ -180,17 +188,22 @@ saver = MySQLManager(host="localhost",
 
 # -------------------------------------------JOIN TABLES ------------------------------------------------
 
-saver.join_SQL(table_1= "carcom16", table_2="rfam16", table_name="data_2016_fam")
-saver.join_SQL(table_1= "carcom14", table_2="rfam14", table_name="data_2014_fam")
-#saver.join_SQL(table_1= "carcom16", table_2="rper16", table_name="data_2016")
+#saver.join_SQL(table_1= "carcom16", table_2="rfam16", table_name="data_2016_fam")
+#saver.join_SQL(table_1= "carcom14", table_2="rfam14", table_name="data_2014_fam")
+saver.join_SQL(table_1= "carcom16", table_2="rper16", table_name="data_2016")
+saver.join_SQL(table_1= "carcom14", table_2="rper14", table_name="data_2014")
 
-#saver.label_irpef(table_name="data_2016")
-saver.label_irpef(table_name="data_2016_fam")
-saver.label_irpef(table_name="data_2014_fam")
+
+
+saver.label_irpef(table_name="data_2016")
+saver.label_irpef(table_name="data_2014")
+#saver.label_irpef(table_name="data_2016_fam")
+#saver.label_irpef(table_name="data_2014_fam")
 
 
 # FINAL TABLE
-saver.union_SQL(table_name = "final", table_1="data_2016_fam", table_2="data_2014_fam")
+#saver.union_SQL(table_name = "final", table_1="data_2016_fam", table_2="data_2014_fam")
+saver.union_SQL(table_name = "final_individual", table_1="data_2016", table_2="data_2014")
 
 #backup = Backup(saver, "C:/Users/lucia/Desktop") # set here your local path
 #backup.set_backup()

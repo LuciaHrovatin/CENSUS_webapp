@@ -26,7 +26,7 @@ def rename_column(filename: str):
     :return file: a new dataset with columns' names standardized
     """
     data = pd.read_csv(filename)
-    file_n = filename[filename.find("/") + 1:]  # extract the name
+    file_n = filename[filename.find("/")+1:]  # extract the name
     if file_n == "Qualita_vita.csv":
         renamed_data = data.rename(columns={'CODICE NUTS 3 2021': 'NUTS3',
                                             'RIFERIMENTO TEMPORALE': 'TIME',
@@ -193,7 +193,7 @@ def lst_tables(filename: str) -> tuple:
     :param str filename: name of the dataset to be inserted
     :return: tuple having as first element the name of the new table and as second element the SQL command
     """
-    name = filename[filename.find("\\") + 1:filename.find(".")].lower()
+    name = filename[filename.find("/") + 1:filename.find(".")].lower()
     data = pd.read_csv(filename)
     table_to_be = []
     cols = [str(i) for i in data.columns.tolist()]

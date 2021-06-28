@@ -74,7 +74,7 @@ class MySQLManager:
         :param str filename: name of the  file
         """
         cursor = self.connection.cursor()
-        name = filename[filename.find("/") + 1:filename.find(".")].lower()
+        name = filename[filename.find("/") + 1: filename.find(".")].lower()
         data = pd.read_csv(filename)
         data.dropna(inplace=True)
         cols = "`, `".join([str(i).lower() for i in data.columns.tolist()])
@@ -167,7 +167,6 @@ class MySQLManager:
 
     def execute_read_query(self, table_name: str):
         cursor = self.connection.cursor()
-        result = None
         try:
             query = "SELECT * FROM {}".format(table_name)
             cursor.execute(query)

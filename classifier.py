@@ -1,8 +1,6 @@
 # TODO #
 # Primo tentativo di implementazione dei modelli.
-# 1. Sono stati implementati 4 modelli
-# 2. Fare attenzione alle variabili che vengono utilizzate --> bisogna andare a ridurle
-# 3. Creare un data-lake da cui prendersi direttamente i dati...fare il passaggio tramite SQL risulta VERBOSO
+# 1. Creare un data-lake da cui prendersi direttamente i dati...fare il passaggio tramite SQL risulta VERBOSO
 
 import numpy as np
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
@@ -10,6 +8,7 @@ from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis as QDA
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier as KNN
 from sklearn.model_selection import train_test_split
+import datetime
 
 from saver import MySQLManager
 
@@ -66,26 +65,29 @@ clf.fit(X_train, y_train)
 print(clf.score(X_test, y_test)) # mean accuracy
 
 
-
 X = [[6, 1, 1973, 3, 6]]
 print(clf.predict(X)[0])
 
 
 # -------------------------
 
-def RandomForest(gender, age, place):
-    password = "luca0405"
-    saver = MySQLManager(host="localhost",
-                         port=3306,
-                         user="root",
-                         password=password,
-                         database="project_bdt")
-    df = saver.execute_read_query(table_name="final")
+
+def RandomForest(saver: MySQLManager, gender: int, age: int, statciv: int, place: int):
+    i = datetime.datetime.now()
+    table = "final"
+    # If a person is less than 18 years old, he/she will not have a REDDITO!  --> ritornare 1 o 0
+    if (i.year - age) <= 18:
+        return 1.0
+    # If statciv is 1, then the dataset containing the insidivual census data will be considered
+    if statciv == 1:
+        table = "final_individual"
+    df = saver.execute_read_query(table_name=table)
     y_train = np.array([x for x in df[df.shape[1] - 1]])
-    X_train = df.drop([0, 1, 3, 8, 9, 10], axis=1)
+    X_train = df.drop([0, 1, 2, 3, 8, 9, 10], axis=1)
     X_train = X_train.to_numpy()
-    print("Random Forests: ")
+    print("Random Forests internal function: ")
     clf = RandomForestClassifier(max_depth=6, random_state=1, bootstrap=True)
     clf.fit(X_train, y_train)
-    return print(clf.predict([[1, gender, age, 3, place]])) # mean accuracy
+    return print(clf.predict([[gender, age, statciv, place]])) # mean accuracy
 
+RandomForest(saver, 2, 1973, 1, 10)
