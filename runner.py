@@ -206,6 +206,7 @@ saver = MySQLManager(host="localhost",
 #backup.set_backup()
 
 number_regions("province-ita.json", province="Aosta")
+sex_parser("MASCHILE")
 
 
 

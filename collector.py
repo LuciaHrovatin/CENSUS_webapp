@@ -252,7 +252,20 @@ def number_regions(filename: str, province: str) -> int:
                 if province in prov["nome"]:
                     region = region.split("-")[0]
                     return regions_n[region]
-def se
+
+def sex_parser(sex: str) -> int:
+    """
+    Returns sex encoded according to the dataset
+    :param str sex: choice made in the form
+    :return: integer as in the dataset
+    """
+    sex_new = 0
+    if "maschile" in sex.lower():
+        sex_new = 1
+    elif "femminile" in sex.lower():
+        sex_new = 2
+    return sex_new
+
 
 
 
