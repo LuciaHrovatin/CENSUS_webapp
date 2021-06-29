@@ -151,10 +151,14 @@ class MySQLManager:
         try:
             query = " UPDATE {} SET Y = CASE" \
                     " WHEN Y < 15000 THEN '1'" \
-                    " WHEN Y BETWEEN 15001 AND 28000 THEN '2'" \
-                    " WHEN Y BETWEEN 28001 AND 55000 THEN '3'" \
-                    " WHEN Y BETWEEN 55001 AND 75000 THEN '4'" \
-                    " ELSE '5'"\
+                    " WHEN Y BETWEEN 15001 AND 22000 THEN '2'" \
+                    " WHEN Y BETWEEN 22001 AND 28000 THEN '3'" \
+                    " WHEN Y BETWEEN 28001 AND 35000 THEN '4'" \
+                    " WHEN Y BETWEEN 35001 AND 42000 THEN '5'" \
+                    " WHEN Y BETWEEN 42001 AND 49000 THEN '6'"\
+                    " WHEN Y BETWEEN 49001 AND 55000 THEN '7'" \
+                    " WHEN Y BETWEEN 55001 AND 75001 THEN '8'" \
+                    " ELSE '9'"\
                     " END".format(table_name)
             cursor.execute(query)
         except mysql.connector.Error as err:

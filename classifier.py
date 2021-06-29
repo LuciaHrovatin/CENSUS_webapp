@@ -42,7 +42,7 @@ clf = LDA()
 clf.fit(X_train, y_train)
 print(clf.score(X_test, y_test)) # mean accuracy
 
-# ---------------------------------------------- QDA ----------------------------------------
+#---------------------------------------------- QDA ----------------------------------------
 
 print("QDA: ")
 clf = QDA()
@@ -62,7 +62,13 @@ print(clf.score(X_test, y_test))
 print("Random Forests: ")
 clf = RandomForestClassifier(max_depth=6, random_state=1, bootstrap=True)
 clf.fit(X_train, y_train)
-print(clf.score(X_test, y_test)) # mean accuracy
+# Use the forest's predict method on the test data
+predictions = clf.predict(X_test)
+# Calculate the absolute errors
+errors = abs(predictions - y_test)
+# Print out the mean absolute error (mae)
+print('Mean Absolute Error:', round(np.mean(errors), 2), 'degrees.')
+#print(clf.score(X_test, y_test)) # mean accuracy
 
 
 X = [[6, 1, 1973, 3, 6]]
@@ -99,4 +105,4 @@ def RandomForest(saver: MySQLManager, sex: int, age: int, statciv: int, place: i
         return print(clf.predict([[age, statciv, place]]))
     return print(clf.predict([[sex, age, statciv, place]])) # mean accuracy
 
-RandomForest(saver, 1, 1960, 1, 3)
+RandomForest(saver, 1, 1966, 3, 6)
