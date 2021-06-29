@@ -27,10 +27,10 @@ df = saver.execute_read_query(table_name="final")
 X_train, X_test, y_train, y_test = train_test_split(df, np.array([x for x in df[df.shape[1]-1]]), test_size=0.40, random_state=1)
 #
 last = df.shape[1]-1
-X_train = X_train.drop([0, 1, 3, 8, 9, 10], axis=1)
+X_train = X_train.drop([0, 1, 2, 3, 8, 9, 10], axis=1)
 X_train = X_train.to_numpy()
 
-X_test = X_test.drop([0, 1, 3, 8, 9, 10], axis=1)
+X_test = X_test.drop([0, 1, 2, 3, 8, 9, 10], axis=1)
 X_test = X_test.to_numpy()
 
 print(X_train.shape, X_test.shape)
@@ -62,18 +62,7 @@ print(clf.score(X_test, y_test))
 print("Random Forests: ")
 clf = RandomForestClassifier(max_depth=6, random_state=1, bootstrap=True)
 clf.fit(X_train, y_train)
-# Use the forest's predict method on the test data
-predictions = clf.predict(X_test)
-# Calculate the absolute errors
-errors = abs(predictions - y_test)
-# Print out the mean absolute error (mae)
-print('Mean Absolute Error:', round(np.mean(errors), 2), 'degrees.')
-#print(clf.score(X_test, y_test)) # mean accuracy
-
-
-X = [[6, 1, 1973, 3, 6]]
-print(clf.predict(X)[0])
-
+print(clf.score(X_test, y_test)) # mean accuracy
 
 # -------------------------
 
@@ -105,4 +94,4 @@ def RandomForest(saver: MySQLManager, sex: int, age: int, statciv: int, place: i
         return print(clf.predict([[age, statciv, place]]))
     return print(clf.predict([[sex, age, statciv, place]])) # mean accuracy
 
-RandomForest(saver, 1, 1966, 3, 6)
+RandomForest(saver, 2, 1973, 3, 19)
