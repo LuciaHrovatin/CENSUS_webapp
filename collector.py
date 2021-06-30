@@ -2,18 +2,9 @@ from __future__ import absolute_import, annotations
 
 import uuid
 import pandas as pd
-import json
 from typing import Optional, List
 import numpy as np
 import json
-
-# ----------------------------------------- GETTING DATA -----------------------------------------------
-
-def save_file(filename: str):
-    data = pd.read_csv(filename)
-    file_n = filename.split("/")[-1]
-    data.to_csv("dataset_clean/" + file_n, index=None)
-
 
 # -----------------------------------------RENAMING/ DELETING COLUMNS ----------------------------------
 
@@ -29,12 +20,8 @@ def rename_column(filename: str):
     if file_n == "Qualita_vita.csv":
         renamed_data = data.rename(columns={'CODICE NUTS 3 2021': 'NUTS3',
                                             'RIFERIMENTO TEMPORALE': 'TIME',
-                                            'INDICATORE': 'INDEX'})
-    elif "occupazione" in file_n:
-        renamed_data = data.rename(columns={'Value': ('Value_UNEMP' if "dis" in file_n else 'Value_EMP'),
-                                            'ITTER107': 'NUTS3',
-                                            'SEXISTAT1': 'SEX',
-                                            'ETA1': 'AGE'})
+                                            'INDICATORE': 'INDEXES',
+                                            'NOME PROVINCIA (ISTAT)': 'PROVINCE'})
     renamed_data.to_csv("dataset_clean/" + file_n, index=None)
 
 
@@ -77,28 +64,21 @@ def clean_rows(filename: str, ind: Optional[bool] = False):
     data = pd.read_csv(filename)
     count = 0
     row_lst = []
-    if "occupazione" in filename:
-        while count < len(data["NUTS3"]):
-            if (data["NUTS3"][count].isalpha()) or ("Q" in data["TIME"][count]) or (data["SEX"][count] == 9):
-                row_lst.append(count)
-            count += 1
-        data = data.drop(data.index[row_lst], inplace=False)
-    else:
-        target = "INDEX"
-        indicators_lst = list_arg("dataset_clean/indicators.json")
+    target = "INDEXES"
+    indicators_lst = list_arg("dataset_clean/indicators.json")
+    if not ind:
+        target = "TIME"
+    for row in data[target]:
         if not ind:
-            target = "TIME"
-        for row in data[target]:
-            if not ind:
-                if not row.isnumeric():
-                    value = parse_date(row)
-                    row_lst.append((count, value))
-            else:
-                value = indicators_lst[row][-1]
+            if not row.isnumeric():
+                value = parse_date(row)
                 row_lst.append((count, value))
-            count += 1
-        if 0 < len(row_lst):
-            data.loc[[v[0] for v in row_lst], [target]] = [v[1] for v in row_lst]
+        else:
+            value = indicators_lst[row][-1]
+            row_lst.append((count, value))
+        count += 1
+    if 0 < len(row_lst):
+        data.loc[[v[0] for v in row_lst], [target]] = [v[1] for v in row_lst]
     data.to_csv(filename, index=None)
 
 
@@ -114,9 +94,9 @@ def sub_table(filename: str, col_name: str):
     table = dict()
     count = 0
     for row in data[col_name]:
-        if col_name == "INDEX":
+        if col_name == "INDEXES":
             if row not in table:
-                table[row] = [data["UNITA' DI MISURA"][count], "INDEX" + uuid.uuid4().hex[:6].upper()]
+                table[row] = [data["UNITA' DI MISURA"][count], "INDEXES" + uuid.uuid4().hex[:6].upper()]
         else:
             table[row] = str(row) + "A" + str(count)
         count += 1
@@ -176,7 +156,7 @@ def del_indicators(filename: str, indicators: List):
     data = pd.read_csv(filename)
     row_lst = []
     count = 0
-    for i in data["INDEX"]:
+    for i in data["INDEXES"]:
         if i in indicators:
             row_lst.append(count)
         count += 1
@@ -213,6 +193,8 @@ def lst_tables(filename: str) -> tuple:
     else:
         data_set = "CREATE TABLE `" + name + "` ( " + ", \n".join(table_to_be) + primary_key
     return name, data_set
+
+
 
 def number_regions(filename: str, province: str) -> int:
     """

@@ -5,19 +5,9 @@ from saver import MySQLManager
 from backup import Backup
 
 
-# OCCUPAZIONE
-#rename_column("dataset/Tasso_occupazione.csv")
-#delete_column("dataset_clean/Tasso_occupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato',
-#'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'])
-#
-# # DISOCCUPAZIONE
-#rename_column("dataset/Tasso_disoccupazione.csv")
-#delete_column("dataset_clean/Tasso_disoccupazione.csv", ['Territorio', 'TIPO_DATO_FOL', 'Tipo dato',
-# 'Sesso', 'Classe di età', 'Seleziona periodo', 'Flag Codes', 'Flags'])
-
 # QUALITA VITA
-#rename_column("dataset/Qualita_vita.csv")
-#delete_column("dataset_clean/Qualita_vita.csv", ['NOME PROVINCIA (ISTAT)', 'CODICE PROVINCIA ISTAT (STORICO)', 'DENOMINAZIONE CORRENTE', 'FONTE ORIGINALE'])
+rename_column("dataset/Qualita_vita.csv")
+delete_column("dataset_clean/Qualita_vita.csv", ['CODICE PROVINCIA ISTAT (STORICO)', 'DENOMINAZIONE CORRENTE', 'FONTE ORIGINALE'])
 
 # DATA 2016
 #save_file("dataset/ind16_ascii/carcom16.csv")
@@ -25,11 +15,11 @@ from backup import Backup
 #                                              "univer", "apqual", "asnonoc", "NASCAREA", "nace", "nordp", "motent", "annoenus", "NASCREG", "ACOM5",
 #                                              "QUAL","ISCO","CLETA5", "studio", "Q", "SETT", "PESOFIT", "CFRED", "PERL", "NPERL", "NPERC", "AREA3", "ACOM4C"])
 #
-save_file("dataset/ind14_ascii/carcom14.csv")
-delete_column("dataset_clean/carcom14.csv", ["parent", "ETA", "cit", "isco", "aningr", "motiv", "tipolau", "VOTOEDU", "SUEDU", "selode", "annoedu", "tipodip",
-                                              "univer", "apqual", "asnonoc", "NASCAREA", "nace", "nordp", "motent", "annoenus", "NASCREG", "ACOM5",
-                                              "QUAL","ISCO","CLETA5", "studio", "Q", "SETT", "PESOFIT", "CFRED", "PERL", "NPERL", "NPERC", "AREA3", "ACOM4C"])
-#
+# save_file("dataset/ind14_ascii/carcom14.csv")
+# delete_column("dataset_clean/carcom14.csv", ["parent", "ETA", "cit", "isco", "aningr", "motiv", "tipolau", "VOTOEDU", "SUEDU", "selode", "annoedu", "tipodip",
+#                                               "univer", "apqual", "asnonoc", "NASCAREA", "nace", "nordp", "motent", "annoenus", "NASCREG", "ACOM5",
+#                                               "QUAL","ISCO","CLETA5", "studio", "Q", "SETT", "PESOFIT", "CFRED", "PERL", "NPERL", "NPERC", "AREA3", "ACOM4C"])
+# #
 #
 # save_file("dataset/ind14_ascii/rfam14.csv")
 # delete_column("dataset_clean/rfam14.csv", ['YL', 'YL1', 'YL2', 'YT', 'YTP', 'YTP1', 'YTP2', 'YTA','YTA1',
@@ -53,30 +43,12 @@ delete_column("dataset_clean/rper14.csv", ['YL1','YL2','YTP1','YTP2','YTA1','YTA
                                            'YL','YTP','YTA3','YTA','YT','YM','YCA1','YCA2','YCA','YCF1','YCF2','YCF3',
                                            'YCF4','YCF','YC','YMA1','YMA2'])
 
-
-#save_file("dataset/dataset_samples/isf_w2.csv")
-#delete_column("dataset_clean/isf_w2.csv", ["A06","A08","A11","A12","A13","A14","A15","A16_1","A16A_1","A16_2","A16A_2",
-#                                           "A16_3","A16A_3","A16A_4","A16A_5","A16A_6","A17","A18","A19","A20","A21","A22",
-#                                           "A24","A25","A26","A27","A29","A30","A31","A32","A33","A34","A35","A36","A37","A38",
-#                                           "A39","A41","A42","A43","A44_1","A44_2","A44_3","A44_4","A44_5","A45_1_1",
-#                                           "A45_2_1","A45_3_1","A45_4_1","A45_5_1","A45_1_2","A45_2_2","A45_3_2","A45_4_2",
-#                                           "A45_5_2","A45_1_3","A45_2_3","A45_3_3","A45_4_3","A45_5_3","A45_1_4","A45_2_4",
-#                                           "A45_3_4","A45_4_4","A45_5_4","PESO","pesopanel","TITOLO","A07"])
-
-#save_file("dataset/dataset_samples/isf_w3.csv")
-
-# DISOCCUPAZIONE
-#clean_rows("dataset_clean/Tasso_disoccupazione.csv")
-
-# OCCUPAZIONE
-#clean_rows("dataset_clean/Tasso_occupazione.csv")
-
 # QUALITA' DELLA VITA -> save indicators
-#save(sub_table("dataset_clean/Qualita_vita.csv", "INDEX"))
+save(sub_table("dataset_clean/Qualita_vita.csv", "INDEX"))
 
 # QUALITA' DELLA VITA -> clean rows
-#clean_rows("dataset_clean/Qualita_vita.csv")
-#clean_rows("dataset_clean/Qualita_vita.csv", ind=True)
+clean_rows("dataset_clean/Qualita_vita.csv")
+clean_rows("dataset_clean/Qualita_vita.csv", ind=True)
 
 # --------------------------------------------- DELETE INDECES NOT NEEDED --------------------------------------------
 # List of indicators that will be deleted due to their inconsistency with the project purpose
@@ -139,11 +111,11 @@ indicators = [lst_index["Eventi sportivi"][1],
               lst_index["Spid erogate"][1],
               lst_index["Pos attivi"][1]]
 
-#del_indicators("dataset_clean/Qualita_vita.csv", indicators)
+del_indicators("dataset_clean/Qualita_vita.csv", indicators)
 
 # --------------------------------------------- DELETE "UNITA' di MISURA" -----------------------------------------------
 # Delete the column of "unità di misura"
-#delete_column("dataset_clean\Qualita_vita.csv", ["UNITA' DI MISURA"])
+delete_column("dataset_clean\Qualita_vita.csv", ["UNITA' DI MISURA"])
 
 
 # --------------------------------------------- CONNECTION WITH MYSQL -------------------------------------------------
@@ -159,56 +131,49 @@ saver = MySQLManager(host="localhost",
 #saver.check_database("project_bdt")
 
 # Create table
-#saver.create_table(lst_tables("dataset_clean\Tasso_disoccupazione.csv"))
-#saver.create_table(lst_tables("dataset_clean\Qualita_vita.csv"))
-#saver.create_table(lst_tables("dataset_clean\Tasso_occupazione.csv"))
+saver.create_table(lst_tables("dataset_clean/Qualita_vita.csv"))
 #saver.create_table(lst_tables("dataset_clean/carcom16.csv"))
-#saver.create_table(lst_tables("dataset_clean\carcom14.csv"))
-#saver.create_table(lst_tables("dataset_clean/isf_w2.csv"))
-#saver.create_table(lst_tables("dataset_clean/isf_w3.csv"))
-saver.create_table(lst_tables("dataset_clean/rfam14.csv"))
-saver.create_table(lst_tables("dataset_clean/rfam16.csv"))
-saver.create_table(lst_tables("dataset_clean/rper16.csv"))
-saver.create_table(lst_tables("dataset_clean/rper14.csv"))
+#saver.create_table(lst_tables("dataset_clean/carcom14.csv"))
+# saver.create_table(lst_tables("dataset_clean/rfam14.csv"))
+# saver.create_table(lst_tables("dataset_clean/rfam16.csv"))
+# saver.create_table(lst_tables("dataset_clean/rper16.csv"))
+# saver.create_table(lst_tables("dataset_clean/rper14.csv"))
 
 #Load data
 
-#saver.save_SQL("dataset_clean\Tasso_disoccupazione.csv")
-#saver.save_SQL("dataset_clean\Qualita_vita.csv")
-#saver.save_SQL("dataset_clean\Tasso_occupazione.csv")
-#saver.save_SQL("dataset_clean\carcom16.csv")
-saver.save_SQL("dataset_clean/rper16.csv")
-saver.save_SQL("dataset_clean/rper14.csv")
-saver.save_SQL("dataset_clean/rfam16.csv")
+saver.save_SQL("dataset_clean/Qualita_vita.csv")
+#saver.save_SQL("dataset_clean/carcom16.csv")
+# saver.save_SQL("dataset_clean/rper16.csv")
+# saver.save_SQL("dataset_clean/rper14.csv")
+# saver.save_SQL("dataset_clean/rfam16.csv")
 #saver.save_SQL("dataset_clean/carcom14.csv")
-#saver.save_SQL("dataset_clean/isf_w2.csv")
-#saver.save_SQL("dataset_clean/isf_w3.csv")
-saver.save_SQL("dataset_clean/rfam14.csv")
+#saver.save_SQL("dataset_clean/rfam14.csv")
 
 # -------------------------------------------JOIN TABLES ------------------------------------------------
 
-saver.join_SQL(table_1= "carcom16", table_2="rfam16", table_name="data_2016_fam")
-saver.join_SQL(table_1= "carcom14", table_2="rfam14", table_name="data_2014_fam")
-saver.join_SQL(table_1= "carcom16", table_2="rper16", table_name="data_2016")
-saver.join_SQL(table_1= "carcom14", table_2="rper14", table_name="data_2014")
-
-
-
-saver.label_irpef(table_name="data_2016")
-saver.label_irpef(table_name="data_2014")
-saver.label_irpef(table_name="data_2016_fam")
-saver.label_irpef(table_name="data_2014_fam")
-
-
-# FINAL TABLE
-saver.union_SQL(table_name = "final", table_1="data_2016_fam", table_2="data_2014_fam")
-saver.union_SQL(table_name = "final_individual", table_1="data_2016", table_2="data_2014")
+# saver.join_SQL(table_1= "carcom16", table_2="rfam16", table_name="data_2016_fam")
+# saver.join_SQL(table_1= "carcom14", table_2="rfam14", table_name="data_2014_fam")
+# saver.join_SQL(table_1= "carcom16", table_2="rper16", table_name="data_2016")
+# saver.join_SQL(table_1= "carcom14", table_2="rper14", table_name="data_2014")
+#
+#
+#
+# saver.label_irpef(table_name="data_2016")
+# saver.label_irpef(table_name="data_2014")
+# saver.label_irpef(table_name="data_2016_fam")
+# saver.label_irpef(table_name="data_2014_fam")
+#
+#
+# # FINAL TABLE
+# saver.union_SQL(table_name = "final", table_1="data_2016_fam", table_2="data_2014_fam")
+# saver.union_SQL(table_name = "final_individual", table_1="data_2016", table_2="data_2014")
 
 #backup = Backup(saver, "C:/Users/lucia/Desktop") # set here your local path
 #backup.set_backup()
 
 number_regions("province-ita.json", province="Aosta")
 sex_parser("MASCHILE")
+
 
 
 
