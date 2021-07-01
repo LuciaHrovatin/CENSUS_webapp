@@ -31,6 +31,13 @@ services:
       options:
         max-size: 10m
         max-file: "3"
+
+  apache_spark:
+    image: httpd
+    container_name: "sparkServer"
+    ports:
+      - 8088:80
+
 #  redis:
 #    image: redis
 #    container_name: "redis"
