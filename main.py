@@ -2,6 +2,7 @@ from flask import Flask, render_template, url_for, flash, redirect, Markup, requ
 from forms import RegistrationForm, LoginForm, CensusData
 from collector import *
 from classifier import RandomForest
+from saver import MySQLManager
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
@@ -35,8 +36,10 @@ def home():
     stato_civile=request.args.get('stato_civile')
     if gender == "femminile":
         gender = 2
-    else:
+    elif gender == "maschile":
         gender = 1
+    else: 
+        gender = 0 
     
     if isinstance(age, str) == True:
         age = int(age)
@@ -52,10 +55,17 @@ def home():
         stato_civile = 5
     else:
         gender = 6
-
-
     
-    return render_template('home.html', form=form, age=age, gender=gender, place=place, componenti=componenti, stato_civile=stato_civile)
+    password = "Pr0tett0.98"
+    saver = MySQLManager(host="localhost",
+                       port=3306,
+                       user="root",
+                       password=password,
+                       database = "project_bdt")
+    
+    prob = RandomForest(saver, componenti, gender, age, stato_civile, number_regions("province-ita.json", province=place))
+    
+    return render_template('home.html', form=form, age=age, gender=gender, place=place, componenti=componenti, stato_civile=stato_civile, prob=prob)
 
 
 @app.route("/about")

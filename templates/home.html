@@ -92,8 +92,10 @@
             <td>{{ age }}</td>
             {% if gender == 2 %}
             <td>femminile</td>
-            {% else %}
+            {% elif gender == 1 %}
             <td>maschile</td>
+            {% else %}
+            <td>preferisco non specificare</td>
             {% endif %}
             <td>{{ place }}</td>
             <td>{{ componenti }}</td>
@@ -110,7 +112,7 @@
             {% else %}
             <td>divorziato/a</td>
             {% endif %}
-            <td><b>prob<b></td>
+            <td><b>{{ prob }}<b></td>
             </tr>
         </tbody>
         </table>
