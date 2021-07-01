@@ -6,37 +6,20 @@ services:
     container_name: "mysql-bdt"
     environment:
       MYSQL_ROOT_PASSWORD: "Pr0tett0.98"
-      MYSQL_USER: "user"
-      MYSQL_PASSWORD: "password"
-      MYSQL_DATABSE: "project_bdt"
     volumes:
       - ./data/mysql:/var/lib/mysql
     ports:
       - 3310:3306
 
-  percona:
-    image: percona
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: password
-
-  adminer:
-    image: adminer
-    restart: always
-    links:
-      - mysql
-      - percona
-    ports:
-      - "8081:8080"
-
   phpmyadmin:
     image: phpmyadmin
+    container_name: "myadmin"
     ports:
-      - "8080:80"
+      - 8080:80
     environment:
       - PMA_ARBITRARY=1
       - PMA_HOST=mysql
-      - PMA_PORT=8081
+      - PMA_PORT=3306
 
   postgres:
     image: postgres:9.6
@@ -48,6 +31,21 @@ services:
       options:
         max-size: 10m
         max-file: "3"
+#  redis:
+#    image: redis
+#    container_name: "redis"
+#    ports:
+#    - 6379:6379
+#    volumes:
+#      - ./data/redis:/var/lib/redis
+#    environment:
+#      - REDIS_REPLICATION_MODE=master
+#
+#  maven:
+#    image: maven
+#    container_name: "maven"
+
+
 
 #  webserver:
 #    build: ./dockerfiles

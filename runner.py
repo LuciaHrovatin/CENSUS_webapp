@@ -120,12 +120,11 @@ delete_column("dataset_clean\Qualita_vita.csv", ["UNITA' DI MISURA"])
 
 # --------------------------------------------- CONNECTION WITH MYSQL -------------------------------------------------
 #password = "luca0405" # change with your password
-password = "Pr0tett0.98"
-saver = MySQLManager(host="mysql",
-                      port=8081,
+saver = MySQLManager(host="localhost",
+                      port=3310,
                       user="root",
-                      password="password",
-                      database = "project_bdt")
+                      password="Pr0tett0.98",
+                      database="project-bdt")
 
 #saver.check_database("project_bdt")
 
