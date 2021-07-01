@@ -10,33 +10,33 @@ rename_column("dataset/Qualita_vita.csv")
 delete_column("dataset_clean/Qualita_vita.csv", ['CODICE PROVINCIA ISTAT (STORICO)', 'DENOMINAZIONE CORRENTE', 'FONTE ORIGINALE'])
 
 # DATA 2016
-#save_file("dataset/ind16_ascii/carcom16.csv")
-#delete_column("dataset_clean/carcom16.csv", ["parent", "ETA", "cit", "isco", "aningr", "motiv", "tipolau", "votoedu", "suedu", "selode", "annoedu", "tipodip",
-#                                              "univer", "apqual", "asnonoc", "NASCAREA", "nace", "nordp", "motent", "annoenus", "NASCREG", "ACOM5",
-#                                              "QUAL","ISCO","CLETA5", "studio", "Q", "SETT", "PESOFIT", "CFRED", "PERL", "NPERL", "NPERC", "AREA3", "ACOM4C"])
-#
-# save_file("dataset/ind14_ascii/carcom14.csv")
-# delete_column("dataset_clean/carcom14.csv", ["parent", "ETA", "cit", "isco", "aningr", "motiv", "tipolau", "VOTOEDU", "SUEDU", "selode", "annoedu", "tipodip",
-#                                               "univer", "apqual", "asnonoc", "NASCAREA", "nace", "nordp", "motent", "annoenus", "NASCREG", "ACOM5",
-#                                               "QUAL","ISCO","CLETA5", "studio", "Q", "SETT", "PESOFIT", "CFRED", "PERL", "NPERL", "NPERC", "AREA3", "ACOM4C"])
-# #
-#
-# save_file("dataset/ind14_ascii/rfam14.csv")
-# delete_column("dataset_clean/rfam14.csv", ['YL', 'YL1', 'YL2', 'YT', 'YTP', 'YTP1', 'YTP2', 'YTA','YTA1',
-#                                             'YTA2', 'YTA3', 'YTA31', 'YTA32', 'YM', 'YMA1', 'YMA2', 'YC',
-#                                             'YCA', 'YCA1', 'YCA2', 'YCF', 'YCF1', 'YCF2', 'YCF3', 'YCF4', 'CLY',
-#                                             'CLY2'])
+save_file("dataset/ind16_ascii/carcom16.csv")
+delete_column("dataset_clean/carcom16.csv", ["parent", "ETA", "cit", "isco", "aningr", "motiv", "tipolau", "votoedu", "suedu", "selode", "annoedu", "tipodip",
+                                             "univer", "apqual", "asnonoc", "NASCAREA", "nace", "nordp", "motent", "annoenus", "NASCREG", "ACOM5",
+                                             "QUAL","ISCO","CLETA5", "studio", "Q", "SETT", "PESOFIT", "CFRED", "PERL", "NPERL", "NPERC", "AREA3", "ACOM4C"])
 
-#save_file("dataset/ind16_ascii/rfam16.csv")
-# delete_column("dataset_clean/rfam16.csv", ['YL', 'YL1', 'YL2', 'YT', 'YTP', 'YTP1', 'YTP2', 'YTA','YTA1',
-#                                            'YTA2', 'YTA3', 'YTA31', 'YTA32', 'YM', 'YMA1', 'YMA2', 'YC',
-#                                            'YCA', 'YCA1', 'YCA2', 'YCF', 'YCF1', 'YCF2', 'YCF3', 'YCF4', 'CLY',
-#                                            'CLY2'])
+save_file("dataset/ind14_ascii/carcom14.csv")
+delete_column("dataset_clean/carcom14.csv", ["parent", "ETA", "cit", "isco", "aningr", "motiv", "tipolau", "VOTOEDU", "SUEDU", "selode", "annoedu", "tipodip",
+                                              "univer", "apqual", "asnonoc", "NASCAREA", "nace", "nordp", "motent", "annoenus", "NASCREG", "ACOM5",
+                                              "QUAL","ISCO","CLETA5", "studio", "Q", "SETT", "PESOFIT", "CFRED", "PERL", "NPERL", "NPERC", "AREA3", "ACOM4C"])
+#
 
-#save_file("dataset/ind16_ascii/rper16.csv")
-#delete_column("dataset_clean/rper16.csv", ['YL1','YL2','YTP1','YTP2','YTA1','YTA2','YTA31','YTA32',
-#                                           'YL','YTP','YTA3','YTA','YT','YM','YCA1','YCA2','YCA','YCF1','YCF2','YCF3',
-#                                           'YCF4','YCF','YC','YMA1','YMA2'])
+save_file("dataset/ind14_ascii/rfam14.csv")
+delete_column("dataset_clean/rfam14.csv", ['YL', 'YL1', 'YL2', 'YT', 'YTP', 'YTP1', 'YTP2', 'YTA','YTA1',
+                                            'YTA2', 'YTA3', 'YTA31', 'YTA32', 'YM', 'YMA1', 'YMA2', 'YC',
+                                            'YCA', 'YCA1', 'YCA2', 'YCF', 'YCF1', 'YCF2', 'YCF3', 'YCF4', 'CLY',
+                                            'CLY2'])
+
+save_file("dataset/ind16_ascii/rfam16.csv")
+delete_column("dataset_clean/rfam16.csv", ['YL', 'YL1', 'YL2', 'YT', 'YTP', 'YTP1', 'YTP2', 'YTA','YTA1',
+                                           'YTA2', 'YTA3', 'YTA31', 'YTA32', 'YM', 'YMA1', 'YMA2', 'YC',
+                                           'YCA', 'YCA1', 'YCA2', 'YCF', 'YCF1', 'YCF2', 'YCF3', 'YCF4', 'CLY',
+                                           'CLY2'])
+
+save_file("dataset/ind16_ascii/rper16.csv")
+delete_column("dataset_clean/rper16.csv", ['YL1','YL2','YTP1','YTP2','YTA1','YTA2','YTA31','YTA32',
+                                          'YL','YTP','YTA3','YTA','YT','YM','YCA1','YCA2','YCA','YCF1','YCF2','YCF3',
+                                          'YCF4','YCF','YC','YMA1','YMA2'])
 
 save_file("dataset/ind14_ascii/rper14.csv")
 delete_column("dataset_clean/rper14.csv", ['YL1','YL2','YTP1','YTP2','YTA1','YTA2','YTA31','YTA32',
@@ -121,9 +121,9 @@ delete_column("dataset_clean\Qualita_vita.csv", ["UNITA' DI MISURA"])
 # --------------------------------------------- CONNECTION WITH MYSQL -------------------------------------------------
 #password = "luca0405" # change with your password
 saver = MySQLManager(host="localhost",
-                      port=3310,
+                      port=3306,
                       user="root",
-                      password="Pr0tett0.98",
+                      password="luca0405",
                       database="project-bdt")
 
 #saver.check_database("project_bdt")
@@ -166,7 +166,7 @@ saver.label_irpef(table_name="data_2014_fam")
 saver.union_SQL(table_name = "final", table_1="data_2016_fam", table_2="data_2014_fam")
 saver.union_SQL(table_name = "final_individual", table_1="data_2016", table_2="data_2014")
 
-#backup = Backup(saver, "C:/Users/lucia/Desktop") # set here your local path
+#backup = Backup(saver, "C:/Users/elypa") # set here your local path
 #backup.set_backup()
 
 number_regions("province-ita.json", province="Aosta")

@@ -56,14 +56,15 @@ def home():
     else:
         gender = 6
     
-    password = "Pr0tett0.98"
+    password = "luca0405"
     saver = MySQLManager(host="localhost",
                        port=3306,
                        user="root",
                        password=password,
-                       database = "project_bdt")
+                       database = "project-bdt")
     
     prob = RandomForest(saver, componenti, gender, age, stato_civile, number_regions("province-ita.json", province=place))
+    print(prob)
     
     return render_template('home.html', form=form, age=age, gender=gender, place=place, componenti=componenti, stato_civile=stato_civile, prob=prob)
 
