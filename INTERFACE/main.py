@@ -86,4 +86,4 @@ def line():
     return render_template('line_chart.html', title='Bitcoin Monthly Price in USD', max=17000, labels=line_labels, values=line_values)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
