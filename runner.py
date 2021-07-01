@@ -44,7 +44,7 @@ delete_column("dataset_clean/rper14.csv", ['YL1','YL2','YTP1','YTP2','YTA1','YTA
                                            'YCF4','YCF','YC','YMA1','YMA2'])
 
 # QUALITA' DELLA VITA -> save indicators
-save(sub_table("dataset_clean/Qualita_vita.csv", "INDEX"))
+save(sub_table("dataset_clean/Qualita_vita.csv", "INDEXES"))
 
 # QUALITA' DELLA VITA -> clean rows
 clean_rows("dataset_clean/Qualita_vita.csv")
@@ -121,12 +121,11 @@ delete_column("dataset_clean\Qualita_vita.csv", ["UNITA' DI MISURA"])
 # --------------------------------------------- CONNECTION WITH MYSQL -------------------------------------------------
 #password = "luca0405" # change with your password
 password = "Pr0tett0.98"
-saver = MySQLManager(host="localhost",
-                      port=3306,
+saver = MySQLManager(host="mysql",
+                      port=8081,
                       user="root",
-                      password=password,
+                      password="password",
                       database = "project_bdt")
-
 
 #saver.check_database("project_bdt")
 

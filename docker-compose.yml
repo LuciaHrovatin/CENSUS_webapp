@@ -1,6 +1,42 @@
-version: '3.7'
+version: '3.1'
 
 services:
+  mysql:
+    image: mysql
+    container_name: "mysql-bdt"
+    environment:
+      MYSQL_ROOT_PASSWORD: "Pr0tett0.98"
+      MYSQL_USER: "user"
+      MYSQL_PASSWORD: "password"
+      MYSQL_DATABSE: "project_bdt"
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    ports:
+      - 3310:3306
+
+  percona:
+    image: percona
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+
+  adminer:
+    image: adminer
+    restart: always
+    links:
+      - mysql
+      - percona
+    ports:
+      - "8081:8080"
+
+  phpmyadmin:
+    image: phpmyadmin
+    ports:
+      - "8080:80"
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=mysql
+      - PMA_PORT=8081
 
   postgres:
     image: postgres:9.6
@@ -13,27 +49,28 @@ services:
         max-size: 10m
         max-file: "3"
 
-  webserver:
-    build: ./dockerfiles
-    restart: always
-    depends_on:
-      - postgres
-    environment:
-      - LOAD_EX=n
-      - EXECUTOR=Local
-    logging:
-      options:
-        max-size: 10m
-        max-file: "3"
-    volumes:
-      - ./dags:/usr/local/airflow/dags
-      # - ./plugins:/usr/local/airflow/plugins
-    ports:
-      - "8080:8080"
-    command: webserver
-    healthcheck:
-      test: ["CMD-SHELL", "[ -f /usr/local/airflow/airflow-webserver.pid ]"]
-      interval: 30s
-      timeout: 30s
-      retries: 3
+#  webserver:
+#    build: ./dockerfiles
+#    restart: always
+#    depends_on:
+#      - postgres
+#    environment:
+#      - LOAD_EX=n
+#      - EXECUTOR=Local
+#    logging:
+#      options:
+#        max-size: 10m
+#        max-file: "3"
+#    volumes:
+#      - ./dags:/usr/local/airflow/dags
+#      # - ./plugins:/usr/local/airflow/plugins
+#    ports:
+#      - "8080:8080"
+#    command: webserver
+#    healthcheck:
+#      test: ["CMD-SHELL", "[ -f /usr/local/airflow/airflow-webserver.pid ]"]
+#      interval: 30s
+#      timeout: 30s
+#      retries: 3
+
 

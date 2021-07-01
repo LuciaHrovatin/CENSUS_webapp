@@ -4,14 +4,13 @@ import mysql.connector
 from mysql.connector import errorcode, Error
 import pandas as pd
 
-
 class MySQLManager:
 
     def __init__(self, host: str, port: int, user: str, password: str, database: str) -> None:
         self.connection = mysql.connector.connect(
             host=host,
-            port=port,
             user=user,
+            port=port,
             password=password,
             database=database
         )

@@ -6,6 +6,12 @@ from typing import Optional, List
 import numpy as np
 import json
 
+def save_file(filename: str):
+    data = pd.read_csv(filename)
+    file_n = filename.split("/")[-1]
+    data.to_csv("dataset_clean/" + file_n, index=None)
+
+
 # -----------------------------------------RENAMING/ DELETING COLUMNS ----------------------------------
 
 def rename_column(filename: str):
