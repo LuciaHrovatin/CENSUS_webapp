@@ -43,6 +43,8 @@ def home():
     
     if isinstance(age, str) == True:
         age = int(age)
+    if isinstance(componenti, str) == True:
+        componenti = int(componenti)
     if stato_civile == "celibe/nubile":
         stato_civile = 1
     elif stato_civile == "convivente":
@@ -56,6 +58,8 @@ def home():
     else:
         gender = 6
     
+    region = number_regions("province-ita.json", province=place)
+
     password = "luca0405"
     saver = MySQLManager(host="localhost",
                        port=3306,
@@ -63,7 +67,8 @@ def home():
                        password=password,
                        database = "project-bdt")
     
-    prob = RandomForest(saver, componenti, gender, age, stato_civile, number_regions("province-ita.json", province=place))
+    prob = RandomForest(saver, componenti, gender, age, stato_civile, region)
+    print(region)
     print(prob)
     
     return render_template('home.html', form=form, age=age, gender=gender, place=place, componenti=componenti, stato_civile=stato_civile, prob=prob)

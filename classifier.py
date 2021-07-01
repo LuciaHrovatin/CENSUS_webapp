@@ -94,4 +94,4 @@ def RandomForest(saver: MySQLManager, ncomp : int, sex: int, age: int, statciv: 
         return print(clf.predict([[ncomp, age, statciv, place]]))
     return print(clf.predict([[ncomp, sex, age, statciv, place]])) # mean accuracy
 
-RandomForest(saver, 2, 1, 1973, 3, 4)
+RandomForest(saver, 2, 1, 1968, 3, 4)
