@@ -12,13 +12,13 @@ import datetime
 
 from saver import MySQLManager
 
-#password = "luca0405" # change with your password
+# password = "luca0405" # change with your password
 # password = "Pr0tett0.98"
 # saver = MySQLManager(host="localhost",
 #                        port=3306,
 #                        user="root",
 #                        password=password,
-#                        database = "project_bdt")
+#                        database = "project-bdt")
 
 
 #df = saver.execute_read_query(table_name="final")
