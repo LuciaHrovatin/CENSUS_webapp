@@ -32,21 +32,15 @@ services:
         max-size: 10m
         max-file: "3"
 
-  apache_spark:
-    image: httpd
-    container_name: "sparkServer"
+  redis:
+    image: redis
+    container_name: "redis"
     ports:
-      - 8088:80
-
-#  redis:
-#    image: redis
-#    container_name: "redis"
-#    ports:
-#    - 6379:6379
+    - 6379:6379
 #    volumes:
 #      - ./data/redis:/var/lib/redis
-#    environment:
-#      - REDIS_REPLICATION_MODE=master
+    environment:
+      - REDIS_REPLICATION_MODE=master
 #
 #  maven:
 #    image: maven

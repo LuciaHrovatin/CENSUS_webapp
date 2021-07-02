@@ -72,7 +72,7 @@ def RandomForest(saver: MySQLManager, ncomp : int, sex: int, age: int, statciv: 
     table = "final"
     # If a person is less than 18 years old, he/she will not have a REDDITO!  --> ritornare 1 o 0
     if (i.year - age) <= 18:
-        return 1.0
+        return 1
 
     # If statciv is 1, then the dataset containing the individual census data will be considered
     if statciv == 1:
@@ -87,7 +87,6 @@ def RandomForest(saver: MySQLManager, ncomp : int, sex: int, age: int, statciv: 
     else:
         X_train = df.drop([0, 1, 3, 8, 9, 10], axis=1)
     X_train = X_train.to_numpy()
-    print("Random Forests internal function: ")
     clf = RandomForestClassifier(max_depth=6, random_state=1, bootstrap=True)
     clf.fit(X_train, y_train)
     if not sex:
