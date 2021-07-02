@@ -211,7 +211,6 @@ def number_regions(filename: str, province: str) -> int:
     """
     with open(filename) as f:
         data = json.load(f)
-
         # region numbers come from the dataset
         regions_n = {
             "Piemonte": 1,
@@ -219,7 +218,7 @@ def number_regions(filename: str, province: str) -> int:
             "Lombardia": 3,
             "Trentino": 4,
             "Veneto": 5,
-            "Friuli" : 6,
+            "Friuli": 6,
             "Liguria": 7,
             "Emilia Romagna": 8,
             "Toscana": 9,
