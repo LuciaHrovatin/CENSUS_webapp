@@ -1,25 +1,25 @@
 version: '3.1'
 
 services:
-  mysql:
-    image: mysql
-    container_name: "mysql-bdt"
-    environment:
-      MYSQL_ROOT_PASSWORD: "Pr0tett0.98"
-    volumes:
-      - ./data/mysql:/var/lib/mysql
-    ports:
-      - 3310:3306
-
-  phpmyadmin:
-    image: phpmyadmin
-    container_name: "myadmin"
-    ports:
-      - 8080:80
-    environment:
-      - PMA_ARBITRARY=1
-      - PMA_HOST=mysql
-      - PMA_PORT=3306
+#  mysql:
+#    image: mysql
+#    container_name: "mysql-bdt"
+#    environment:
+#      MYSQL_ROOT_PASSWORD: "Pr0tett0.98"
+#    volumes:
+#      - ./data/mysql:/var/lib/mysql
+#    ports:
+#      - 3310:3306
+#
+#  phpmyadmin:
+#    image: phpmyadmin
+#    container_name: "myadmin"
+#    ports:
+#      - 8080:80
+#    environment:
+#      - PMA_ARBITRARY=1
+#      - PMA_HOST=mysql
+#      - PMA_PORT=3306
 
   postgres:
     image: postgres:9.6
@@ -33,19 +33,12 @@ services:
         max-file: "3"
 
   redis:
-    image: redis
+    image: shaynativ/redis-ml
     container_name: "redis"
     ports:
-    - 6379:6379
+      - 6379:6379
 #    volumes:
 #      - ./data/redis:/var/lib/redis
-    environment:
-      - REDIS_REPLICATION_MODE=master
-#
-#  maven:
-#    image: maven
-#    container_name: "maven"
-
 
 
 #  webserver:
