@@ -45,3 +45,18 @@ Stato civile del rispondente STACIV
 > Vedovo/vedova 4
 > Separato/separata 5
 > Divorziato/Divorziata 6
+
+
+
+# Per runnare DOCKER 
+nella cmd (con venv già attivata scrivere) 
+
+docker-compose up -d (dove -d sta per detached) 
+
+# per bloccare DOCKER 
+docker-compose stop 
+
+# per bloccarlo definitivamente 
+docker-compose down 
+
+# Solo dopo aver attivato docker runnare flask :) 

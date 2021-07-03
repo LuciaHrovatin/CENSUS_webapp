@@ -1,8 +1,7 @@
 from flask import Flask, render_template, url_for, flash, redirect, Markup, request 
 from forms import RegistrationForm, LoginForm, CensusData
-from collector import *
-from classifier import RandomForest
-from saver import MySQLManager
+from collector import number_regions
+from classifier import redis_classifier
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
@@ -34,42 +33,42 @@ def home():
     place=request.args.get('residenza2')
     componenti=request.args.get('componenti')
     stato_civile=request.args.get('stato_civile')
-    if gender == "femminile":
+
+    # mstandardize gender
+    if "femminile" == gender:
         gender = 2
-    elif gender == "maschile":
+    elif "maschile" == gender:
         gender = 1
     else: 
         gender = 0 
-    
-    if isinstance(age, str) == True:
+
+    # modify age
+    if isinstance(age, str):
         age = int(age)
-    if isinstance(componenti, str) == True:
+
+    # modify componenti
+    if isinstance(componenti, str):
         componenti = int(componenti)
-    if stato_civile == "celibe/nubile":
-        stato_civile = 1
-    elif stato_civile == "convivente":
-        stato_civile = 2
-    elif stato_civile == "sposato/a":
-        stato_civile = 3
-    elif stato_civile == "vedovo/a":
-        stato_civile = 4
-    elif stato_civile == "separato/a":
-        stato_civile = 5
-    else:
-        gender = 6
+
+    # standardize stato civile
+    if isinstance(stato_civile, str):
+        status = {
+            "celibe/nubile": 1,
+            "convivente": 2,
+            "sposato/a": 3,
+            "vedovo/a": 4,
+            "separato/a": 5
+        }
+        if stato_civile in status:
+            stato_civile = status[stato_civile]
+        else:
+            stato_civile = 6
 
     if place is None:
-         prob = 0
+        prob = 0
     else:
         region = number_regions("province-ita.json", province=place)
-        # password = "Pr0tett0.98"
-        password = "luca0405"
-        saver = MySQLManager(host="localhost",
-                             port=3306,
-                             user="root",
-                             password=password,
-                             database="project-bdt")
-        prob = RandomForest(saver, componenti, gender, age, stato_civile, region)
+        prob = redis_classifier(componenti, gender, age, stato_civile, region)
 
     return render_template('home.html', form=form, age=age, gender=gender, place=place, componenti=componenti, stato_civile=stato_civile, prob=prob)
 

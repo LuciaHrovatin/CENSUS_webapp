@@ -32,13 +32,15 @@ services:
         max-size: 10m
         max-file: "3"
 
-  redis:
+  redis-ml:
     image: shaynativ/redis-ml
-    container_name: "redis"
+    container_name: "redis-ml"
     ports:
       - 6379:6379
-#    volumes:
-#      - ./data/redis:/var/lib/redis
+
+
+
+
 
 
 #  webserver:
