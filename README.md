@@ -46,12 +46,13 @@ Stato civile del rispondente STACIV
 > Separato/separata 5
 > Divorziato/Divorziata 6
 
+!!!! PRIMA DI ATTIVARE FLASK !!!!
 
+1. Far partire docker 
 
 # Per runnare DOCKER 
-nella cmd (con venv già attivata scrivere) 
-
-docker-compose up -d (dove -d sta per detached) 
+nella cmd (con venv già attivata) scrivere:  docker-compose up -d 
+il -d sta per detached, è possibile farlo partire anche senza  
 
 # per bloccare DOCKER 
 docker-compose stop 
@@ -59,4 +60,6 @@ docker-compose stop
 # per bloccarlo definitivamente 
 docker-compose down 
 
-# Solo dopo aver attivato docker runnare flask :) 
+2. Nel file training-classifier seguire le istruzioni e runnare i 4 modelli (si salvaranno nella RAM) 
+
+3. Dopo aver fatto runnare tutti e 4 i modelli, attivare flask nel solito modo  
