@@ -170,7 +170,6 @@ saver.union_SQL(table_name = "final_individual", table_1="data_2016", table_2="d
 #backup.set_backup()
 
 number_regions("province-ita.json", province="Aosta")
-sex_parser("MASCHILE")
 
 
 
