@@ -1,25 +1,25 @@
 version: '3.1'
 
 services:
-  mysql:
-    image: mysql
-    container_name: "mysql-bdt"
-    environment:
-      MYSQL_ROOT_PASSWORD: "Pr0tett0.98"
-    volumes:
-      - ./data/mysql:/var/lib/mysql
-    ports:
-      - 3310:3306
-
-  phpmyadmin:
-    image: phpmyadmin
-    container_name: "myadmin"
-    ports:
-      - 8080:80
-    environment:
-      - PMA_ARBITRARY=1
-      - PMA_HOST=mysql
-      - PMA_PORT=3306
+#  mysql:
+#    image: mysql
+#    container_name: "mysql-bdt"
+#    environment:
+#      MYSQL_ROOT_PASSWORD: "Pr0tett0.98"
+#    volumes:
+#      - ./data/mysql:/var/lib/mysql
+#    ports:
+#      - 3310:3306
+#
+#  phpmyadmin:
+#    image: phpmyadmin
+#    container_name: "myadmin"
+#    ports:
+#      - 8080:80
+#    environment:
+#      - PMA_ARBITRARY=1
+#      - PMA_HOST=mysql
+#      - PMA_PORT=3306
 
   postgres:
     image: postgres:9.6
@@ -31,45 +31,50 @@ services:
       options:
         max-size: 10m
         max-file: "3"
-
-  redis:
-    image: redis
-    container_name: "redis"
     ports:
-    - 6379:6379
-#    volumes:
-#      - ./data/redis:/var/lib/redis
+      - 5432:5432
+
+  redis-ml:
+    image: shaynativ/redis-ml
+    container_name: "redis-ml"
+    ports:
+      - 6379:6379
+
+  webserver:
+    image: puckel/docker-airflow:1.10.1
+    container_name: "airflow"
+    build:
+      context: https://github.com/puckel/docker-airflow.git#1.10.1
+      dockerfile: Dockerfile
+      args:
+        AIRFLOW_DEPS: gcp_api,s3
+        PYTHON_DEPS: sqlalchemy==1.2.0
+    restart: always
+    depends_on:
+        - postgres
     environment:
-      - REDIS_REPLICATION_MODE=master
-#
-#  maven:
-#    image: maven
-#    container_name: "maven"
+        - LOAD_EX=n
+        - EXECUTOR=Local
+        - FERNET_KEY=jsDPRErfv8Z_eVTnGfF8ywd19j4pyqE3NpdUBA_oRTo=
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+    volumes:
+      - ./data/airflow:/usr/local/airflow/dags
+      - ./data/airflow:/usr/local/airflow/plugins
+      - ./data/airflow:/usr/local/airflow/logs
+    ports:
+      - 8081:8080
+    command: webserver
+    healthcheck:
+      test: ["CMD-SHELL", "[ -f /usr/local/airflow/airflow-webserver.pid ]"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
 
-
-
-#  webserver:
-#    build: ./dockerfiles
-#    restart: always
-#    depends_on:
-#      - postgres
-#    environment:
-#      - LOAD_EX=n
-#      - EXECUTOR=Local
-#    logging:
-#      options:
-#        max-size: 10m
-#        max-file: "3"
-#    volumes:
-#      - ./dags:/usr/local/airflow/dags
-#      # - ./plugins:/usr/local/airflow/plugins
-#    ports:
-#      - "8080:8080"
-#    command: webserver
-#    healthcheck:
-#      test: ["CMD-SHELL", "[ -f /usr/local/airflow/airflow-webserver.pid ]"]
-#      interval: 30s
-#      timeout: 30s
-#      retries: 3
-
-
+  rabbitmq:
+    image: rabbitmq
+    container_name: "rabbitmq"
+    ports:
+      - 5672:5672

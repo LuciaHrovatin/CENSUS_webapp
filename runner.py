@@ -11,12 +11,12 @@ delete_column("dataset_clean/Qualita_vita.csv", ['CODICE PROVINCIA ISTAT (STORIC
 
 # DATA 2016
 save_file("dataset/ind16_ascii/carcom16.csv")
-delete_column("dataset_clean/carcom16.csv", ["parent", "ETA", "cit", "isco", "aningr", "motiv", "tipolau", "votoedu", "suedu", "selode", "annoedu", "tipodip",
+delete_column("dataset_clean/carcom16.csv", ["perc", "parent", "ETA", "cit", "isco", "aningr", "motiv", "tipolau", "votoedu", "suedu", "selode", "annoedu", "tipodip",
                                              "univer", "apqual", "asnonoc", "NASCAREA", "nace", "nordp", "motent", "annoenus", "NASCREG", "ACOM5",
-                                             "QUAL","ISCO","CLETA5", "studio", "Q", "SETT", "PESOFIT", "CFRED", "PERL", "NPERL", "NPERC", "AREA3", "ACOM4C"])
+                                             "QUAL","ISCO","CLETA5", "AREA5", "studio", "Q", "SETT", "PESOFIT", "CFRED", "PERL", "NPERL", "NPERC", "AREA3", "ACOM4C"])
 
 save_file("dataset/ind14_ascii/carcom14.csv")
-delete_column("dataset_clean/carcom14.csv", ["parent", "ETA", "cit", "isco", "aningr", "motiv", "tipolau", "VOTOEDU", "SUEDU", "selode", "annoedu", "tipodip",
+delete_column("dataset_clean/carcom14.csv", ["perc", "AREA5", "parent", "ETA", "cit", "isco", "aningr", "motiv", "tipolau", "VOTOEDU", "SUEDU", "selode", "annoedu", "tipodip",
                                               "univer", "apqual", "asnonoc", "NASCAREA", "nace", "nordp", "motent", "annoenus", "NASCREG", "ACOM5",
                                               "QUAL","ISCO","CLETA5", "studio", "Q", "SETT", "PESOFIT", "CFRED", "PERL", "NPERL", "NPERC", "AREA3", "ACOM4C"])
 #
@@ -170,7 +170,6 @@ saver.union_SQL(table_name = "final_individual", table_1="data_2016", table_2="d
 #backup.set_backup()
 
 number_regions("province-ita.json", province="Aosta")
-sex_parser("MASCHILE")
 
 
 
