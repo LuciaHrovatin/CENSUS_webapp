@@ -7,54 +7,48 @@ from backup import Backup
 
 # QUALITA VITA
 rename_column("dataset/Qualita_vita.csv")
-delete_column("dataset_clean/Qualita_vita.csv", ['CODICE PROVINCIA ISTAT (STORICO)', 'DENOMINAZIONE CORRENTE', 'FONTE ORIGINALE'])
+delete_column("dataset/Qualita_vita.csv", ['CODICE PROVINCIA ISTAT (STORICO)', 'DENOMINAZIONE CORRENTE', 'FONTE ORIGINALE'])
 
-# DATA 2016
-save_file("dataset/carcom16.csv")
-delete_column("dataset_clean/carcom16.csv", ["perc", "parent", "ETA", "cit", "isco", "aningr", "motiv", "tipolau", "votoedu", "suedu", "selode", "annoedu", "tipodip",
+# DATA 2016 e 2014 hanno le stesse colonne !!
+delete_column("dataset/carcom16.csv", ["perc", "parent", "ETA", "cit", "isco", "aningr", "motiv", "tipolau", "votoedu", "suedu", "selode", "annoedu", "tipodip",
                                              "univer", "apqual", "asnonoc", "NASCAREA", "nace", "nordp", "motent", "annoenus", "NASCREG", "ACOM5",
                                              "QUAL","ISCO","CLETA5", "AREA5", "studio", "Q", "SETT", "PESOFIT", "CFRED", "PERL", "NPERL", "NPERC", "AREA3", "ACOM4C"])
 
-save_file("dataset/carcom14.csv")
-delete_column("dataset_clean/carcom14.csv", ["perc", "AREA5", "parent", "ETA", "cit", "isco", "aningr", "motiv", "tipolau", "VOTOEDU", "SUEDU", "selode", "annoedu", "tipodip",
+delete_column("dataset/carcom14.csv", ["perc", "AREA5", "parent", "ETA", "cit", "isco", "aningr", "motiv", "tipolau", "VOTOEDU", "SUEDU", "selode", "annoedu", "tipodip",
                                               "univer", "apqual", "asnonoc", "NASCAREA", "nace", "nordp", "motent", "annoenus", "NASCREG", "ACOM5",
                                               "QUAL","ISCO","CLETA5", "studio", "Q", "SETT", "PESOFIT", "CFRED", "PERL", "NPERL", "NPERC", "AREA3", "ACOM4C"])
-#
 
-save_file("dataset/rfam14.csv")
-delete_column("dataset_clean/rfam14.csv", ['YL', 'YL1', 'YL2', 'YT', 'YTP', 'YTP1', 'YTP2', 'YTA','YTA1',
+# Stessa cosa vale per rfam14 e 16
+delete_column("dataset/rfam14.csv", ['YL', 'YL1', 'YL2', 'YT', 'YTP', 'YTP1', 'YTP2', 'YTA','YTA1',
                                             'YTA2', 'YTA3', 'YTA31', 'YTA32', 'YM', 'YMA1', 'YMA2', 'YC',
                                             'YCA', 'YCA1', 'YCA2', 'YCF', 'YCF1', 'YCF2', 'YCF3', 'YCF4', 'CLY',
                                             'CLY2'])
 
-save_file("dataset/rfam16.csv")
-delete_column("dataset_clean/rfam16.csv", ['YL', 'YL1', 'YL2', 'YT', 'YTP', 'YTP1', 'YTP2', 'YTA','YTA1',
+delete_column("dataset/rfam16.csv", ['YL', 'YL1', 'YL2', 'YT', 'YTP', 'YTP1', 'YTP2', 'YTA','YTA1',
                                            'YTA2', 'YTA3', 'YTA31', 'YTA32', 'YM', 'YMA1', 'YMA2', 'YC',
                                            'YCA', 'YCA1', 'YCA2', 'YCF', 'YCF1', 'YCF2', 'YCF3', 'YCF4', 'CLY',
                                            'CLY2'])
-
-save_file("dataset/rper16.csv")
-delete_column("dataset_clean/rper16.csv", ['YL1','YL2','YTP1','YTP2','YTA1','YTA2','YTA31','YTA32',
+# Stessa cosa vale per rper14 e 16
+delete_column("dataset/rper16.csv", ['YL1','YL2','YTP1','YTP2','YTA1','YTA2','YTA31','YTA32',
                                           'YL','YTP','YTA3','YTA','YT','YM','YCA1','YCA2','YCA','YCF1','YCF2','YCF3',
                                           'YCF4','YCF','YC','YMA1','YMA2'])
 
-save_file("dataset/rper14.csv")
-delete_column("dataset_clean/rper14.csv", ['YL1','YL2','YTP1','YTP2','YTA1','YTA2','YTA31','YTA32',
+delete_column("dataset/rper14.csv", ['YL1','YL2','YTP1','YTP2','YTA1','YTA2','YTA31','YTA32',
                                            'YL','YTP','YTA3','YTA','YT','YM','YCA1','YCA2','YCA','YCF1','YCF2','YCF3',
                                            'YCF4','YCF','YC','YMA1','YMA2'])
 
 # QUALITA' DELLA VITA -> save indicators
-save(sub_table("dataset_clean/Qualita_vita.csv", "INDEXES"))
+save(sub_table("dataset/Qualita_vita.csv", "INDEXES"))
 
 # QUALITA' DELLA VITA -> clean rows
-clean_rows("dataset_clean/Qualita_vita.csv")
-clean_rows("dataset_clean/Qualita_vita.csv", ind=True)
+clean_rows("dataset/Qualita_vita.csv")
+clean_rows("dataset/Qualita_vita.csv", ind=True)
 
 # --------------------------------------------- DELETE INDECES NOT NEEDED --------------------------------------------
 # List of indicators that will be deleted due to their inconsistency with the project purpose
 
 
-lst_index = list_arg("dataset_clean/indicators.json")
+lst_index = list_arg("dataset/indicators.json")
 indicators = [lst_index["Eventi sportivi"][1],
               lst_index["Indice di lettura dei quotidiani"][1],
               lst_index["Spettacoli - Spesa al botteghino"][1],
@@ -111,11 +105,11 @@ indicators = [lst_index["Eventi sportivi"][1],
               lst_index["Spid erogate"][1],
               lst_index["Pos attivi"][1]]
 
-del_indicators("dataset_clean/Qualita_vita.csv", indicators)
+del_indicators("dataset/Qualita_vita.csv", indicators)
 
 # --------------------------------------------- DELETE "UNITA' di MISURA" -----------------------------------------------
 # Delete the column of "unità di misura"
-delete_column("dataset_clean\Qualita_vita.csv", ["UNITA' DI MISURA"])
+delete_column("dataset\Qualita_vita.csv", ["UNITA' DI MISURA"])
 
 
 # --------------------------------------------- CONNECTION WITH MYSQL -------------------------------------------------
@@ -129,23 +123,23 @@ delete_column("dataset_clean\Qualita_vita.csv", ["UNITA' DI MISURA"])
 # #saver.check_database("project_bdt")
 #
 # # Create table
-# saver.create_table(lst_tables("dataset_clean/Qualita_vita.csv"))
-# saver.create_table(lst_tables("dataset_clean/carcom16.csv"))
-# saver.create_table(lst_tables("dataset_clean/carcom14.csv"))
-# saver.create_table(lst_tables("dataset_clean/rfam14.csv"))
-# saver.create_table(lst_tables("dataset_clean/rfam16.csv"))
-# saver.create_table(lst_tables("dataset_clean/rper16.csv"))
-# saver.create_table(lst_tables("dataset_clean/rper14.csv"))
+# saver.create_table(lst_tables("dataset/Qualita_vita.csv"))
+# saver.create_table(lst_tables("dataset/carcom16.csv"))
+# saver.create_table(lst_tables("dataset/carcom14.csv"))
+# saver.create_table(lst_tables("dataset/rfam14.csv"))
+# saver.create_table(lst_tables("dataset/rfam16.csv"))
+# saver.create_table(lst_tables("dataset/rper16.csv"))
+# saver.create_table(lst_tables("dataset/rper14.csv"))
 #
 # #Load data
 #
-# saver.save_SQL("dataset_clean/Qualita_vita.csv")
-# saver.save_SQL("dataset_clean/carcom16.csv")
-# saver.save_SQL("dataset_clean/rper16.csv")
-# saver.save_SQL("dataset_clean/rper14.csv")
-# saver.save_SQL("dataset_clean/rfam16.csv")
-# saver.save_SQL("dataset_clean/carcom14.csv")
-# saver.save_SQL("dataset_clean/rfam14.csv")
+# saver.save_SQL("dataset/Qualita_vita.csv")
+# saver.save_SQL("dataset/carcom16.csv")
+# saver.save_SQL("dataset/rper16.csv")
+# saver.save_SQL("dataset/rper14.csv")
+# saver.save_SQL("dataset/rfam16.csv")
+# saver.save_SQL("dataset/carcom14.csv")
+# saver.save_SQL("dataset/rfam14.csv")
 #
 # # -------------------------------------------JOIN TABLES ------------------------------------------------
 #

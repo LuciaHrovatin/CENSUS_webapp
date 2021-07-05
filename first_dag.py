@@ -1,14 +1,13 @@
-
 from airflow import DAG
 from airflow.operators.bash_operator import BashOperator
 from datetime import timedelta
 from airflow.utils.dates import days_ago
 from textwrap import dedent
-from collector import * 
+from collector import *
 
 default_args = {
     'owner': 'airflow',
-    'depends_on_past':True,
+    'depends_on_past': True,
     'email_on_failure': ['luciahrovatin@gmail.com'],
     'email_on_retry': ['luciahrovatin@gmail.com'],
     'retries': 1,
@@ -18,44 +17,61 @@ default_args = {
 }
 
 with DAG(
-    'bdt_project_2021',
-    default_args=default_args,
-    description='ETL part of BDT project',
-    schedule_interval='@once',
+        'bdt_project_2021',
+        default_args=default_args,
+        description='ETL part of BDT project',
+        schedule_interval='@once',
 ) as dag:
-
-
-
     # t1, t2 and t3 are examples of tasks created by instantiating operators
     # [START basic_task]
 
     t1 = BashOperator(
-        task_id='initialise',
-        bash_command=rename_column("dataset/Qualita_vita.csv"),
-        dag = dag
+        task_id='start',
+        bash_command=print("start downloading files"),
+        dag=dag
     )
 
     t2 = BashOperator(
-        task_id='delete',
-        bash_command=delete_column("dataset_clean/Qualita_vita.csv", ['CODICE PROVINCIA ISTAT (STORICO)', 'DENOMINAZIONE CORRENTE', 'FONTE ORIGINALE']),
+        task_id='file1',
+        bash_command=download_file(
+            url="https://www.bancaditalia.it/statistiche/tematiche/indagini-famiglie-imprese/bilanci-famiglie/distribuzione-microdati/documenti/ind16_ascii.zip",
+            target_path="bancaditalia_dataset_16.zip",
+            file_to_keep=["carcom16.csv", "rfam16.csv", "rper16.csv"]),
         dag=dag
     )
-    # [END basic_task]
 
     t3 = BashOperator(
-         task_id='print',
-         bash_command=print("DONE"),
-        dag= dag
-     )
+        task_id='file2',
+        bash_command=download_file(
+            url="https://www.bancaditalia.it/statistiche/tematiche/indagini-famiglie-imprese/bilanci-famiglie/distribuzione-microdati/documenti/ind14_ascii.zip",
+            target_path="bancaditalia_dataset_14.zip",
+            file_to_keep=["carcom14.csv", "rfam14.csv", "rper14.csv"],
+            multistep=True),
+        dag=dag
+    )
+
+    t4 = BashOperator(
+        task_id='file3',
+        bash_command=download_file(url="https://github.com/IlSole24ORE/QDV/raw/main/20201214_QDV2020_001.csv",
+                                   target_path="dataset/Qualita_vita.csv"),
+        dag=dag
+    )
+
+    t5 = BashOperator(
+        task_id='end',
+        bash_command=print("end downloading files"),
+        dag=dag
+    )
+
 
     # bin shift operator
-    t1 >> t2 >> t3
+    t1 >> [t2, t3, t4] >> t5
 
     # t2 will depend on t1
-    #t1.set_downstream(t2)
+    # t1.set_downstream(t2)
 
- #t3 will depend on t1
- #t3.set_upstream(t1)
+# t3 will depend on t1
+# t3.set_upstream(t1)
 
-    # tasks in parallel:
-    #t1.set_downstream([t2, t3])
+# tasks in parallel:
+# t1.set_downstream([t2, t3])

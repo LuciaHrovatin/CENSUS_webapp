@@ -1,15 +1,50 @@
 from __future__ import absolute_import, annotations
-
+import requests
+from zipfile import ZipFile
+import os
+import shutil
+from typing import Optional, List
 import uuid
 import pandas as pd
-from typing import Optional, List
 import numpy as np
 import json
 
-def save_file(filename: str):
-    data = pd.read_csv(filename)
-    file_n = filename.split("/")[-1]
-    data.to_csv("dataset_clean/" + file_n, index=None)
+
+def download_file(url: str, target_path: str, file_to_keep: Optional[list] = None, multistep: Optional[bool] = False):
+    """
+    Using a url and setting a target_path, the function downloads the required files saving
+    them locally into the folder "dataset".
+    :param str url: link to the repository online
+    :param str target_path: directory in which files will be saved
+    :param list file_to_keep: list containing only the files to keep
+    :param bool multistep: by default it is set to False, but if switched to True performs a two-step file extraction
+    """
+    response = requests.get(url, stream=True)
+    handle = open(target_path, "wb")
+    for chunk in response.iter_content(chunk_size=512):
+        if chunk:
+            handle.write(chunk)
+    handle.close()
+
+    if not file_to_keep is None:
+        if multistep:
+            with ZipFile(target_path, 'r') as zipObj:
+                # Extract all the contents of zip file in current directory
+                zipObj.extractall(path='./dataset')
+
+            for i in file_to_keep:
+                shutil.move("dataset/CSV/" + i, "dataset")
+
+            if os.path.exists('dataset/CSV'):
+                shutil.rmtree('dataset/CSV')
+        else:
+            with ZipFile(target_path, 'r') as zipObj:
+                # Extract all the contents of zip file in current directory
+                # zipObj.extractall(path='./dataset')
+                for i in file_to_keep:
+                    zipObj.extract(i, path='./dataset')
+        os.remove(target_path)
+
 
 
 # -----------------------------------------RENAMING/ DELETING COLUMNS ----------------------------------
@@ -22,13 +57,13 @@ def rename_column(filename: str):
     :return file: a new dataset with columns' names standardized
     """
     data = pd.read_csv(filename)
-    file_n = filename[filename.find("/")+1:]  # extract the name
+    file_n = filename[filename.find("/") + 1:]  # extract the name
     if file_n == "Qualita_vita.csv":
         renamed_data = data.rename(columns={'CODICE NUTS 3 2021': 'NUTS3',
                                             'RIFERIMENTO TEMPORALE': 'TIME',
                                             'INDICATORE': 'INDEXES',
                                             'NOME PROVINCIA (ISTAT)': 'PROVINCE'})
-    renamed_data.to_csv("dataset_clean/" + file_n, index=None)
+    renamed_data.to_csv("dataset/" + file_n, index=None)
 
 
 def delete_column(filename: str, cols_to_remove: list):
@@ -64,14 +99,15 @@ def clean_rows(filename: str, ind: Optional[bool] = False):
     """
     The function cleans the dataset from the rows which contains special cases.
     It also updates the value of certain rows
-    :param filename: name of the file
+    :param str filename: name of the file
+    :param ind:
     :return: the file updated
     """
     data = pd.read_csv(filename)
     count = 0
     row_lst = []
     target = "INDEXES"
-    indicators_lst = list_arg("dataset_clean/indicators.json")
+    indicators_lst = list_arg("dataset/indicators.json")
     if not ind:
         target = "TIME"
     for row in data[target]:
@@ -131,7 +167,7 @@ def save(table: dict):
     :param dict table: dictionary having indicators as keys and description of indicators as values
     :return: json file
     """
-    with open("dataset_clean/indicators.json", "w") as f:
+    with open("dataset/indicators.json", "w") as f:
         json.dump(
             table,
             f,
@@ -201,7 +237,6 @@ def lst_tables(filename: str) -> tuple:
     return name, data_set
 
 
-
 def number_regions(filename: str, province: str) -> int:
     """
     Takes the province and returns the integer according to the data encoded in the dataset.
@@ -239,10 +274,3 @@ def number_regions(filename: str, province: str) -> int:
                 if province in prov["nome"]:
                     region = region.split("-")[0]
                     return regions_n[region]
-
-
-
-
-
-
-

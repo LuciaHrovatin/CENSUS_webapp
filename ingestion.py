@@ -4,33 +4,7 @@ import os
 import shutil
 from typing import Optional, List
 
-
-def download_files(url: str, target_path: str, file_to_keep: list, multistep: Optional[bool] = False):
-    response = requests.get(url, stream=True)
-    handle = open(target_path, "wb")
-    for chunk in response.iter_content(chunk_size=512):
-        if chunk:
-            handle.write(chunk)
-    handle.close()
-
-    if not ("qualità" in target_path.lower()):
-        if multistep:
-            with ZipFile(target_path, 'r') as zipObj:
-                # Extract all the contents of zip file in current directory
-                zipObj.extractall(path='./dataset')
-
-            for i in file_to_keep:
-                shutil.move("dataset/CSV/" + i, "dataset")
-
-            if os.path.exists('dataset/CSV'):
-                shutil.rmtree('dataset/CSV')
-        else:
-            with ZipFile(target_path, 'r') as zipObj:
-                # Extract all the contents of zip file in current directory
-                # zipObj.extractall(path='./dataset')
-                for i in file_to_keep:
-                    zipObj.extract(i, path='./dataset')
-        os.remove(target_path)
+## HO SPOSTATO LA FUNZIONE GENERALE IN COLLECTOR!!!
 
 # Automated download zip file from Banca d'Italia
 # url14 = "https://www.bancaditalia.it/statistiche/tematiche/indagini-famiglie-imprese/bilanci-famiglie/distribuzione-microdati/documenti/ind14_ascii.zip"
