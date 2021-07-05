@@ -1,28 +1,29 @@
 version: '3.1'
 
 services:
-#  mysql:
-#    image: mysql
-#    container_name: "mysql-bdt"
-#    environment:
-#      MYSQL_ROOT_PASSWORD: "Pr0tett0.98"
-#    volumes:
-#      - ./data/mysql:/var/lib/mysql
-#    ports:
-#      - 3310:3306
-#
-#  phpmyadmin:
-#    image: phpmyadmin
-#    container_name: "myadmin"
-#    ports:
-#      - 8080:80
-#    environment:
-#      - PMA_ARBITRARY=1
-#      - PMA_HOST=mysql
-#      - PMA_PORT=3306
+  mysql:
+    image: mysql
+    container_name: "mysql"
+    environment:
+      MYSQL_ROOT_PASSWORD: "Pr0tett0.98"
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    ports:
+      - 3310:3306
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: "myadmin"
+    ports:
+      - 8080:80
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=mysql
+      - PMA_PORT=3306
 
   postgres:
     image: postgres:9.6
+    container_name: "postgres"
     environment:
       - POSTGRES_USER=airflow
       - POSTGRES_PASSWORD=airflow
@@ -47,8 +48,8 @@ services:
       context: https://github.com/puckel/docker-airflow.git#1.10.1
       dockerfile: Dockerfile
       args:
-        AIRFLOW_DEPS: gcp_api,s3
-        PYTHON_DEPS: sqlalchemy==1.2.0
+        - AIRFLOW_DEPS:gcp_api,s3
+        - PYTHON_DEPS:sqlalchemy==1.2.0
     restart: always
     depends_on:
         - postgres
@@ -73,8 +74,3 @@ services:
       timeout: 30s
       retries: 3
 
-  rabbitmq:
-    image: rabbitmq
-    container_name: "rabbitmq"
-    ports:
-      - 5672:5672
