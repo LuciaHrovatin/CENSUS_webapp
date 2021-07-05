@@ -2,7 +2,6 @@ from airflow import DAG
 from airflow.operators.bash_operator import BashOperator
 from datetime import timedelta
 from airflow.utils.dates import days_ago
-from textwrap import dedent
 from collector import *
 
 default_args = {
@@ -62,8 +61,35 @@ t5 = BashOperator(
     dag=dag
 )
 
+t6 = BashOperator(
+    task_id='rename_column',
+    bash_command=rename_column("dataset/Qualita_vita.csv"),
+    dag=dag
+)
+
+t7 = BashOperator(
+    task_id='del_col1',
+    bash_command=delete_column("dataset/Qualita_vita.csv", ['CODICE PROVINCIA ISTAT (STORICO)', 'DENOMINAZIONE CORRENTE', 'FONTE ORIGINALE']),
+    dag=dag
+)
+
+t8 = BashOperator(
+    task_id='del_col2',
+    bash_command=delete_column("dataset/carcom16.csv", ["PERC", "parent", "ETA", "cit", "isco", "aningr", "motiv", "tipolau", "votoedu", "suedu", "selode", "annoedu", "tipodip",
+                                             "univer", "apqual", "asnonoc", "NASCAREA", "nace", "nordp", "motent", "annoenus", "NASCREG", "ACOM5",
+                                             "QUAL","ISCO","CLETA5", "AREA5", "studio", "Q", "SETT", "PESOFIT", "CFRED", "PERL", "NPERL", "NPERC", "AREA3", "ACOM4C"]),
+    dag=dag
+)
+
+t9 = BashOperator(
+    task_id='fine',
+    bash_command=print("ho finito!"),
+    dag=dag
+)
+
+
 # bin shift operator
-t1 >> [t2, t3, t4] >> t5
+t1 >> [t2, t3, t4] >> t5 >> t6 >> [t7, t8]
 
 # t2 will depend on t1
 # t1.set_downstream(t2)
@@ -72,4 +98,5 @@ t1 >> [t2, t3, t4] >> t5
 # t3.set_upstream(t1)
 
 # tasks in parallel:
-# t1.set_downstream([t2, t3])
+# t1.set_downstream([t2, t3, t4]) # data collection
+# t3.set

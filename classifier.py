@@ -1,5 +1,4 @@
 import datetime
-
 import numpy as np
 import redis
 from training_classifier import feature_names

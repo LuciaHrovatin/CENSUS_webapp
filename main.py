@@ -67,7 +67,7 @@ def home():
     if place is None:
         prob = 0
     else:
-        region = number_regions("province-ita.json", province=place)
+        region = number_regions("dataset/province-ita.json", province=place)
         prob = redis_classifier(componenti, gender, age, stato_civile, region)
 
     return render_template('home.html', form=form, age=age, gender=gender, place=place, componenti=componenti, stato_civile=stato_civile, prob=prob)

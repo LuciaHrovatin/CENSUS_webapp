@@ -46,7 +46,6 @@ def download_file(url: str, target_path: str, file_to_keep: Optional[list] = Non
         os.remove(target_path)
 
 
-
 # -----------------------------------------RENAMING/ DELETING COLUMNS ----------------------------------
 
 def rename_column(filename: str):
@@ -129,7 +128,8 @@ def clean_rows(filename: str, ind: Optional[bool] = False):
 def sub_table(filename: str, col_name: str):
     """
     The function saves each indicator with the corresponding measure and a randomly generated index
-    :param filename: name of the file
+    :param str col_name: name of the involved column
+    :param str filename: name of the file
     :return: a dictionary having as keys the indicators and as values a list with measure and unique index
     """
     data = pd.read_csv(filename)
