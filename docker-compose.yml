@@ -32,8 +32,6 @@ services:
       options:
         max-size: 10m
         max-file: "3"
-    ports:
-      - 5432:5432
 
   redis-ml:
     image: shaynativ/redis-ml
@@ -56,13 +54,12 @@ services:
     environment:
         - LOAD_EX=n
         - EXECUTOR=Local
-        - FERNET_KEY=jsDPRErfv8Z_eVTnGfF8ywd19j4pyqE3NpdUBA_oRTo=
     logging:
       options:
         max-size: 10m
         max-file: "3"
     volumes:
-      - ./data/airflow:/usr/local/airflow/dags
+      - ./dags:/usr/local/airflow/dags
       - ./data/airflow:/usr/local/airflow/plugins
       - ./data/airflow:/usr/local/airflow/logs
     ports:
