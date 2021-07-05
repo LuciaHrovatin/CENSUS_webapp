@@ -43,4 +43,14 @@ with ZipFile('bancaditalia_dataset_16.zip', 'r') as zipObj:
    # zipObj.extractall(path='./dataset')
    for i in file_to_keep16:
        zipObj.extract(i, path='./dataset')
+       
+# Automated download file from GitHub
+url16 = "https://github.com/IlSole24ORE/QDV/raw/main/20201214_QDV2020_001.csv"
+target_path = "dataset/Qualita_vita.csv"
+response = requests.get(url16, stream=True)
+handle = open(target_path, "wb")
+for chunk in response.iter_content(chunk_size=512):
+    if chunk:  # filter out keep-alive new chunks
+        handle.write(chunk)
+handle.close()
 
