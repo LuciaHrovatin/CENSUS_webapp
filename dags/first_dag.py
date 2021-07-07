@@ -10,14 +10,12 @@ default_args = {
     'retries': 1,
     'retry_delay': timedelta(minutes=1),
     "start_date": days_ago(1),
-    'queue': 'bash_queue'
-
 }
 
 dag = DAG('bdt_2021',
           default_args=default_args,
           description='ETL part of BDT project',
-          schedule_interval='@once'
+          schedule_interval=None
           )
 
 t1 = BashOperator(
@@ -86,7 +84,7 @@ t9 = BashOperator(
 
 
 # bin shift operator
-t1 >> [t2, t3, t4] >> t5 >> t6 >> [t7, t8]
+#t1 >> [t2, t3, t4] >> t5 >> t6 >> [t7, t8]
 
 # t2 will depend on t1
 # t1.set_downstream(t2)
@@ -95,5 +93,8 @@ t1 >> [t2, t3, t4] >> t5 >> t6 >> [t7, t8]
 # t3.set_upstream(t1)
 
 # tasks in parallel:
-# t1.set_downstream([t2, t3, t4]) # data collection
-# t3.set
+t1.set_downstream([t2, t3, t4])
+# data collection
+t4.set_downstream(t5)
+t5.set_downstream(t6)
+t6.set_downstream([t7, t8])
