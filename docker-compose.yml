@@ -28,91 +28,69 @@ services:
     ports:
       - "6380:6379"
 
+  redis:
+    image: 'redis:5.0.5'
+
   postgres:
     image: postgres:9.6
-    container_name: "postgres"
     environment:
       - POSTGRES_USER=airflow
       - POSTGRES_PASSWORD=airflow
       - POSTGRES_DB=airflow
-    ports:
-      - 5432:5432
 
   webserver:
-    image: puckel/docker-airflow:1.10.9
-    container_name: "webserver"
+    build: ./dockerfiles
     restart: always
     depends_on:
       - postgres
       - redis
     environment:
-      - EXECUTOR=Celery
-      - BACKEND=postgres
-      - BACKEND_HOST=postgres
-      - BROKER=redis
-      - CELERY_BROKER_HOST=redis
-      - CELERY_BROKER_PORT=6379
-      - INITDB=True
-      - FERNET_KEY=qzZkqTnVcIpbKuTU2Fdkl0tzSYTgroRqssfRPVfb9wk=
       - LOAD_EX=n
-    logging:
-      options:
-        max-size: 10m
-        max-file: "3"
-    volumes:
-      - ./data/airflow:/usr/local/airflow/dags
-      - ./data/airflow:/usr/local/airflow/logs
+      - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
+      - EXECUTOR=Celery
     ports:
-      - 8080:8080
+      - "8080:8080"
     command: webserver
+    volumes:
+      - ./dags:/usr/local/airflow/dags
     healthcheck:
-      test: ["CMD-SHELL", "[ -f /usr/local/airflow/airflow-webserver.pid ]"]
+      test: [ "CMD-SHELL", "[ -f /usr/local/airflow/airflow-webserver.pid ]" ]
       interval: 30s
       timeout: 30s
       retries: 3
 
   flower:
-    image: mher/flower
-    container_name: "flower"
-    ports:
-      - 5555:5555
+    image: puckel/docker-airflow:1.10.9
+    restart: always
     depends_on:
       - redis
     environment:
       - EXECUTOR=Celery
+    ports:
+      - "5555:5555"
+    command: flower
 
   scheduler:
     image: puckel/docker-airflow:1.10.9
-    container_name: "scheduler"
     restart: always
     depends_on:
       - webserver
     volumes:
-      - ./data/airflow:/usr/local/airflow/dags
-      - ./data/airflow:/usr/local/airflow/logs
+      - ./dags:/usr/local/airflow/dags
     environment:
       - LOAD_EX=n
-      - FERNET_KEY=qzZkqTnVcIpbKuTU2Fdkl0tzSYTgroRqssfRPVfb9wk=
+      - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
       - EXECUTOR=Celery
     command: scheduler
 
-  redis:
-    image: redis:alpine
-    container_name: "redis"
-    ports:
-      - 6379:6379
-
   worker:
     image: puckel/docker-airflow:1.10.9
-    container_name: "worker"
     restart: always
     depends_on:
       - scheduler
     volumes:
-      - ./data/airflow:/usr/local/airflow/dags
-      - ./data/airflow:/usr/local/airflow/logs
+      - ./dags:/usr/local/airflow/dags
     environment:
-      - FERNET_KEY=qzZkqTnVcIpbKuTU2Fdkl0tzSYTgroRqssfRPVfb9wk=
+      - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
       - EXECUTOR=Celery
     command: worker
-
