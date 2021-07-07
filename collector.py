@@ -30,7 +30,7 @@ def download_file(url: str, target_path: str, file_to_keep: Optional[list] = Non
         if multistep:
             with ZipFile(target_path, 'r') as zipObj:
                 # Extract all the contents of zip file in current directory
-                zipObj.extractall(path='./dataset')
+                zipObj.extractall(path='dataset')
 
             for i in file_to_keep:
                 shutil.move("dataset/CSV/" + i, "dataset")
@@ -42,7 +42,7 @@ def download_file(url: str, target_path: str, file_to_keep: Optional[list] = Non
                 # Extract all the contents of zip file in current directory
                 # zipObj.extractall(path='./dataset')
                 for i in file_to_keep:
-                    zipObj.extract(i, path='./dataset')
+                    zipObj.extract(i, path='dataset')
         os.remove(target_path)
 
 

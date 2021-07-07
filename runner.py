@@ -1,10 +1,6 @@
 from __future__ import absolute_import, annotations
 
-from collector import *
-from saver import MySQLManager
-from backup import Backup
-
-
+"""
 # QUALITA VITA
 rename_column("dataset/Qualita_vita.csv")
 delete_column("dataset/Qualita_vita.csv", ['CODICE PROVINCIA ISTAT (STORICO)', 'DENOMINAZIONE CORRENTE', 'FONTE ORIGINALE'])
@@ -162,7 +158,7 @@ delete_column("dataset\Qualita_vita.csv", ["UNITA' DI MISURA"])
 
 #backup = Backup(saver, "C:/Users/elypa") # set here your local path
 #backup.set_backup()
-
+"""
 
 
 

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, flash, redirect, Markup, request 
+from flask import Flask, render_template, url_for, flash, redirect, request
 from forms import RegistrationForm, LoginForm, CensusData
 from collector import number_regions
 from classifier import redis_classifier

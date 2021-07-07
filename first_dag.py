@@ -1,5 +1,5 @@
 from airflow import DAG
-from airflow.operators.bash_operator import BashOperator
+from airflow.operators.bash import BashOperator
 from datetime import timedelta
 from airflow.utils.dates import days_ago
 from collector import *
@@ -7,13 +7,10 @@ from collector import *
 default_args = {
     'owner': 'airflow',
     'depends_on_past': True,
-    'email': ['luciahrovatin@gmail.com'],
-    'email_on_failure': True,
-    'email_on_retry': True,
     'retries': 1,
     'retry_delay': timedelta(minutes=1),
-    'wait_for_downstream': True,
-    "start_date": days_ago(1)
+    "start_date": days_ago(1),
+    'queue': 'bash_queue'
 
 }
 

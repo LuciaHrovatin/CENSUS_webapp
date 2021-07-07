@@ -1,4 +1,4 @@
-version: '3.1'
+version: '2.1'
 
 services:
   mysql:
@@ -9,17 +9,24 @@ services:
     volumes:
       - ./data/mysql:/var/lib/mysql
     ports:
-      - 3310:3306
+      - "3310:3306"
 
   phpmyadmin:
     image: phpmyadmin
     container_name: "myadmin"
     ports:
-      - 8080:80
+      - "8082:80"
     environment:
       - PMA_ARBITRARY=1
       - PMA_HOST=mysql
       - PMA_PORT=3306
+
+
+  redis-ml:
+    image: shaynativ/redis-ml
+    container_name: "redis-ml"
+    ports:
+      - "6380:6379"
 
   postgres:
     image: postgres:9.6
@@ -28,45 +35,84 @@ services:
       - POSTGRES_USER=airflow
       - POSTGRES_PASSWORD=airflow
       - POSTGRES_DB=airflow
-    logging:
-      options:
-        max-size: 10m
-        max-file: "3"
-
-  redis-ml:
-    image: shaynativ/redis-ml
-    container_name: "redis-ml"
     ports:
-      - 6379:6379
+      - 5432:5432
 
   webserver:
-    image: puckel/docker-airflow:1.10.1
-    container_name: "airflow"
-    build:
-      context: https://github.com/puckel/docker-airflow.git#1.10.1
-      dockerfile: Dockerfile
-      args:
-        - AIRFLOW_DEPS:gcp_api,s3
-        - PYTHON_DEPS:sqlalchemy==1.2.0
+    image: puckel/docker-airflow:1.10.9
+    container_name: "webserver"
     restart: always
     depends_on:
-        - postgres
+      - postgres
+      - redis
     environment:
-        - LOAD_EX=n
-        - EXECUTOR=Local
+      - EXECUTOR=Celery
+      - BACKEND=postgres
+      - BACKEND_HOST=postgres
+      - BROKER=redis
+      - CELERY_BROKER_HOST=redis
+      - CELERY_BROKER_PORT=6379
+      - INITDB=True
+      - FERNET_KEY=qzZkqTnVcIpbKuTU2Fdkl0tzSYTgroRqssfRPVfb9wk=
+      - LOAD_EX=n
     logging:
       options:
         max-size: 10m
         max-file: "3"
     volumes:
       - ./data/airflow:/usr/local/airflow/dags
-    #  - ./data/airflow:/usr/local/airflow/plugins
+      - ./data/airflow:/usr/local/airflow/logs
     ports:
-      - 8081:8080
+      - 8080:8080
     command: webserver
     healthcheck:
       test: ["CMD-SHELL", "[ -f /usr/local/airflow/airflow-webserver.pid ]"]
       interval: 30s
       timeout: 30s
       retries: 3
+
+  flower:
+    image: mher/flower
+    container_name: "flower"
+    ports:
+      - 5555:5555
+    depends_on:
+      - redis
+    environment:
+      - EXECUTOR=Celery
+
+  scheduler:
+    image: puckel/docker-airflow:1.10.9
+    container_name: "scheduler"
+    restart: always
+    depends_on:
+      - webserver
+    volumes:
+      - ./data/airflow:/usr/local/airflow/dags
+      - ./data/airflow:/usr/local/airflow/logs
+    environment:
+      - LOAD_EX=n
+      - FERNET_KEY=qzZkqTnVcIpbKuTU2Fdkl0tzSYTgroRqssfRPVfb9wk=
+      - EXECUTOR=Celery
+    command: scheduler
+
+  redis:
+    image: redis:alpine
+    container_name: "redis"
+    ports:
+      - 6379:6379
+
+  worker:
+    image: puckel/docker-airflow:1.10.9
+    container_name: "worker"
+    restart: always
+    depends_on:
+      - scheduler
+    volumes:
+      - ./data/airflow:/usr/local/airflow/dags
+      - ./data/airflow:/usr/local/airflow/logs
+    environment:
+      - FERNET_KEY=qzZkqTnVcIpbKuTU2Fdkl0tzSYTgroRqssfRPVfb9wk=
+      - EXECUTOR=Celery
+    command: worker
 
