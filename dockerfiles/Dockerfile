@@ -66,7 +66,7 @@ COPY data/config/airflow.cfg ${AIRFLOW_USER_HOME}/airflow.cfg
 
 RUN chown -R airflow: ${AIRFLOW_USER_HOME}
 
-EXPOSE 8080 5555 8793
+EXPOSE 8080 5555
 
 USER airflow
 WORKDIR ${AIRFLOW_USER_HOME}

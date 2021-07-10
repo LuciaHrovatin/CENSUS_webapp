@@ -106,7 +106,7 @@ def clean_rows(filename: str, ind: Optional[bool] = False):
     count = 0
     row_lst = []
     target = "INDEXES"
-    indicators_lst = list_arg("dataset/indicators.json")
+    indicators_lst = list_arg("../dataset/indicators.json")
     if not ind:
         target = "TIME"
     for row in data[target]:
@@ -167,7 +167,7 @@ def save(table: dict):
     :param dict table: dictionary having indicators as keys and description of indicators as values
     :return: json file
     """
-    with open("dataset/indicators.json", "w") as f:
+    with open("../dataset/indicators.json", "w") as f:
         json.dump(
             table,
             f,
