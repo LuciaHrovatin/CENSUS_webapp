@@ -101,7 +101,7 @@ indicators = [lst_index["Eventi sportivi"][1],
               lst_index["Spid erogate"][1],
               lst_index["Pos attivi"][1]]
 
-del_indicators("dataset/Qualita_vita.csv", indicators)
+del_indicators("dataset/Qualita_vita.csv")
 
 # --------------------------------------------- DELETE "UNITA' di MISURA" -----------------------------------------------
 # Delete the column of "unità di misura"

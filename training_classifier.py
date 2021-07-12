@@ -95,7 +95,7 @@ while len(stack) > 0:
         forrest_cmd.write(cmd)
 
 # execute command in Redis
-r = redis.Redis("localhost", 6379)
+r = redis.Redis("localhost", 6380)
 r.execute_command(forrest_cmd.getvalue())
 
 

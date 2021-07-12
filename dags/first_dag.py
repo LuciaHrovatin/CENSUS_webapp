@@ -1,136 +1,97 @@
+import os
+import shutil
+from typing import Optional
+from zipfile import ZipFile
+import requests
 from airflow import DAG
-from airflow.operators.bash_operator import BashOperator
-from datetime import timedelta
-from airflow.utils.dates import days_ago
-from collector import *
+from airflow.operators.python import PythonOperator
+from datetime import timedelta, datetime
+
+
+def download_file(url: str, target_path: str, file_to_keep: Optional[list] = None, multistep: Optional[bool] = False):
+    """
+    Using a url and setting a target_path, the function downloads the required files saving
+    them locally into the folder "dataset".
+    :param str url: link to the repository online
+    :param str target_path: directory in which files will be saved
+    :param list file_to_keep: list containing only the files to keep
+    :param bool multistep: by default it is set to False, but if switched to True performs a two-step file extraction
+    """
+    response = requests.get(url, stream=True)
+    handle = open(target_path, "wb")
+    for chunk in response.iter_content(chunk_size=512):
+        if chunk:
+            handle.write(chunk)
+    handle.close()
+
+    if not file_to_keep is None:
+        if multistep:
+            with ZipFile(target_path, 'r') as zipObj:
+                # Extract all the contents of zip file in current directory
+                zipObj.extractall(path='dataset')
+
+            for i in file_to_keep:
+                shutil.move("dataset/CSV/" + i, "dataset")
+
+            if os.path.exists('dataset/CSV'):
+                shutil.rmtree('dataset/CSV')
+        else:
+            with ZipFile(target_path, 'r') as zipObj:
+                # Extract all the contents of zip file in current directory
+                # zipObj.extractall(path='./dataset')
+                for i in file_to_keep:
+                    zipObj.extract(i, path='dataset')
+        os.remove(target_path)
+
 
 default_args = {
     'owner': 'airflow',
     'depends_on_past': True,
     'retries': 1,
     'retry_delay': timedelta(minutes=1),
-    "start_date": days_ago(1),
+    "start_date": datetime.now(),
     'wait_for_downstream': True,
-    'trigger_rule': 'all_success'
+    'trigger_rule': 'all_success',
 }
 
 dag = DAG('bdt_2021',
           default_args=default_args,
-          description='ETL part of BDT project',
-          schedule_interval="@once"
+          description='Files download',
+          schedule_interval=None
           )
 
-carc_delete = ["PERC", "parent", "ETA", "cit", "isco", "aningr", "motiv", "tipolau", "votoedu", "suedu", "selode", "annoedu", "tipodip",
-                                             "univer", "apqual", "asnonoc", "NASCAREA", "nace", "nordp", "motent", "annoenus", "NASCREG", "ACOM5",
-                                             "QUAL","ISCO","CLETA5", "AREA5", "studio", "Q", "SETT", "PESOFIT", "CFRED", "PERL", "NPERL", "NPERC", "AREA3", "ACOM4C"]
 
-fam_canc = ['YL', 'YL1', 'YL2', 'YT', 'YTP', 'YTP1', 'YTP2', 'YTA','YTA1',
-                                            'YTA2', 'YTA3', 'YTA31', 'YTA32', 'YM', 'YMA1', 'YMA2', 'YC',
-                                            'YCA', 'YCA1', 'YCA2', 'YCF', 'YCF1', 'YCF2', 'YCF3', 'YCF4', 'CLY',
-                                            'CLY2']
-per_canc = ['YL1','YL2','YTP1','YTP2','YTA1','YTA2','YTA31','YTA32',
-                                          'YL','YTP','YTA3','YTA','YT','YM','YCA1','YCA2','YCA','YCF1','YCF2','YCF3',
-                                          'YCF4','YCF','YC','YMA1','YMA2']
 
-t01 = BashOperator(
-    task_id='start',
-    bash_command=print("start downloading files"),
-    dag=dag
-)
-
-t02 = BashOperator(
+t01 = PythonOperator(
     task_id='file1',
-    bash_command=download_file(
-        url="https://www.bancaditalia.it/statistiche/tematiche/indagini-famiglie-imprese/bilanci-famiglie/distribuzione-microdati/documenti/ind16_ascii.zip",
-        target_path="bancaditalia_dataset_16.zip",
-        file_to_keep=["carcom16.csv", "rfam16.csv", "rper16.csv"]),
+    python_callable = download_file,
+    op_kwargs={'url': "https://www.bancaditalia.it/statistiche/tematiche/indagini-famiglie-imprese/bilanci-famiglie/distribuzione-microdati/documenti/ind16_ascii.zip",
+        'target_path': "bancaditalia_dataset_16.zip",
+        'file_to_keep': ["carcom16.csv", "rfam16.csv", "rper16.csv"]},
     dag=dag
 )
 
-t03 = BashOperator(
+t02 = PythonOperator(
     task_id='file2',
-    bash_command=download_file(
-        url="https://www.bancaditalia.it/statistiche/tematiche/indagini-famiglie-imprese/bilanci-famiglie/distribuzione-microdati/documenti/ind14_ascii.zip",
-        target_path="bancaditalia_dataset_14.zip",
-        file_to_keep=["carcom14.csv", "rfam14.csv", "rper14.csv"],
-        multistep=True),
+    python_callable = download_file,
+    op_kwargs={'url': "https://www.bancaditalia.it/statistiche/tematiche/indagini-famiglie-imprese/bilanci-famiglie/distribuzione-microdati/documenti/ind14_ascii.zip",
+        'target_path':"bancaditalia_dataset_14.zip",
+        'file_to_keep': ["carcom14.csv", "rfam14.csv", "rper14.csv"],
+        'multistep':True},
     dag=dag
 )
 
-t04 = BashOperator(
+t03 = PythonOperator(
     task_id='file3',
-    bash_command=download_file(url="https://github.com/IlSole24ORE/QDV/raw/main/20201214_QDV2020_001.csv",
-                               target_path="dataset/Qualita_vita.csv"),
+    python_callable=download_file,
+    op_kwargs={
+        'url': "https://github.com/IlSole24ORE/QDV/raw/main/20201214_QDV2020_001.csv",
+        'target_path':"dataset/Qualita_vita.csv"},
     dag=dag
 )
 
-t05 = BashOperator(
-    task_id='end',
-    bash_command=print("end downloading files"),
-    dag=dag
-)
-
-t06 = BashOperator(
-    task_id='rename_column',
-    bash_command=rename_column("dataset/Qualita_vita.csv"),
-    dag=dag
-)
-
-t07 = BashOperator(
-    task_id='del_col1',
-    bash_command=delete_column("dataset/Qualita_vita.csv", ['CODICE PROVINCIA ISTAT (STORICO)', 'DENOMINAZIONE CORRENTE', 'FONTE ORIGINALE']),
-    dag=dag
-)
-
-t08 = BashOperator(
-    task_id='del_col2',
-    bash_command=delete_column("dataset/carcom16.csv", carc_delete),
-    dag=dag
-)
-
-t09 = BashOperator(
-    task_id='del_col3',
-    bash_command=delete_column("dataset/carcom14.csv", carc_delete),
-    dag=dag
-)
-
-t10 = BashOperator(
-    task_id='del_col4',
-    bash_command=delete_column("dataset/rfam16.csv", fam_canc),
-    dag=dag
-)
-
-t11 = BashOperator(
-    task_id='del_col5',
-    bash_command=delete_column("dataset/rfam14.csv", fam_canc),
-    dag=dag
-)
-
-t12 = BashOperator(
-    task_id='del_col6',
-    bash_command=delete_column("dataset/rper14.csv", per_canc),
-    dag=dag
-)
-
-t13 = BashOperator(
-    task_id='del_col7',
-    bash_command=delete_column("dataset/rper16.csv", per_canc),
-    dag=dag
-)
-
-t14 = BashOperator(
-    task_id='del_col8',
-    bash_command=delete_column("dataset/rper16.csv", per_canc),
-    dag=dag
-)
-
-t15 = BashOperator(
-    task_id = "end_final",
-    bash_command = print("end"),
-    dag = dag
-)
 
 
-t01.set_downstream([t02, t03, t04])
-t05.set_downstream(t06)
-t06.set_downstream([t07, t08, t09, t10, t11, t12, t13, t14])
+# sequence of events
+t01.set_downstream(t02)
+t02.set_downstream(t03)

@@ -1,5 +1,3 @@
-from __future__ import absolute_import, annotations
-
 import mysql.connector
 from mysql.connector import errorcode, Error
 import pandas as pd
@@ -18,7 +16,7 @@ class MySQLManager:
     def create_database(self, database: str):
         """
         Creates a new database if the called one does not exist
-        :param str name_DB: name of the database
+        :param str database: name of the database
         """
         cursor = self.connection.cursor()
         try:
@@ -28,11 +26,10 @@ class MySQLManager:
             print("Failed in creation database: {}".format(err))
             exit(1)
 
-
     def check_database(self, database: str):
         """
         Checks whether the called database exists or not
-        :param str name_DB: name of the database involved in further analyses
+        :param str database: name of the database involved in further analyses
         """
         cursor = self.connection.cursor()
         try:
@@ -65,7 +62,7 @@ class MySQLManager:
                 print(err.msg)
         cursor.close()
 
-    def save_SQL(self, filename: str) -> None:
+    def save_sql(self, filename: str) -> None:
         """
         Inserting the records in the appropriate table
         :param str filename: name of the  file
@@ -76,10 +73,9 @@ class MySQLManager:
         data.dropna(inplace=True)
         cols = "`, `".join([str(i).lower() for i in data.columns.tolist()])
         for i, row in data.iterrows():
-            sql = "INSERT INTO " + name + "(`" + cols + "`) VALUES (" + "%s,"*(len(row)-1) + "%s)"
+            sql = "INSERT INTO " + name + "(`" + cols + "`) VALUES (" + "%s," * (len(row) - 1) + "%s)"
             cursor.execute(sql, tuple(row))
         print("Data have been successfully inserted in table {}".format(name))
-
 
     def join_SQL(self, table_1: str, table_2: str, table_name: str):
         """
