@@ -47,6 +47,7 @@ n_componenti = [('1'), ('2'), ('3'), ('4'), ('5'), ('6'), ('7'), ('8'), ('9'), (
 stato = [('celibe/nubile'), ('convivente'), ('sposato/a'), ('vedovo/a'), ('separato/a'), ('divorziato/a')]
 
 sex = ['maschile', 'femminile', 'preferisco non specificare']
+
 class CensusData(FlaskForm):
     eta = SelectField('Anno di nascita:', choices=years, validators=[DataRequired()])
     genere = RadioField('Genere:', choices=sex, default='preferisco non specificare', validators=[DataRequired()])

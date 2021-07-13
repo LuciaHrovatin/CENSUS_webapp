@@ -1,21 +1,46 @@
-version: '2.1'
+version: '3'
+x-airflow-common:
+  &airflow-common
+  image: apache/airflow:2.1.1
+  environment:
+    &airflow-common-env
+    AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+    AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+    AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow
+    AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
+    AIRFLOW__CORE__FERNET_KEY: ''
+    AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
+    AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+    AIRFLOW__API__AUTH_BACKEND: 'airflow.api.auth.backend.basic_auth'
+    _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-}
+    AIRFLOW__CORE__PARALLELISM: 64
+    AIRFLOW__CORE__DAG_CONCURRENCY: 16
+    AIRFLOW__SCHEDULER__PARSING_PROCESSES: 4
+    AIRFLOW__CORE__LOAD_DEFAULT_CONNECTIONS: 'true'
+  volumes:
+    - ./dags:/opt/airflow/dags
+    - ./data/airflow/logs:/opt/airflow/logs
+    - ./data/airflow/plugins:/opt/airflow/plugins
+  depends_on:
+    redis:
+      condition: service_healthy
+    postgres:
+      condition: service_healthy
 
 services:
   mysql:
     image: mysql
-    container_name: "mysql"
     environment:
-      MYSQL_ROOT_PASSWORD: "Pr0tett0.98"
-    volumes:
-      - ./data/mysql:/var/lib/mysql
+      MYSQL_ROOT_PASSWORD: "password"
+      MYSQL_DATABSE: "project_bdt"
     ports:
-      - "3310:3306"
+      - 3310:3306
 
   phpmyadmin:
     image: phpmyadmin
     container_name: "myadmin"
     ports:
-      - "8082:80"
+      - 8082:80
     environment:
       - PMA_ARBITRARY=1
       - PMA_HOST=mysql
@@ -28,72 +53,80 @@ services:
     ports:
       - "6380:6379"
 
-  redis:
-    image: 'redis:5.0.5'
-
   postgres:
     image: postgres:9.6
     environment:
-      - POSTGRES_USER=airflow
-      - POSTGRES_PASSWORD=airflow
-      - POSTGRES_DB=airflow
-
-  webserver:
-    build: ./dockerfiles
-    restart: always
-    depends_on:
-      - postgres
-      - redis
-    environment:
-      - LOAD_EX=n
-      - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
-      - EXECUTOR=Celery
-    ports:
-      - "8080:8080"
-    command: webserver
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
     volumes:
-      - ./data/airflow:/usr/local/airflow/logs
-      - ./dags:/usr/local/airflow/dags
+      - ./data/postgres:/var/lib/postgresql/data
+      - ./data/postgres:/var/lib/postgresql/logs
     healthcheck:
-      test: [ "CMD-SHELL", "[ -f /usr/local/airflow/airflow-webserver.pid ]" ]
-      interval: 30s
+      test: ["CMD", "pg_isready", "-U", "airflow"]
+      interval: 5s
+      retries: 5
+    restart: always
+
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
       timeout: 30s
-      retries: 3
+      retries: 50
+    restart: always
+
+  airflow-webserver:
+    <<: *airflow-common
+    container_name: "webserver"
+    command: webserver
+    ports:
+      - 8080:8080
+    environment:
+      <<: *airflow-common-env
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    restart: always
+
+  airflow-scheduler:
+    <<: *airflow-common
+    container_name: "scheduler"
+    command: scheduler
+    healthcheck:
+      test: ["CMD-SHELL", 'airflow jobs check --job-type SchedulerJob --hostname "$${HOSTNAME}"']
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    restart: always
+
+  airflow-worker:
+    <<: *airflow-common
+    container_name: "worker"
+    command: celery worker
+    healthcheck:
+      test:
+        - "CMD-SHELL"
+        - 'celery --app airflow.executors.celery_executor.app inspect ping -d "celery@$${HOSTNAME}"'
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    restart: always
 
   flower:
-    image: puckel/docker-airflow:1.10.9
-    restart: always
-    depends_on:
-      - redis
-    environment:
-      - EXECUTOR=Celery
+    <<: *airflow-common
+    command: celery flower
     ports:
-      - "5555:5555"
-    command: flower
-
-  scheduler:
-    image: puckel/docker-airflow:1.10.9
+      - 5555:5555
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:5555/"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
     restart: always
-    depends_on:
-      - webserver
-    volumes:
-      - ./data/airflow:/usr/local/airflow/logs
-      - ./dags:/usr/local/airflow/dags
-    environment:
-      - LOAD_EX=n
-      - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
-      - EXECUTOR=Celery
-    command: scheduler
 
-  worker:
-    image: puckel/docker-airflow:1.10.9
-    restart: always
-    depends_on:
-      - scheduler
-    volumes:
-      - ./data/airflow:/usr/local/airflow/logs
-      - ./dags:/usr/local/airflow/dags
-    environment:
-      - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
-      - EXECUTOR=Celery
-    command: worker

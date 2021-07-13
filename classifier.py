@@ -6,7 +6,7 @@ from training_classifier import feature_names
 
 def redis_prediction(X_test, key_tree: str) -> int:
 
-    r = redis.StrictRedis('localhost', 6379)
+    r = redis.StrictRedis('localhost', 6380)
     r_pred = np.full(len(X_test), -1, dtype=int)
 
     for i, x in enumerate(X_test):
