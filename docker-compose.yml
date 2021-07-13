@@ -17,10 +17,10 @@ x-airflow-common:
     AIRFLOW__CORE__DAG_CONCURRENCY: 16
     AIRFLOW__SCHEDULER__PARSING_PROCESSES: 4
     AIRFLOW__CORE__LOAD_DEFAULT_CONNECTIONS: 'true'
+    AIRFLOW_CONN_MYSQL_TEST_CONN: mysql://root:password@172.24.0.1:3310/project_bdt
   volumes:
-    - ./dags:/opt/airflow/dags
-    - ./data/airflow/logs:/opt/airflow/logs
-    - ./data/airflow/plugins:/opt/airflow/plugins
+    - ./airflow/dags:/opt/airflow/dags
+    - ./airflow/logs:/opt/airflow/logs
   depends_on:
     redis:
       condition: service_healthy
@@ -32,7 +32,7 @@ services:
     image: mysql
     environment:
       MYSQL_ROOT_PASSWORD: "password"
-      MYSQL_DATABSE: "project_bdt"
+      MYSQL_DATABASE: "project_bdt"
     ports:
       - 3310:3306
 
@@ -129,4 +129,15 @@ services:
       timeout: 10s
       retries: 5
     restart: always
+
+  airflow-init:
+    <<: *airflow-common
+    command: version
+    environment:
+      <<: *airflow-common-env
+      _AIRFLOW_DB_UPGRADE: 'true'
+      _AIRFLOW_WWW_USER_CREATE: 'true'
+      _AIRFLOW_WWW_USER_USERNAME: ${_AIRFLOW_WWW_USER_USERNAME:-airflow}
+      _AIRFLOW_WWW_USER_PASSWORD: ${_AIRFLOW_WWW_USER_PASSWORD:-airflow}
+
 

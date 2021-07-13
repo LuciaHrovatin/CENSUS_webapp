@@ -62,7 +62,7 @@ RUN set -ex \
 
 
 COPY script/entrypoint.sh /entrypoint.sh
-COPY data/config/airflow.cfg ${AIRFLOW_USER_HOME}/airflow.cfg
+COPY ../airflow/config/airflow.cfg ${AIRFLOW_USER_HOME}/airflow.cfg
 
 RUN chown -R airflow: ${AIRFLOW_USER_HOME}
 
@@ -76,9 +76,4 @@ CMD ["webserver"]
 
 FROM httpd:2.4
 COPY ./public-html/ /usr/local/apache2/htdocs/
-
-
-# SOURCE: https://github.com/puckel/docker-airflow
-
-
 
