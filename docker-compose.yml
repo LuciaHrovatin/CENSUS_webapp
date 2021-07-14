@@ -19,7 +19,7 @@ x-airflow-common:
     AIRFLOW__CORE__DAG_CONCURRENCY: 16
     AIRFLOW__SCHEDULER__PARSING_PROCESSES: 4
     AIRFLOW__CORE__LOAD_DEFAULT_CONNECTIONS: 'true'
-    AIRFLOW_CONN_MYSQL_TEST_CONN: mysql://root:password@172.24.0.1:3310/project_bdt
+    AIRFLOW_CONN_MYSQL_TEST_CONN: mysql://root:password@172.17.0.1:3310/project_bdt
   volumes:
     - ./airflow/dags:/opt/airflow/dags
     - ./airflow/logs:/opt/airflow/logs

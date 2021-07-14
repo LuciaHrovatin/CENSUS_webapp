@@ -30,6 +30,7 @@ def rename_column(filename: str):
     renamed_data.to_csv("dataset/" + file_n, index=None)
 
 
+
 def delete_column(filename: str, cols_to_remove: list):
     """
     The function deletes the columns contained in the list cols_to_remove.
@@ -281,44 +282,44 @@ t2 = PythonOperator(
                'cols_to_remove': ['CODICE PROVINCIA ISTAT (STORICO)', 'DENOMINAZIONE CORRENTE', 'FONTE ORIGINALE']},
     dag=dag2
 )
-
-t3 = PythonOperator(
-    task_id='save_indicators',
-    python_callable=sub_table,
-    op_kwargs={'filename': "dataset/Qualita_vita.csv",
-               'col_name': "INDEXES"},
-    dag=dag2
-)
-
-t4 = PythonOperator(
-    task_id='clean_rows1',
-    python_callable=clean_rows,
-    op_kwargs={'filename': "dataset/Qualita_vita.csv"},
-    dag=dag2
-)
-
-t5 = PythonOperator(
-    task_id='clean_rows2',
-    python_callable=clean_rows,
-    op_kwargs={'filename': "dataset/Qualita_vita.csv",
-               'ind': True},
-    dag=dag2
-)
-
-t6 = PythonOperator(
-    task_id='del_indicators',
-    python_callable=del_indicators,
-    op_kwargs={'filename': "dataset/Qualita_vita.csv"},
-    dag=dag2
-)
-
-t7 = PythonOperator(
-    task_id='del_col2',
-    python_callable=delete_column,
-    op_kwargs={'filename': "dataset/Qualita_vita.csv",
-               'cols_to_remove': ["UNITA' DI MISURA"]},
-    dag=dag2
-)
+#
+# t3 = PythonOperator(
+#     task_id='save_indicators',
+#     python_callable=sub_table,
+#     op_kwargs={'filename': "dataset/Qualita_vita.csv",
+#                'col_name': "INDEXES"},
+#     dag=dag2
+# )
+#
+# t4 = PythonOperator(
+#     task_id='clean_rows1',
+#     python_callable=clean_rows,
+#     op_kwargs={'filename': "dataset/Qualita_vita.csv"},
+#     dag=dag2
+# )
+#
+# t5 = PythonOperator(
+#     task_id='clean_rows2',
+#     python_callable=clean_rows,
+#     op_kwargs={'filename': "dataset/Qualita_vita.csv",
+#                'ind': True},
+#     dag=dag2
+# )
+#
+# t6 = PythonOperator(
+#     task_id='del_indicators',
+#     python_callable=del_indicators,
+#     op_kwargs={'filename': "dataset/Qualita_vita.csv"},
+#     dag=dag2
+# )
+#
+# t7 = PythonOperator(
+#     task_id='del_col2',
+#     python_callable=delete_column,
+#     op_kwargs={'filename': "dataset/Qualita_vita.csv",
+#                'cols_to_remove': ["UNITA' DI MISURA"]},
+#     dag=dag2
+# )
 
 t8 = PythonOperator(
     task_id='del_col3',
@@ -408,33 +409,20 @@ def lst_tables(filename: str) -> tuple:
 
 
 
-def check_table_exists(name:str, **kwargs):
-    query = "select count(*) from {}.tables where table_name=".format("project_bdt", name)
-    mysql_hook = MySqlHook(mysql_conn_id='mysql_test_conn', schema='project_bdt')
-    connection = mysql_hook.get_conn()
-    cursor = connection.cursor()
-    cursor.execute(query)
-    results = cursor.fetchall()
-    return results
-
-
 def store_data(filename: str, **kwargs):
     res = lst_tables(filename)
-    table_status = check_table_exists(res[0])
+
     mysql_hook = MySqlHook(mysql_conn_id='mysql_test_conn', schema='project_bdt')
-    if table_status[0][0] == 0:
-        print("----- table does not exists, creating it")
-        create_sql = res[1]
-        mysql_hook.run(create_sql)
-    else:
-        print("----- table already exists")
-    name = filename[filename.find("/") + 1: filename.find(".")].lower()
+    create_sql = res[1]
+    mysql_hook.run(create_sql)
+
     data = pd.read_csv(filename)
     data.dropna(inplace=True)
     cols = "`, `".join([str(i).lower() for i in data.columns.tolist()])
     for i, row in data.iterrows():
-        sql = "INSERT INTO " + name + "(`" + cols + "`) VALUES (" + "%s," * (len(row) - 1) + "%s)"
-        mysql_hook.run(sql, parameters=(data.get("title"), data.get("id")))
+        #sql = "INSERT INTO " + res[0] + " (`" + cols + "`) VALUES (" + "%s, " * (len(row) - 1) + "%s)"
+        #mysql_hook.run(sql, row)
+        mysql_hook.insert_rows(table=res[0], rows=row, target_fields=[cols])
 
 
 py1 = PythonOperator(
@@ -445,4 +433,4 @@ py1 = PythonOperator(
 )
 
 # Sequence of the DAG
-t1 >> [t2, t8, t9, t10, t11, t12, t13] >> t3 >> t4 >> t5 >> t6 >> t7 >> py1
+t1 >> [t2, t8, t9, t10, t11, t12, t13]  >> py1
