@@ -4,9 +4,9 @@
         <form method="GET" action="">
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Predizione del benessere</legend>
+                <legend class="border-bottom mb-4" style="color:#17a2b8;"><b>Predizione del benessere</b></legend>
                 <div class="form-group">
-                    {{ form.eta.label }}
+                    <b>{{ form.eta.label }}</b>
                     <small class="text-muted">{{ form.eta.description }}</small>
                     {{ form.eta(class_="form-control") }}
 
@@ -15,7 +15,7 @@
                     {% endfor %}
                 </div>
                 <div class="form-group">
-                {{ form.genere.label }}
+                <b>{{ form.genere.label }}</b>
                 <br>
                 <table>
                 {% for subfield in form.genere %}
@@ -27,13 +27,13 @@
                       <td>{{ subfield.label }}</td>
                   </tr>
                   <tr>
-                      
+
                   </tr>
                 {% endfor %}
                 </table>
                 </div>
                 <div class="form-group">
-                    {{ form.residenza2.label }}
+                    <b>{{ form.residenza2.label }}</b>
                     <small class="text-muted">{{ form.residenza2.description }}</small>
                     {{ form.residenza2(class_="form-control") }}
 
@@ -42,7 +42,7 @@
                     {% endfor %}
                 </div>
                 <div class="form-group">
-                    {{ form.componenti.label }}
+                    <b>{{ form.componenti.label }}</b>
                     <small class="text-muted">{{ form.componenti.description }}</small>
                     {{ form.componenti(class_="form-control") }}
 
@@ -51,7 +51,7 @@
                     {% endfor %}
                 </div>
                 <div class="form-group">
-                {{ form.stato_civile.label }}
+                <b>{{ form.stato_civile.label }}</b>
                 <br>
                 <table>
                 {% for subfield in form.stato_civile %}
@@ -63,14 +63,14 @@
                       <td>{{ subfield.label }}</td>
                   </tr>
                   <tr>
-                      
+
                   </tr>
                 {% endfor %}
                 </table>
                 </div>
             </fieldset>
-            <div class="form-group">
-                {{ form.submit(class="btn btn-outline-info") }}
+            <div class="form-group , text-center">
+                <b>{{ form.submit(class="btn btn-info btn-lg") }}</b>
             </div>
         </form>
     </div>
@@ -84,7 +84,7 @@
             <th scope="col">Componenti</th>
             <th scope="col">Stato civile</th>
             <th scope="col">Predizione</th>
-            
+
         </tr>
         </thead>
         <tbody>

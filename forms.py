@@ -21,7 +21,7 @@ class LoginForm(FlaskForm):
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
 
-years = [('2002'), ('2001'), ('2000'), ('1999'), ('1998'), ('1997'), ('1996'), ('1995'), ('1994'), ('1993'), 
+years = [('2002'), ('2001'), ('2000'), ('1999'), ('1998'), ('1997'), ('1996'), ('1995'), ('1994'), ('1993'),
 ('1992'), ('1991'), ('1990'), ('1989'), ('1988'), ('1987'), ('1986'), ('1985'), ('1984'), ('1983'),
 ('1982'), ('1981'), ('1980'), ('1979'), ('1978'), ('1977'), ('1976'), ('1975'), ('1974'), ('1973'),
 ('1972'), ('1971'), ('1970'), ('1969'), ('1968'), ('1967'), ('1966'), ('1965'), ('1964'), ('1963'),
@@ -30,8 +30,8 @@ years = [('2002'), ('2001'), ('2000'), ('1999'), ('1998'), ('1997'), ('1996'), (
 ('1942'), ('1941'), ('1940'), ('1939'), ('1938'), ('1937'), ('1936'), ('1935'), ('1934'), ('1933'),
 ('1932')]
 
-province = [('Agrigento'), ('Alessandria'), ('Ancona'), ('Aosta'), ('Arezzo'), ('Ascoli Piceno'), ('Asti'), ('Avellino'), ('Bari'), ('Barletta-Andria-Trani'), 
-('Belluno'), ('Benevento'), ('Bergamo'), ('Biella'), ('Bologna'), ('Bolzano'), ('Brescia'), ('Brindisi'), ('Cagliari'), ('Caltanissetta'), 
+province = [('Agrigento'), ('Alessandria'), ('Ancona'), ('Aosta'), ('Arezzo'), ('Ascoli Piceno'), ('Asti'), ('Avellino'), ('Bari'), ('Barletta-Andria-Trani'),
+('Belluno'), ('Benevento'), ('Bergamo'), ('Biella'), ('Bologna'), ('Bolzano'), ('Brescia'), ('Brindisi'), ('Cagliari'), ('Caltanissetta'),
 ('Campobasso'), ('Carbonia-Iglesias') , ('Caserta'), ('Catania'), ('Catanzaro'), ('Chieti'), ('Como'), ('Cosenza'), ('Cremona'), ('Crotone'),
 ('Cuneo'), ('Enna'), ('Fermo'), ('Ferrara'), ('Firenze'), ('Foggia'), ('Forlì-Cesena'), ('Frosinone'), ('Genova'), ('Gorizia'),
 ('Grosseto'), ('Imperia'), ('Isernia'), ('La Spezia'), ("L'Aquila"), ('Latina'), ('Lecce'), ('Lecco'), ('Livorno'), ('Lodi'),
@@ -51,11 +51,7 @@ sex = ['maschile', 'femminile', 'preferisco non specificare']
 class CensusData(FlaskForm):
     eta = SelectField('Anno di nascita:', choices=years, validators=[DataRequired()])
     genere = RadioField('Genere:', choices=sex, default='preferisco non specificare', validators=[DataRequired()])
-    residenza2 = SelectField('Provincia di residenza:', choices=province, validators=[DataRequired()])   
+    residenza2 = SelectField('Provincia di residenza:', choices=province, validators=[DataRequired()])
     componenti = SelectField('Numero di componenti del nucleo familiare:', choices=n_componenti, validators=[DataRequired()])
     stato_civile = RadioField('Stato civile:', choices=stato, default='celibe/nubile', validators=[DataRequired()])
-    submit = SubmitField('Vai!')
-
-
-
-
+    submit = SubmitField('Predici fascia IRPEF')
