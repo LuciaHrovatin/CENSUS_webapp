@@ -1,14 +1,14 @@
+import csv
 import json
 import uuid
+from tempfile import NamedTemporaryFile
 from typing import Optional
 
 import numpy as np
 import pandas as pd
-from airflow import DAG, settings
-from airflow.models import Connection
-from airflow.operators.python import PythonOperator
+from airflow import DAG
+from airflow.operators.python_operator import PythonOperator
 from datetime import timedelta, datetime
-import mysql.connector
 from airflow.hooks.mysql_hook import MySqlHook
 
 # Functions
@@ -28,7 +28,6 @@ def rename_column(filename: str):
                                             'INDICATORE': 'INDEXES',
                                             'NOME PROVINCIA (ISTAT)': 'PROVINCE'})
     renamed_data.to_csv("dataset/" + file_n, index=None)
-
 
 
 def delete_column(filename: str, cols_to_remove: list):
@@ -282,7 +281,7 @@ t2 = PythonOperator(
                'cols_to_remove': ['CODICE PROVINCIA ISTAT (STORICO)', 'DENOMINAZIONE CORRENTE', 'FONTE ORIGINALE']},
     dag=dag2
 )
-#
+
 # t3 = PythonOperator(
 #     task_id='save_indicators',
 #     python_callable=sub_table,
@@ -385,52 +384,140 @@ def lst_tables(filename: str) -> tuple:
     :param str filename: name of the dataset to be inserted
     :return: tuple having as first element the name of the new table and as second element the SQL command
     """
-    name = filename[filename.find("/") + 1:filename.find(".")].lower()
+    name = filename[filename.find("/")+1 :filename.find(".")].lower()
     data = pd.read_csv(filename)
     table_to_be = []
     cols = [str(i) for i in data.columns.tolist()]
     primary_key = 0
     for i in range(len(cols)):
         pointer = data.loc[0, cols[i]]
-        if cols[i].lower() == "id":
-            primary_key = ", PRIMARY KEY(`{}`))".format(cols[i].lower())
+        # if cols[i].lower() == "id":
+        #     primary_key = ", PRIMARY KEY(`{}`))".format(cols[i].lower())
         if isinstance(pointer, str):
             table_to_be.append("`" + cols[i].lower() + "` VARCHAR(255) NOT NULL")
         elif isinstance(pointer, np.int64):
             table_to_be.append("`" + cols[i].lower() + "` INT NOT NULL")
         elif isinstance(pointer, float):
             table_to_be.append("`" + cols[i].lower() + "` FLOAT NOT NULL")
-    if not primary_key:
-        data_set = "CREATE TABLE `" + name + "` ( `id` int NOT NULL AUTO_INCREMENT, \n" + \
-                   ", \n".join(table_to_be) + ", PRIMARY KEY(`id`))"
-    else:
-        data_set = "CREATE TABLE `" + name + "` ( " + ", \n".join(table_to_be) + primary_key
+    # if not primary_key:
+    #     data_set = "CREATE TABLE `" + name + "` ( `id` int NOT NULL AUTO_INCREMENT, \n" + \
+    #                ", \n".join(table_to_be) + ", PRIMARY KEY(`id`))"
+    # else:
+    data_set = "CREATE TABLE `" + name + "` ( " + ", \n".join(table_to_be) + ")"
     return name, data_set
 
 
 
+
+def create_db(filename: str, **kwargs):
+    res = lst_tables(filename)
+    mysql_hook = MySqlHook(mysql_conn_id='mysql_test_conn', schema="project_bdt")
+    mysql_hook.run(res[1])
+
+
 def store_data(filename: str, **kwargs):
     res = lst_tables(filename)
-
-    mysql_hook = MySqlHook(mysql_conn_id='mysql_test_conn', schema='project_bdt')
-    create_sql = res[1]
-    mysql_hook.run(create_sql)
-
-    data = pd.read_csv(filename)
-    data.dropna(inplace=True)
-    cols = "`, `".join([str(i).lower() for i in data.columns.tolist()])
-    for i, row in data.iterrows():
-        #sql = "INSERT INTO " + res[0] + " (`" + cols + "`) VALUES (" + "%s, " * (len(row) - 1) + "%s)"
-        #mysql_hook.run(sql, row)
-        mysql_hook.insert_rows(table=res[0], rows=row, target_fields=[cols])
+    mysql_hook = MySqlHook(mysql_conn_id='mysql_test_conn', schema="project_bdt")
+    with open(filename, "r", newline= '') as f:
+        results = csv.reader(f)
+        next(results, None) # skip the header
+        mysql_hook.insert_rows(table=res[0], rows=results)
 
 
 py1 = PythonOperator(
+     task_id='create_db',
+     dag=dag2,
+     python_callable=create_db,
+     op_kwargs={'filename': 'dataset/rfam14.csv'}
+ )
+
+
+py2 = PythonOperator(
     task_id='store_opt',
+    dag=dag2,
+    python_callable=store_data,
+    op_kwargs={'filename': 'dataset/rfam14.csv'}
+)
+
+
+py3 = PythonOperator(
+     task_id='create_db_2',
+     dag=dag2,
+     python_callable=create_db,
+     op_kwargs={'filename': 'dataset/rfam16.csv'}
+ )
+
+
+py4 = PythonOperator(
+    task_id='store_opt_2',
+    dag=dag2,
+    python_callable=store_data,
+    op_kwargs={'filename': 'dataset/rfam16.csv'}
+)
+
+
+py5 = PythonOperator(
+     task_id='create_db_3',
+     dag=dag2,
+     python_callable=create_db,
+     op_kwargs={'filename': 'dataset/rper16.csv'}
+ )
+
+
+py6 = PythonOperator(
+    task_id='store_opt_3',
     dag=dag2,
     python_callable=store_data,
     op_kwargs={'filename': 'dataset/rper16.csv'}
 )
 
+
+py7 = PythonOperator(
+     task_id='create_db_4',
+     dag=dag2,
+     python_callable=create_db,
+     op_kwargs={'filename': 'dataset/rper14.csv'}
+ )
+
+
+py8 = PythonOperator(
+    task_id='store_opt_4',
+    dag=dag2,
+    python_callable=store_data,
+    op_kwargs={'filename': 'dataset/rper14.csv'}
+)
+
+py9 = PythonOperator(
+     task_id='create_db_5',
+     dag=dag2,
+     python_callable=create_db,
+     op_kwargs={'filename': 'dataset/carcom14.csv'}
+ )
+
+
+py10 = PythonOperator(
+    task_id='store_opt_5',
+    dag=dag2,
+    python_callable=store_data,
+    op_kwargs={'filename': 'dataset/carcom14.csv'}
+)
+
+py11 = PythonOperator(
+     task_id='create_db_6',
+     dag=dag2,
+     python_callable=create_db,
+     op_kwargs={'filename': 'dataset/carcom16.csv'}
+ )
+
+
+py12 = PythonOperator(
+    task_id='store_opt_6',
+    dag=dag2,
+    python_callable=store_data,
+    op_kwargs={'filename': 'dataset/carcom16.csv'}
+)
+
+
+
 # Sequence of the DAG
-t1 >> [t2, t8, t9, t10, t11, t12, t13]  >> py1
+t1 >> [t2, t8, t9, t10, t11, t12, t13] >> py1 >> py2 >> py3 >> py4 >> py5 >> py6 >> py7 >> py8 >> py9 >> py10 >> py11 >> py12

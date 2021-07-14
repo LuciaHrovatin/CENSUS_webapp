@@ -1,6 +1,5 @@
 version: '3'
 
-
 x-airflow-common:
   &airflow-common
   image: apache/airflow:2.1.1
@@ -20,6 +19,7 @@ x-airflow-common:
     AIRFLOW__SCHEDULER__PARSING_PROCESSES: 4
     AIRFLOW__CORE__LOAD_DEFAULT_CONNECTIONS: 'true'
     AIRFLOW_CONN_MYSQL_TEST_CONN: mysql://root:password@172.17.0.1:3310/project_bdt
+  user: "${AIRFLOW_UID:-50000}:${AIRFLOW_GID:-50000}"
   volumes:
     - ./airflow/dags:/opt/airflow/dags
     - ./airflow/logs:/opt/airflow/logs
@@ -141,5 +141,4 @@ services:
       _AIRFLOW_WWW_USER_CREATE: 'true'
       _AIRFLOW_WWW_USER_USERNAME: ${_AIRFLOW_WWW_USER_USERNAME:-airflow}
       _AIRFLOW_WWW_USER_PASSWORD: ${_AIRFLOW_WWW_USER_PASSWORD:-airflow}
-
 

@@ -4,7 +4,7 @@ from typing import Optional
 from zipfile import ZipFile
 import requests
 from airflow import DAG
-from airflow.operators.python import PythonOperator
+from airflow.operators.python_operator import PythonOperator
 from datetime import timedelta, datetime
 
 
@@ -50,8 +50,7 @@ default_args = {
     'retries': 1,
     'retry_delay': timedelta(minutes=1),
     "start_date": datetime.now(),
-    'wait_for_downstream': True,
-    'trigger_rule': 'all_success',
+    'wait_for_downstream': True
 }
 
 dag = DAG('bdt_2021',

@@ -3,7 +3,6 @@ from airflow.operators.bash_operator import BashOperator
 from airflow.operators.python_operator import PythonOperator
 from datetime import datetime, timedelta
 from airflow.hooks.mysql_hook import MySqlHook
-from airflow.operators.mysql_operator import MySqlOperator
 import pandas as pd
 import requests
 import json
