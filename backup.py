@@ -3,7 +3,6 @@ from datetime import datetime
 import pipes
 from saver import MySQLManager
 
-
 class Backup:
 
     def __init__(self, saver: MySQLManager, backup_path: str):

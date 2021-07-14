@@ -1,0 +1,24 @@
+[2021-07-14 20:35:32,039] {taskinstance.py:896} INFO - Dependencies all met for <TaskInstance: MySQL.final_create_3 2021-07-14T20:35:21.024125+00:00 [queued]>
+[2021-07-14 20:35:32,073] {taskinstance.py:896} INFO - Dependencies all met for <TaskInstance: MySQL.final_create_3 2021-07-14T20:35:21.024125+00:00 [queued]>
+[2021-07-14 20:35:32,076] {taskinstance.py:1087} INFO - 
+--------------------------------------------------------------------------------
+[2021-07-14 20:35:32,079] {taskinstance.py:1088} INFO - Starting attempt 1 of 2
+[2021-07-14 20:35:32,080] {taskinstance.py:1089} INFO - 
+--------------------------------------------------------------------------------
+[2021-07-14 20:35:32,157] {taskinstance.py:1107} INFO - Executing <Task(PythonOperator): final_create_3> on 2021-07-14T20:35:21.024125+00:00
+[2021-07-14 20:35:32,165] {standard_task_runner.py:52} INFO - Started process 5145 to run task
+[2021-07-14 20:35:32,177] {standard_task_runner.py:76} INFO - Running: ['***', 'tasks', 'run', 'MySQL', 'final_create_3', '2021-07-14T20:35:21.024125+00:00', '--job-id', '61', '--pool', 'default_pool', '--raw', '--subdir', 'DAGS_FOLDER/third_dag.py', '--cfg-path', '/tmp/tmpdmlzajyb', '--error-file', '/tmp/tmp4rnvz3tp']
+[2021-07-14 20:35:32,179] {standard_task_runner.py:77} INFO - Job 61: Subtask final_create_3
+[2021-07-14 20:35:32,465] {logging_mixin.py:104} INFO - Running <TaskInstance: MySQL.final_create_3 2021-07-14T20:35:21.024125+00:00 [running]> on host bf600838264e
+[2021-07-14 20:35:32,948] {taskinstance.py:1302} INFO - Exporting the following env vars:
+AIRFLOW_CTX_DAG_OWNER=user
+AIRFLOW_CTX_DAG_ID=MySQL
+AIRFLOW_CTX_TASK_ID=final_create_3
+AIRFLOW_CTX_EXECUTION_DATE=2021-07-14T20:35:21.024125+00:00
+AIRFLOW_CTX_DAG_RUN_ID=manual__2021-07-14T20:35:21.024125+00:00
+[2021-07-14 20:35:32,956] {crypto.py:82} WARNING - empty cryptography key - values will not be stored encrypted.
+[2021-07-14 20:35:32,958] {base.py:78} INFO - Using connection to: id: mysql_test_conn. Host: 172.17.0.1, Port: 3310, Schema: project_bdt, Login: root, Password: ***, extra: {}
+[2021-07-14 20:35:34,637] {python.py:151} INFO - Done. Returned value was: None
+[2021-07-14 20:35:34,680] {taskinstance.py:1211} INFO - Marking task as SUCCESS. dag_id=MySQL, task_id=final_create_3, execution_date=20210714T203521, start_date=20210714T203532, end_date=20210714T203534
+[2021-07-14 20:35:34,795] {taskinstance.py:1265} INFO - 1 downstream tasks scheduled from follow-on schedule check
+[2021-07-14 20:35:34,827] {local_task_job.py:151} INFO - Task exited with return code 0

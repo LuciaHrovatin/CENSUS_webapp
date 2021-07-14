@@ -1,9 +1,7 @@
 import csv
 import json
 import uuid
-from tempfile import NamedTemporaryFile
 from typing import Optional
-
 import numpy as np
 import pandas as pd
 from airflow import DAG
@@ -41,8 +39,6 @@ def delete_column(filename: str, cols_to_remove: list):
     del_col = [i for i in cols_to_remove if i in data.columns]
     data = data.drop(del_col, inplace=False, axis=1)
     data.to_csv(filename, index=None)
-
-
 
 # -----------------------------------------CLEANING ROWS ----------------------------------
 
@@ -135,7 +131,6 @@ def list_arg(filename: str):
     with open(filename, "r") as f:
         rows = json.load(f)
         return rows
-
 
 # ---------------------------------------------DELETE NOT RELEVANT INDICATORS-----------------------------------------
 
@@ -241,7 +236,8 @@ def lst_tables(filename: str) -> tuple:
         data_set = "CREATE TABLE `" + name + "` ( " + ", \n".join(table_to_be) + primary_key
     return name, data_set
 
-## DAG
+
+# ------------------------------------------- DAG -----------------------------------------------
 
 default_args = {
     'owner': 'airflow',
@@ -324,7 +320,7 @@ t8 = PythonOperator(
     task_id='del_col3',
     python_callable=delete_column,
     op_kwargs={'filename': "dataset/carcom16.csv",
-               'cols_to_remove': ["perc", "parent", "ETA", "cit", "isco", "aningr", "motiv",
+               'cols_to_remove': ["PERC", "parent", "ETA", "cit", "isco", "aningr", "motiv",
                                   "tipolau", "votoedu", "suedu", "selode", "annoedu", "tipodip",
                                   "univer", "apqual", "asnonoc", "NASCAREA", "nace", "nordp",
                                   "motent", "annoenus", "NASCREG", "ACOM5", "QUAL", "ISCO",
@@ -337,7 +333,7 @@ t9 = PythonOperator(
     task_id='del_col4',
     python_callable=delete_column,
     op_kwargs={'filename': "dataset/carcom14.csv",
-               'cols_to_remove': ["perc", "AREA5", "parent", "ETA", "cit", "isco", "aningr",
+               'cols_to_remove': ["PERC", "AREA5", "parent", "ETA", "cit", "isco", "aningr",
                                   "motiv", "tipolau", "VOTOEDU", "SUEDU", "selode", "annoedu",
                                   "tipodip", "univer", "apqual", "asnonoc", "NASCAREA", "nace",
                                   "nordp", "motent", "annoenus", "NASCREG", "ACOM5",
@@ -388,24 +384,16 @@ def lst_tables(filename: str) -> tuple:
     data = pd.read_csv(filename)
     table_to_be = []
     cols = [str(i) for i in data.columns.tolist()]
-    primary_key = 0
     for i in range(len(cols)):
         pointer = data.loc[0, cols[i]]
-        # if cols[i].lower() == "id":
-        #     primary_key = ", PRIMARY KEY(`{}`))".format(cols[i].lower())
         if isinstance(pointer, str):
             table_to_be.append("`" + cols[i].lower() + "` VARCHAR(255) NOT NULL")
         elif isinstance(pointer, np.int64):
             table_to_be.append("`" + cols[i].lower() + "` INT NOT NULL")
         elif isinstance(pointer, float):
             table_to_be.append("`" + cols[i].lower() + "` FLOAT NOT NULL")
-    # if not primary_key:
-    #     data_set = "CREATE TABLE `" + name + "` ( `id` int NOT NULL AUTO_INCREMENT, \n" + \
-    #                ", \n".join(table_to_be) + ", PRIMARY KEY(`id`))"
-    # else:
     data_set = "CREATE TABLE `" + name + "` ( " + ", \n".join(table_to_be) + ")"
     return name, data_set
-
 
 
 
@@ -418,7 +406,7 @@ def create_db(filename: str, **kwargs):
 def store_data(filename: str, **kwargs):
     res = lst_tables(filename)
     mysql_hook = MySqlHook(mysql_conn_id='mysql_test_conn', schema="project_bdt")
-    with open(filename, "r", newline= '') as f:
+    with open(filename, "r", newline='') as f:
         results = csv.reader(f)
         next(results, None) # skip the header
         mysql_hook.insert_rows(table=res[0], rows=results)

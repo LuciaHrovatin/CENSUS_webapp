@@ -1,0 +1,37 @@
+[2021-07-14 20:33:07,372] {taskinstance.py:896} INFO - Dependencies all met for <TaskInstance: MySQL.irpef_1 2021-07-14T20:32:22.335444+00:00 [queued]>
+[2021-07-14 20:33:07,563] {taskinstance.py:896} INFO - Dependencies all met for <TaskInstance: MySQL.irpef_1 2021-07-14T20:32:22.335444+00:00 [queued]>
+[2021-07-14 20:33:07,601] {taskinstance.py:1087} INFO - 
+--------------------------------------------------------------------------------
+[2021-07-14 20:33:07,693] {taskinstance.py:1088} INFO - Starting attempt 1 of 2
+[2021-07-14 20:33:07,728] {taskinstance.py:1089} INFO - 
+--------------------------------------------------------------------------------
+[2021-07-14 20:33:08,359] {taskinstance.py:1107} INFO - Executing <Task(PythonOperator): irpef_1> on 2021-07-14T20:32:22.335444+00:00
+[2021-07-14 20:33:08,367] {standard_task_runner.py:52} INFO - Started process 5005 to run task
+[2021-07-14 20:33:08,392] {standard_task_runner.py:76} INFO - Running: ['***', 'tasks', 'run', 'MySQL', 'irpef_1', '2021-07-14T20:32:22.335444+00:00', '--job-id', '57', '--pool', 'default_pool', '--raw', '--subdir', 'DAGS_FOLDER/third_dag.py', '--cfg-path', '/tmp/tmpwtpmbsol', '--error-file', '/tmp/tmp00itxnvj']
+[2021-07-14 20:33:08,398] {standard_task_runner.py:77} INFO - Job 57: Subtask irpef_1
+[2021-07-14 20:33:08,711] {logging_mixin.py:104} INFO - Running <TaskInstance: MySQL.irpef_1 2021-07-14T20:32:22.335444+00:00 [running]> on host bf600838264e
+[2021-07-14 20:33:09,044] {taskinstance.py:1302} INFO - Exporting the following env vars:
+AIRFLOW_CTX_DAG_OWNER=user
+AIRFLOW_CTX_DAG_ID=MySQL
+AIRFLOW_CTX_TASK_ID=irpef_1
+AIRFLOW_CTX_EXECUTION_DATE=2021-07-14T20:32:22.335444+00:00
+AIRFLOW_CTX_DAG_RUN_ID=manual__2021-07-14T20:32:22.335444+00:00
+[2021-07-14 20:33:09,049] {crypto.py:82} WARNING - empty cryptography key - values will not be stored encrypted.
+[2021-07-14 20:33:09,051] {base.py:78} INFO - Using connection to: id: mysql_test_conn. Host: 172.17.0.1, Port: 3310, Schema: project_bdt, Login: root, Password: ***, extra: {}
+[2021-07-14 20:33:09,083] {taskinstance.py:1501} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.6/site-packages/airflow/models/taskinstance.py", line 1157, in _run_raw_task
+    self._prepare_and_execute_task_with_callbacks(context, task)
+  File "/home/airflow/.local/lib/python3.6/site-packages/airflow/models/taskinstance.py", line 1331, in _prepare_and_execute_task_with_callbacks
+    result = self._execute_task(context, task_copy)
+  File "/home/airflow/.local/lib/python3.6/site-packages/airflow/models/taskinstance.py", line 1361, in _execute_task
+    result = task_copy.execute(context=context)
+  File "/home/airflow/.local/lib/python3.6/site-packages/airflow/operators/python.py", line 150, in execute
+    return_value = self.execute_callable()
+  File "/home/airflow/.local/lib/python3.6/site-packages/airflow/operators/python.py", line 161, in execute_callable
+    return self.python_callable(*self.op_args, **self.op_kwargs)
+  File "/opt/airflow/dags/third_dag.py", line 71, in label_irpef
+    cursor = conn.cursor(buffered=True)
+TypeError: cursor() got an unexpected keyword argument 'buffered'
+[2021-07-14 20:33:09,099] {taskinstance.py:1551} INFO - Marking task as UP_FOR_RETRY. dag_id=MySQL, task_id=irpef_1, execution_date=20210714T203222, start_date=20210714T203307, end_date=20210714T203309
+[2021-07-14 20:33:09,222] {local_task_job.py:151} INFO - Task exited with return code 1

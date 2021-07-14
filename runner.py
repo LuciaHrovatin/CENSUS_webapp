@@ -122,7 +122,7 @@ print("done")
 #saver.check_database("project_bdt")
 #
 # # Create table
-saver.create_table(lst_tables("dataset/Qualita_vita.csv"))
+#saver.create_table(lst_tables("dataset/Qualita_vita.csv"))
 # saver.create_table(lst_tables("dataset/carcom16.csv"))
 # saver.create_table(lst_tables("dataset/carcom14.csv"))
 # saver.create_table(lst_tables("dataset/rfam14.csv"))
