@@ -10,6 +10,8 @@ from datetime import timedelta, datetime
 from airflow.hooks.mysql_hook import MySqlHook
 
 # Functions
+from airflow.sensors.external_task import ExternalTaskSensor
+
 
 def rename_column(filename: str):
     """
@@ -249,7 +251,7 @@ default_args = {
     'trigger_rule': 'all_success',
 }
 
-dag2 = DAG('bdt_2021_ETL',
+dag2 = DAG('etl_phase',
           default_args=default_args,
           description='ETL files',
           schedule_interval=None
@@ -505,7 +507,13 @@ py12 = PythonOperator(
     op_kwargs={'filename': 'dataset/carcom16.csv'}
 )
 
+external_dag_1 = ExternalTaskSensor(
+    task_id='dag_1_completed_status',
+    external_dag_id='ingestion_phase',
+    external_task_id=None,  # wait for whole DAG to complete
+    allowed_states=['success'],
+    check_existence=True)
 
 
 # Sequence of the DAG
-t1 >> [t2, t8, t9, t10, t11, t12, t13] >> py1 >> py2 >> py3 >> py4 >> py5 >> py6 >> py7 >> py8 >> py9 >> py10 >> py11 >> py12
+external_dag_1 >> t1 >> [t2, t8, t9, t10, t11, t12, t13] >> py1 >> py2 >> py3 >> py4 >> py5 >> py6 >> py7 >> py8 >> py9 >> py10 >> py11 >> py12

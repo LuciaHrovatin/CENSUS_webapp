@@ -37,8 +37,6 @@ def download_file(url: str, target_path: str, file_to_keep: Optional[list] = Non
                 shutil.rmtree('dataset/CSV')
         else:
             with ZipFile(target_path, 'r') as zipObj:
-                # Extract all the contents of zip file in current directory
-                # zipObj.extractall(path='./dataset')
                 for i in file_to_keep:
                     zipObj.extract(i, path='dataset')
         os.remove(target_path)
@@ -46,18 +44,17 @@ def download_file(url: str, target_path: str, file_to_keep: Optional[list] = Non
 
 default_args = {
     'owner': 'airflow',
-    'depends_on_past': True,
+    'depends_on_past': False,
     'retries': 1,
     'retry_delay': timedelta(minutes=1),
-    "start_date": datetime.now(),
-    'wait_for_downstream': True
+    "start_date": datetime.now()
 }
 
-dag = DAG('bdt_2021',
-          default_args=default_args,
-          description='Files download',
-          schedule_interval=None
-          )
+dag1 = DAG('ingestion_phase',
+           default_args=default_args,
+           description='Files download',
+           schedule_interval=None
+           )
 
 
 
@@ -67,7 +64,7 @@ t01 = PythonOperator(
     op_kwargs={'url': "https://www.bancaditalia.it/statistiche/tematiche/indagini-famiglie-imprese/bilanci-famiglie/distribuzione-microdati/documenti/ind16_ascii.zip",
         'target_path': "bancaditalia_dataset_16.zip",
         'file_to_keep': ["carcom16.csv", "rfam16.csv", "rper16.csv"]},
-    dag=dag
+    dag=dag1
 )
 
 t02 = PythonOperator(
@@ -77,7 +74,7 @@ t02 = PythonOperator(
         'target_path':"bancaditalia_dataset_14.zip",
         'file_to_keep': ["carcom14.csv", "rfam14.csv", "rper14.csv"],
         'multistep':True},
-    dag=dag
+    dag=dag1
 )
 
 t03 = PythonOperator(
@@ -85,8 +82,8 @@ t03 = PythonOperator(
     python_callable=download_file,
     op_kwargs={
         'url': "https://github.com/IlSole24ORE/QDV/raw/main/20201214_QDV2020_001.csv",
-        'target_path':"dataset/Qualita_vita.csv"},
-    dag=dag
+        'target_path': "dataset/Qualita_vita.csv"},
+    dag=dag1
 )
 
 

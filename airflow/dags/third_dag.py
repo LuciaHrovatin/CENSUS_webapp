@@ -1,23 +1,20 @@
 from errno import errorcode
 
 from airflow import DAG
-from airflow.operators.bash_operator import BashOperator
 from airflow.operators.python_operator import PythonOperator
 from datetime import datetime, timedelta
 from airflow.hooks.mysql_hook import MySqlHook
-import pandas as pd
+from airflow.sensors.external_task import ExternalTaskSensor
+
 
 default_args = {
-    'owner': 'user',
+    'owner': 'airflow',
     'depends_on_past': False,
     'start_date': datetime.now(),
-    'email_on_failure': False,
-    'email_on_retry': False,
     'retries': 1,
-    'retry_delay': timedelta(minutes=1),
-}
+    'retry_delay': timedelta(minutes=1)}
 
-dag_mySQL = DAG('MySQL', schedule_interval=None, default_args=default_args)
+dag3 = DAG('mySQL_phase', schedule_interval=None, default_args=default_args)
 
 
 def join_SQL(table_1: str, table_2: str, table_name: str):
@@ -89,7 +86,7 @@ def label_irpef(table_name: str):
 
 t1 = PythonOperator(
     task_id='final_create',
-    dag=dag_mySQL,
+    dag=dag3,
     python_callable=join_SQL,
     op_kwargs={'table_1': "carcom16",
                'table_2': "rfam16",
@@ -98,7 +95,7 @@ t1 = PythonOperator(
 
 t2 = PythonOperator(
     task_id='final_create_2',
-    dag=dag_mySQL,
+    dag=dag3,
     python_callable=join_SQL,
     op_kwargs={'table_1': "carcom14",
                'table_2': "rfam14",
@@ -107,7 +104,7 @@ t2 = PythonOperator(
 
 t3 = PythonOperator(
     task_id='final_create_3',
-    dag=dag_mySQL,
+    dag=dag3,
     python_callable=join_SQL,
     op_kwargs={'table_1': "carcom16",
                'table_2': "rper16",
@@ -116,7 +113,7 @@ t3 = PythonOperator(
 
 t4 = PythonOperator(
     task_id='final_create_4',
-    dag=dag_mySQL,
+    dag=dag3,
     python_callable=join_SQL,
     op_kwargs={'table_1': "carcom14",
                'table_2': "rper14",
@@ -125,7 +122,7 @@ t4 = PythonOperator(
 
 t5 = PythonOperator(
     task_id='final_db_1',
-    dag=dag_mySQL,
+    dag=dag3,
     python_callable=union_SQL,
     op_kwargs={'table_1': "data_2016",
                'table_2': "data_2014",
@@ -134,7 +131,7 @@ t5 = PythonOperator(
 
 t6 = PythonOperator(
     task_id='final_db_2',
-    dag=dag_mySQL,
+    dag=dag3,
     python_callable=union_SQL,
     op_kwargs={'table_1': "data_2016_fam",
                'table_2': "data_2014_fam",
@@ -144,17 +141,24 @@ t6 = PythonOperator(
 
 t7 = PythonOperator(
     task_id='irpef_1',
-    dag=dag_mySQL,
+    dag=dag3,
     python_callable=label_irpef,
     op_kwargs={'table_name': "final"}
 )
 
 t8 = PythonOperator(
     task_id='irpef_2',
-    dag=dag_mySQL,
+    dag=dag3,
     python_callable=label_irpef,
     op_kwargs={'table_name': "final_individual"}
 )
 
+external_dag_2 = ExternalTaskSensor(
+    task_id='dag_2_completed',
+    external_dag_id='etl_phase',
+    external_task_id=None,
+    allowed_states=['success'],
+    check_existence=True)
 
-t1 >> t2 >> t3 >> t4 >> t5 >> t6 >> t7 >> t8
+
+external_dag_2 >> t1 >> t2 >> t3 >> t4 >> t5 >> t6 >> t7 >> t8

@@ -1,7 +1,7 @@
 import datetime
 import numpy as np
 import redis
-from training_classifier import feature_names
+#from training_classifier import feature_names
 
 
 def redis_prediction(X_test, key_tree: str) -> int:
@@ -15,7 +15,7 @@ def redis_prediction(X_test, key_tree: str) -> int:
         # iterate over each feature in the test record to build up the
         # feature:value pairs
         for j, x_val in enumerate(x):
-            cmd += "{}:{},".format(feature_names[j], x_val)
+            cmd += "{}:{},"#.format(feature_names[j], x_val)
 
         cmd = cmd[:-1]
         r_pred[i] = int(r.execute_command(cmd))

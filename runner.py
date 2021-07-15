@@ -1,5 +1,3 @@
-from __future__ import absolute_import, annotations
-from collector import *
 
 # QUALITA VITA
 # rename_column("dataset/Qualita_vita.csv")
@@ -110,15 +108,17 @@ from collector import *
 
 # --------------------------------------------- CONNECTION WITH MYSQL -------------------------------------------------
 #password = "luca0405" # change with your password
-from saver import MySQLManager
+from celery.worker.state import requests
 
-saver = MySQLManager(host="localhost",
-                       port=3306,
-                       user="root",
-                       password="Pr0tett0.98",
-                       database="project_bdt")
-
-print("done")
+# from saver import MySQLManager
+#
+# saver = MySQLManager(host="localhost",
+#                        port=3306,
+#                        user="root",
+#                        password="Pr0tett0.98",
+#                        database="project_bdt")
+#
+# print("done")
 #saver.check_database("project_bdt")
 #
 # # Create table
@@ -163,10 +163,19 @@ print("done")
 #backup.set_backup()
 
 
+import requests
 
+# Authentication
+url = "http://localhost:8080/api/v1/pools"
+headers = {'user': 'airflow:airflow'}
+r = requests.get(url, auth=('airflow', 'airflow'))
+print(r)
+print("done")
 
-
-
-
+# Trigger the pipeline DAG
+url = 'http://localhost:8080/api/v1/dags/ingestion_phase/dagRuns'
+headers = {'Content-Type': 'application/json', 'Cache-Control': 'no-cache'}
+r = requests.post(url, headers=headers, data="{}", auth=('airflow', 'airflow'))
+print(r)
 
 
