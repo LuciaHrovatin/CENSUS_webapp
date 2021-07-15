@@ -50,7 +50,7 @@ import os
 # lst_index = list_arg("dataset/indicators.json")
 # del_indicators("dataset/Qualita_vita.csv")
 #
-# # --------------------------------------------- DELETE "UNITA' di MISURA" -----------------------------------------------
+
 # # Delete the column of "unità di misura"
 # delete_column("dataset\Qualita_vita.csv", ["UNITA' DI MISURA"])
 
