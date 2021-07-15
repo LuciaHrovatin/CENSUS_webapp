@@ -57,33 +57,6 @@ def union_SQL(table_1: str, table_2: str, table_name: str):
             print(err.msg)
     cursor.close()
 
-def label_irpef(table_name: str):
-    """
-    Creates census classes following the 5 Irpef categories.
-    :param table_name: Name of the table whose census data will be modified
-    :return: modified table having the attribute "Y" standardized
-    """
-    mysql = MySqlHook(mysql_conn_id='mysql_test_conn', schema="project_bdt")
-    conn = mysql.get_conn()
-    cursor = conn.cursor()
-    try:
-        query = " UPDATE {} SET {} = CASE" \
-                " WHEN {} < 15000 THEN '1'" \
-                " WHEN {} BETWEEN 15001 AND 22000 THEN '2'" \
-                " WHEN {} BETWEEN 22001 AND 28000 THEN '3'" \
-                " WHEN {} BETWEEN 28001 AND 35000 THEN '4'" \
-                " WHEN {} BETWEEN 35001 AND 42000 THEN '5'" \
-                " WHEN {} BETWEEN 42001 AND 49000 THEN '6'"\
-                " WHEN {} BETWEEN 49001 AND 55000 THEN '7'" \
-                " WHEN {} BETWEEN 55001 AND 75000 THEN '8'" \
-                " ELSE '9'"\
-                " END".format(table_name, "y", "y", "y", "y", "y", "y", "y", "y", "y")
-        cursor.execute(query)
-    except mysql.connector.Error as err:
-        print(err.msg)
-    cursor.close()
-
-
 t1 = PythonOperator(
     task_id='final_create',
     dag=dag3,
@@ -138,21 +111,6 @@ t6 = PythonOperator(
                'table_name': "final"}
 )
 
-
-t7 = PythonOperator(
-    task_id='irpef_1',
-    dag=dag3,
-    python_callable=label_irpef,
-    op_kwargs={'table_name': "final"}
-)
-
-t8 = PythonOperator(
-    task_id='irpef_2',
-    dag=dag3,
-    python_callable=label_irpef,
-    op_kwargs={'table_name': "final_individual"}
-)
-
 external_dag_2 = ExternalTaskSensor(
     task_id='dag_2_completed',
     external_dag_id='etl_phase',
@@ -161,4 +119,4 @@ external_dag_2 = ExternalTaskSensor(
     check_existence=True)
 
 
-external_dag_2 >> t1 >> t2 >> t3 >> t4 >> t5 >> t6 >> t7 >> t8
+external_dag_2 >> t1 >> t2 >> t3 >> t4 >> t5 >> t6
