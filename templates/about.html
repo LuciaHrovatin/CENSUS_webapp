@@ -2,6 +2,7 @@
 {% block content %}
     <h1 style="color:#17a2b8;"><b>C.E.N.S.U.S<b/></h1>
     <h3 style="color:#17a2b8;"><i>Calculator of Earnings Nationally Scored via User Specifics</i></h3>
+    <br>
         <h5>CENSUS is a web application, developed using Flask framework, that aims at informing the user about his/her income bracket, predicted
         on the basis of some of his/her census data.<br>
         We are Lucia and Elisa, two Data Science students at <i>University of Trento</i>. This project has been developed
@@ -12,22 +13,24 @@
         <ul style="color:#787878;line-height:160%;">
             <li>age (more precisely year of birth)</li>
             <li>gender (optional, the user can not specify it)</li>
-            <li>province of residence</li>
+            <li>province of residence (<a href= "https://www.istat.it/it/archivio/6789">ISTAT code </a>)</li>
             <li>number of family component</li>
-            <li>marital status</li>
+            <li>marital status (single, cohabitee, married, widow, separated, divorced)</li>
         </ul>
         </h5>
+        <br>
     <div class="content-section">
-        <h5>The prediction is made possible by a Random Forest algorithm feed by the data entered by users. Such algorithm has been trained
-        on some big dataset from <i>Banca d'Italia</i> and <i>Sole 24 Ore</i>:
+        <h5>The prediction is made possible by a Random Forest algorithm fed with the entered data. Such algorithm has been trained
+        on some big <i>Banca d'Italia</i> and <i>Sole 24 Ore</i> datasets:
 
         <br>
         <ul style="color:#787878;line-height:160%;">
-            <li><a href="https://www.bancaditalia.it/statistiche/tematiche/indagini-famiglie-imprese/bilanci-famiglie/distribuzione-microdati/ricerca/ricerca.html?min_anno_pubblicazione=2018&max_anno_pubblicazione=2018">Indagine sul 2018</a></li>
-            <li><a href="https://www.bancaditalia.it/statistiche/tematiche/indagini-famiglie-imprese/bilanci-famiglie/distribuzione-microdati/ricerca/ricerca.html?min_anno_pubblicazione=2018&max_anno_pubblicazione=2018">Indagine sul 2016</a></li>
-            <li><a href="https://github.com/IlSole24ORE/QDV">Qualità della vita</a></li>
+            <li>Banca d'Italia, Indagine sui bilanci delle famiglie italiane, <a href="https://www.bancaditalia.it/statistiche/tematiche/indagini-famiglie-imprese/bilanci-famiglie/distribuzione-microdati/ricerca/ricerca.html?min_anno_pubblicazione=2018&max_anno_pubblicazione=2018">Indagine sul 2018</a></li>
+            <li>Banca d'Italia, Indagine sui bilanci delle famiglie italiane, <a href="https://www.bancaditalia.it/statistiche/tematiche/indagini-famiglie-imprese/bilanci-famiglie/distribuzione-microdati/ricerca/ricerca.html?min_anno_pubblicazione=2018&max_anno_pubblicazione=2018">Indagine sul 2016</a></li>
+            <li><a href="https://lab24.ilsole24ore.com/qualita-della-vita/">Qualità della vita</a> (The <a href="https://github.com/IlSole24ORE/QDV">dataset</a> is protected by Creative Commons Licence CC-BY-NC-4.0.)</li>
         </ul>
         </h5>
         <h4>Source code of the project is available on <a href="https://github.com/elypaolazz/BDT-Project">GitHub</a> </h4>
+        <legen>Licences  </legend>
     </div>
 {% endblock content %}
