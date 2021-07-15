@@ -4,7 +4,7 @@ from saver import MySQLManager
 from classifier import redis_training
 import os
 
-# QUALITA VITA
+
 # rename_column("dataset/Qualita_vita.csv")
 # delete_column("dataset/Qualita_vita.csv", ['CODICE PROVINCIA ISTAT (STORICO)', 'DENOMINAZIONE CORRENTE', 'FONTE ORIGINALE'])
 #
