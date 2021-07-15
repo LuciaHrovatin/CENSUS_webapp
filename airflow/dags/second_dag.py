@@ -9,9 +9,6 @@ from airflow.operators.python_operator import PythonOperator
 from datetime import timedelta, datetime
 from airflow.hooks.mysql_hook import MySqlHook
 
-# Functions
-from airflow.sensors.external_task import ExternalTaskSensor
-
 
 def rename_column(filename: str):
     """
@@ -280,43 +277,43 @@ t2 = PythonOperator(
     dag=dag2
 )
 
-# t3 = PythonOperator(
-#     task_id='save_indicators',
-#     python_callable=sub_table,
-#     op_kwargs={'filename': "dataset/Qualita_vita.csv",
-#                'col_name': "INDEXES"},
-#     dag=dag2
-# )
-#
-# t4 = PythonOperator(
-#     task_id='clean_rows1',
-#     python_callable=clean_rows,
-#     op_kwargs={'filename': "dataset/Qualita_vita.csv"},
-#     dag=dag2
-# )
-#
-# t5 = PythonOperator(
-#     task_id='clean_rows2',
-#     python_callable=clean_rows,
-#     op_kwargs={'filename': "dataset/Qualita_vita.csv",
-#                'ind': True},
-#     dag=dag2
-# )
-#
-# t6 = PythonOperator(
-#     task_id='del_indicators',
-#     python_callable=del_indicators,
-#     op_kwargs={'filename': "dataset/Qualita_vita.csv"},
-#     dag=dag2
-# )
-#
-# t7 = PythonOperator(
-#     task_id='del_col2',
-#     python_callable=delete_column,
-#     op_kwargs={'filename': "dataset/Qualita_vita.csv",
-#                'cols_to_remove': ["UNITA' DI MISURA"]},
-#     dag=dag2
-# )
+t3 = PythonOperator(
+    task_id='save_indicators',
+    python_callable=sub_table,
+    op_kwargs={'filename': "dataset/Qualita_vita.csv",
+               'col_name': "INDEXES"},
+    dag=dag2
+)
+
+t4 = PythonOperator(
+    task_id='clean_rows1',
+    python_callable=clean_rows,
+    op_kwargs={'filename': "dataset/Qualita_vita.csv"},
+    dag=dag2
+)
+
+t5 = PythonOperator(
+    task_id='clean_rows2',
+    python_callable=clean_rows,
+    op_kwargs={'filename': "dataset/Qualita_vita.csv",
+               'ind': True},
+    dag=dag2
+)
+
+t6 = PythonOperator(
+    task_id='del_indicators',
+    python_callable=del_indicators,
+    op_kwargs={'filename': "dataset/Qualita_vita.csv"},
+    dag=dag2
+)
+
+t7 = PythonOperator(
+    task_id='del_col2',
+    python_callable=delete_column,
+    op_kwargs={'filename': "dataset/Qualita_vita.csv",
+               'cols_to_remove': ["UNITA' DI MISURA"]},
+    dag=dag2
+)
 
 t8 = PythonOperator(
     task_id='del_col3',
@@ -507,13 +504,7 @@ py12 = PythonOperator(
     op_kwargs={'filename': 'dataset/carcom16.csv'}
 )
 
-external_dag_1 = ExternalTaskSensor(
-    task_id='dag_1_completed_status',
-    external_dag_id='ingestion_phase',
-    external_task_id=None,  # wait for whole DAG to complete
-    allowed_states=['success'],
-    check_existence=True)
 
 
 # Sequence of the DAG
-external_dag_1 >> t1 >> [t2, t8, t9, t10, t11, t12, t13] >> py1 >> py2 >> py3 >> py4 >> py5 >> py6 >> py7 >> py8 >> py9 >> py10 >> py11 >> py12
+t1 >> [t2, t8, t9, t10, t11, t12, t13] >> t3 >> t4 >> t5 >> t6 >> t7 >> py1 >> py2 >> py3 >> py4 >> py5 >> py6 >> py7 >> py8 >> py9 >> py10 >> py11 >> py12

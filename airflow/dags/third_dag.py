@@ -1,10 +1,8 @@
 from errno import errorcode
-
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 from datetime import datetime, timedelta
 from airflow.hooks.mysql_hook import MySqlHook
-from airflow.sensors.external_task import ExternalTaskSensor
 
 
 default_args = {
@@ -111,12 +109,4 @@ t6 = PythonOperator(
                'table_name': "final"}
 )
 
-external_dag_2 = ExternalTaskSensor(
-    task_id='dag_2_completed',
-    external_dag_id='etl_phase',
-    external_task_id=None,
-    allowed_states=['success'],
-    check_existence=True)
-
-
-external_dag_2 >> t1 >> t2 >> t3 >> t4 >> t5 >> t6
+t1 >> t2 >> t3 >> t4 >> t5 >> t6

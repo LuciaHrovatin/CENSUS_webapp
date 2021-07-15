@@ -25,7 +25,7 @@ class MySQLManager:
         """
         cursor = self.connection.cursor()
         try:
-            query = "ALTER TABLE `{}` CHANGE COLUMN `{}` `{}` INT NOT NULL AFTER`{}`;".format(table_name, col_name_1, col_name_1, col_name_2)
+            query = "ALTER TABLE {} CHANGE COLUMN {} {} INT NOT NULL AFTER {};".format(table_name, col_name_1, col_name_1, col_name_2)
             cursor.execute(query)
         except mysql.connector.Error as err:
             if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:

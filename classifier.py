@@ -12,10 +12,10 @@ def redis_training(table: str, saver: MySQLManager, case: int, sex: Optional[boo
 
     y_train = np.array([x for x in df.iloc[:, df.shape[1] - 1]])
 
-    columns_to_exclude = ["nquest", "nord", "y"]
+    columns_to_exclude = [0, 2, 7]
 
     if sex:
-        columns_to_exclude.append("sex")
+        columns_to_exclude.append(3)
 
     X_train = df.drop(columns_to_exclude, axis=1)
 
@@ -59,7 +59,7 @@ def redis_training(table: str, saver: MySQLManager, case: int, sex: Optional[boo
             forrest_cmd.write(cmd)
 
     # execute command in Redis
-    r = redis.Redis("localhost", 6380)
+    r = redis.StrictRedis(host="localhost", port=6380)
     r.execute_command(forrest_cmd.getvalue())
 
 # choosing the best max_depth
@@ -70,7 +70,7 @@ def redis_training(table: str, saver: MySQLManager, case: int, sex: Optional[boo
 
 def redis_prediction(x_to_predict, key_tree: str) -> int:
     feature_names = x_to_predict.columns.values
-    r = redis.StrictRedis('localhost', 6380)
+    r = redis.StrictRedis(host="localhost", port=6380)
     r_pred = np.full(len(x_to_predict), -1, dtype=int)
 
     for i, x in enumerate(x_to_predict):
@@ -114,7 +114,7 @@ def random_forest(ncomp: int, sex: int, age: int, statciv: int, place: int) -> i
     :return: predicted Irpef income group
     """
 
-    saver = MySQLManager(host="172.17.0.1",
+    saver = MySQLManager(host="localhost",
                          port=3310,
                          user="root",
                          password="password",
