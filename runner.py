@@ -55,21 +55,21 @@ import os
 # delete_column("dataset\Qualita_vita.csv", ["UNITA' DI MISURA"])
 
 
-# for dag_name in ["ingestion_phase", "etl_phase", "mySQL_phase"]:
-#     url = 'http://localhost:8080/api/v1/dags/'+dag_name+'/dagRuns'
-#     headers = {'Content-Type': 'application/json', 'Cache-Control': 'no-cache'}
-#     r = requests.post(url, headers=headers, data="{}", auth=('airflow', 'airflow'))
-#     run = True
-#     allowed_state = 'success'
-#     while run:
-#         url = 'http://localhost:8080/api/v1/dags/'+dag_name+'/dagRuns'
-#         r = requests.get(url, auth=('airflow', 'airflow'))
-#         result = r.json()
-#         for entry in result["dag_runs"]:
-#             if entry["state"] == allowed_state:
-#                 run = False
-#         else:
-#             time.sleep(20)
+for dag_name in ["ingestion_phase", "etl_phase", "mySQL_phase"]:
+    url = 'http://localhost:8080/api/v1/dags/'+dag_name+'/dagRuns'
+    headers = {'Content-Type': 'application/json', 'Cache-Control': 'no-cache'}
+    r = requests.post(url, headers=headers, data="{}", auth=('airflow', 'airflow'))
+    run = True
+    allowed_state = 'success'
+    while run:
+        url = 'http://localhost:8080/api/v1/dags/'+dag_name+'/dagRuns'
+        r = requests.get(url, auth=('airflow', 'airflow'))
+        result = r.json()
+        for entry in result["dag_runs"]:
+            if entry["state"] == allowed_state:
+                run = False
+        else:
+            time.sleep(20)
 
 cursor_Mysql = MySQLManager(host="localhost",
                             port=3310,
