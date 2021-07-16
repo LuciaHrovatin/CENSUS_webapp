@@ -15,11 +15,11 @@ def number_regions(filename: str, province: str) -> int:
             "Piemonte": 1,
             "Valle d'Aosta": 2,
             "Lombardia": 3,
-            "Trentino": 4,
+            "Trentino-Alto Adige": 4,
             "Veneto": 5,
-            "Friuli": 6,
+            "Friuli-Venezia Giulia": 6,
             "Liguria": 7,
-            "Emilia Romagna": 8,
+            "Emilia-Romagna": 8,
             "Toscana": 9,
             "Umbria": 10,
             "Marche": 11,
@@ -36,5 +36,4 @@ def number_regions(filename: str, province: str) -> int:
         for region in data:
             for prov in data[region]:
                 if province in prov["nome"]:
-                    region = region.split("-")[0]
                     return regions_n[region]

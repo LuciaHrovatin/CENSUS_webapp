@@ -1,3 +1,4 @@
+import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
 from io import StringIO
@@ -28,7 +29,9 @@ def redis_training(table: str, saver: MySQLManager, case: int, sex: Optional[boo
     t_feature = cl_tree.tree_.feature
     t_threshold = cl_tree.tree_.threshold
     t_value = cl_tree.tree_.value
-    feature_names = df.columns.values
+
+    feature_names = X_train.columns.values
+
 
     # create a buffer to build the Redis command
     forrest_cmd = StringIO()
@@ -69,7 +72,7 @@ def redis_training(table: str, saver: MySQLManager, case: int, sex: Optional[boo
 #     print(cl_tree.score(X_test, y_test), i)
 
 def redis_prediction(x_to_predict, key_tree: str) -> int:
-    feature_names = x_to_predict.columns.values
+    feature_names = list(range(0, len(x_to_predict[0])))
     r = redis.StrictRedis(host="localhost", port=6380)
     r_pred = np.full(len(x_to_predict), -1, dtype=int)
 
