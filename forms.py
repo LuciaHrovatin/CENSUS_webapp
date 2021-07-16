@@ -1,24 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, IntegerField, RadioField, SelectField, DateField
-from wtforms.validators import DataRequired, Length, Email, EqualTo
+from wtforms.validators import DataRequired, Length, EqualTo
 
-class RegistrationForm(FlaskForm):
-    username = StringField('Username',
-                           validators=[DataRequired(), Length(min=2, max=20)])
-    email = StringField('Email',
-                        validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    confirm_password = PasswordField('Confirm Password',
-                                     validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('Sign Up')
-
-
-class LoginForm(FlaskForm):
-    email = StringField('Email',
-                        validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    remember = BooleanField('Remember Me')
-    submit = SubmitField('Login')
 
 years = [('2002'), ('2001'), ('2000'), ('1999'), ('1998'), ('1997'), ('1996'), ('1995'), ('1994'), ('1993'),
 ('1992'), ('1991'), ('1990'), ('1989'), ('1988'), ('1987'), ('1986'), ('1985'), ('1984'), ('1983'),
@@ -53,4 +36,4 @@ class CensusData(FlaskForm):
     residenza2 = SelectField('Provincia di residenza:', choices=province, validators=[DataRequired()])
     componenti = SelectField('Numero di componenti del nucleo familiare:', choices=n_componenti, validators=[DataRequired()])
     stato_civile = RadioField('Stato civile:', choices=stato, default='celibe/nubile', validators=[DataRequired()])
-    submit = SubmitField('Predici fascia IRPEF')
+    submit = SubmitField('Predici fascia di reddito')
