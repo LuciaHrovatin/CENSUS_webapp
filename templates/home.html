@@ -4,9 +4,9 @@
         <form method="GET" action="">
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4" style="color:#17a2b8;"><b>Predizione del benessere</b></legend>
+                <legend class="border-bottom mb-4; text-center" style="color:#17a2b8; font-size: 32px;"><br><b>Predizione del benessere</b></legend><br>
                 <div class="form-group">
-                    <b>{{ form.eta.label }}</b>
+                    <b style="font-size: 18px;">{{ form.eta.label }}</b>
                     <small class="text-muted">{{ form.eta.description }}</small>
                     {{ form.eta(class_="form-control") }}
 
@@ -15,7 +15,7 @@
                     {% endfor %}
                 </div>
                 <div class="form-group">
-                <b>{{ form.genere.label }}</b>
+                <b style="font-size: 18px;">{{ form.genere.label }}</b>
                 <br>
                 <table>
                 {% for subfield in form.genere %}
@@ -33,7 +33,7 @@
                 </table>
                 </div>
                 <div class="form-group">
-                    <b>{{ form.residenza2.label }}</b>
+                    <b style="font-size: 18px;">{{ form.residenza2.label }}</b>
                     <small class="text-muted">{{ form.residenza2.description }}</small>
                     {{ form.residenza2(class_="form-control") }}
 
@@ -42,7 +42,7 @@
                     {% endfor %}
                 </div>
                 <div class="form-group">
-                    <b>{{ form.componenti.label }}</b>
+                    <b style="font-size: 18px;">{{ form.componenti.label }}</b>
                     <small class="text-muted">{{ form.componenti.description }}</small>
                     {{ form.componenti(class_="form-control") }}
 
@@ -51,7 +51,7 @@
                     {% endfor %}
                 </div>
                 <div class="form-group">
-                <b>{{ form.stato_civile.label }}</b>
+                <b style="font-size: 18px;">{{ form.stato_civile.label }}</b>
                 <br>
                 <table>
                 {% for subfield in form.stato_civile %}
@@ -76,11 +76,11 @@
     </div>
     <div>
         <table class="table table-bordered">
-        <thead>
+        <thead style="background-color:#17a2b8; color:white;">
         <tr class="table-active">
             <th scope="col">Anno di nascita</th>
-            <th scope="col">Genere</th>
-            <th scope="col">Residenza</th>
+            <th scope="col" style="width: 19%;">Genere</th>
+            <th scope="col" style="width: 17%;">Residenza</th>
             <th scope="col">Componenti</th>
             <th scope="col">Stato civile</th>
             <th scope="col">Predizione</th>
@@ -153,5 +153,12 @@
             </tr>
         </tbody>
         </table>
+        <br>
+        <center>
+            <h4>Spesa delle famiglie</h4>
+            <h6 style="color:#787878;">Per il consumo di beni durevoli - In euro all'anno</h6>
+            <br>
+        <img src="{{ url_for('static', filename='spese_fam.png') }}" alt="Spese famiglie italiane" width="652" height="586">
+        </center>
     </div>
 {% endblock content %}
