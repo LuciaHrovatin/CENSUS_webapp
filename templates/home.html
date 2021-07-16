@@ -112,7 +112,44 @@
             {% else %}
             <td>divorziato/a</td>
             {% endif %}
-            <td><b>{{ prob }}<b></td>
+            <td style="color:#17a2b8; font-size: 25px;"><b>{{ prob }}<b></td>
+            </tr>
+        </tbody>
+        </table>
+    </div>
+    <div>
+    <table class="table table-bordered">
+        <thead>
+        <tr class="table-active">
+            <th scope="col">Fascia di reddito di riferimento</th>
+            <th scope="col" style="width: 65%;">Predizione</th>
+
+        </tr>
+        </thead>
+        <tbody>
+            <tr>
+            <td style="color:#17a2b8; font-size: 28px;"><b>Fascia 1</b></td>
+            <td><b style="color:#17a2b8; font-size: 25px;">1</b><b style="color:#fafafa; font-size: 25px;">22</b> Reddito inferiore ai 15000 €
+            </td>
+            </tr>
+            <tr>
+            <td style="color:#17a2b8; font-size: 28px;"><b>Fascia 2</b></td>
+            <td><b style="color:#17a2b8; font-size: 25px;">2</b><b style="color:#fafafa; font-size: 25px;">22</b> Reddito compreso tra i 15001 e 22000 €<br><br>
+            <b style="color:#17a2b8; font-size: 25px;">3</b><b style="color:#fafafa; font-size: 25px;">22</b> Reddito compreso tra i 22001 e 28000 €</td>
+            </tr>
+            <tr>
+            <td style="color:#17a2b8; font-size: 28px;"><b>Fascia 3</b></td>
+            <td><b style="color:#17a2b8; font-size: 25px;">4</b><b style="color:#fafafa; font-size: 25px;">22</b> Reddito compreso tra i 28001 e 35000 €<br><br>
+            <b style="color:#17a2b8; font-size: 25px;">5</b><b style="color:#fafafa; font-size: 25px;">22</b> Reddito compreso tra i 35001 e 42000 €<br><br>
+            <b style="color:#17a2b8; font-size: 25px;">6</b><b style="color:#fafafa; font-size: 25px;">22</b> Reddito compreso tra i 42001 e 49000 €<br><br>
+            <b style="color:#17a2b8; font-size: 25px;">7</b><b style="color:#fafafa; font-size: 25px;">22</b> Reddito compreso tra i 49001 e 55000 €<br><br></td>
+            </tr>
+            <tr>
+            <td style="color:#17a2b8; font-size: 28px;"><b>Fascia 4</b></td>
+            <td><b style="color:#17a2b8; font-size: 25px;">8</b><b style="color:#fafafa; font-size: 25px;">22</b> Reddito compreso tra i 55001 e 75000 €</td>
+            </tr>
+            <td style="color:#17a2b8; font-size: 28px;"><b>Fascia 5</b></td>
+            <td><b style="color:#17a2b8; font-size: 25px;">9</b><b style="color:#fafafa; font-size: 25px;">22</b> Reddito superiore ai 75001 €</td>
             </tr>
         </tbody>
         </table>
