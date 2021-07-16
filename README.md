@@ -1,5 +1,5 @@
 # C.E.N.S.U.S 
-## Calculator of Earnings Nationally Scored via User Specifics
+## *Calculator of Earnings Nationally Scored via User Specifics*
 ___
 
 The C.E.N.S.U.S. project has been developed as final assignment of the Big Data Technologies course, offered by the University of Trento. 
@@ -14,7 +14,96 @@ Specifically, the datasets employed are:
 
 - Lab24: [Qualità della vita](https://lab24.ilsole24ore.com/qualita-della-vita/) 
 
-Whereas the Banca d’Italia offered a large amount of data, only three datasets were of interest for this project's scope: carcom, rper, rfam. Their description, along with the description of their variables, can be found on the relative site.       
+Whereas the Banca d’Italia offered a large amount of data per survey, only three datasets have been retained: **carcom**, containing the generalties of people who taken part into the survey, **rper**, individual income, and **rfam**, income per household. The variable descriptions, along with the survey items, can be found in the [Documentazione per l’utilizzo dei microdati]( https://www.bancaditalia.it/statistiche/tematiche/indagini-famiglie-imprese/bilanci-famiglie/documentazione/index.html).             
+
+## Prerequisites 
+
+In order to run this project, the following tools have been installed on your workstation: 
+- Python, preferably (3.9)[ https://www.python.org/downloads/release/python-390/] 
+- (Docker Desktop)[ https://www.docker.com/], preferably 3.5
+- (Docker Compose)[ https://docs.docker.com/compose/install/] v1.27.0 and newer
+
+Older versions of `docker-compose` do not support all features required by the `docker-compose.yml` file, so check that the minimum version requirements are satisied.
+
+## Installation 
+
+### Clone the repository 
+
+Clone this repository to a local directory typing in the command line: 
+
+ ```
+$  git clone https://github.com/elypaolazz/BDT-Project.git
+```
+
+### Environment 
+The creation of a virtual environment is highly suggested. It can be created tipying in the command line (inside the project folder): 
+
+```
+virtualenv venv
+```
+
+The command above created a virtual environment named *venv*, which can be activated as follow.  
+
+- in Unix systems:
+    ```
+    source venv
+    ```
+
+- in Windows systems:
+    ```
+    venv\Scripts\activate
+    ```
+### Requirements 
+
+In the running virtual environment, install all libraries contained in the `requirements.txt` file:
+
+```
+pip install -r requirements.txt
+
+```
+
+## Usage
+This project employs few Docker images: 
+-	the official (apache-airflow Docker)[ https://hub.docker.com/r/apache/airflow] image with a Celery Executor and using the official (Postgres)[ https://hub.docker.com/_/postgres/] as backend and (Redis)[ https://hub.docker.com/_/redis/] as message broker.
+ 
+-	the official (mysql)[ https://hub.docker.com/_/mysql] along with its web interface (phpmyadmit)[ https://hub.docker.com/_/phpmyadmin]. 
+
+-	the Docker image (shaynativ/redis-ml)[ https://hub.docker.com/r/shaynativ/redis-ml] that contains both the Redis server and the Redis ML module, used during the Machine Learning procedure. 
+If running on **Linux** system, a further check for deploying Airflow is needed. The mounted volumes (in the `docker-compose.yml` file) use the user/group permissions, therefore double-check if the container and the host computer have matching file permissions.
+```
+mkdir ./dags  ./logs 
+echo -e „AIRFLOW_UID=$(id -u) \nAIRFLOW_GID=0” > .env
+```
+On **all operating systems**, initialize the project running:
+```
+docker-compose up airflow-init  
+```
+The command above starts the database migrations and creates the Airflow user account passing as `username: airflow` and `password: airflow`. The initialization is complete when the message below appears:
+```
+start_airflow-init_1 exited with code 0
+```
+Now is possible to start all the other services by typing:
+```
+docker-compose up 
+```
+If a detached mode is preferred: 
+```
+docker-compose up -d 
+```
+Furthermore, the logs are recalled with:
+```
+docker-compose logs [OPTIONAL: container name] 
+```
+Note that this two-step procedure might be sidestepped by running once the command: 
+```
+docker-compose up -d 
+```
+However, this shortcut implies a constant check of the conditions of the containers via: 
+```
+docker-compose ps  
+```
+
+
 
 # NUTS2 - Istat code for region of residence:
 
