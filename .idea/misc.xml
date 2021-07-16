@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ProjectPlainTextFileTypeManager">
-    <file url="file://$PROJECT_DIR$/dataset/Qualita_vita.csv" />
-    <file url="file://$PROJECT_DIR$/dataset/rfam14.csv" />
-    <file url="file://$PROJECT_DIR$/dataset/rfam16.csv" />
-    <file url="file://$PROJECT_DIR$/dataset/rper14.csv" />
-    <file url="file://$PROJECT_DIR$/dataset/rper16.csv" />
-  </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.9 (BDT-Project)" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.9" project-jdk-type="Python SDK" />
   <component name="PythonCompatibilityInspectionAdvertiser">
     <option name="version" value="3" />
   </component>

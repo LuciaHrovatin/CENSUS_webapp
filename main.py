@@ -34,7 +34,7 @@ def home():
     componenti=request.args.get('componenti')
     stato_civile=request.args.get('stato_civile')
 
-    # mstandardize gender
+    # standardize gender
     if "femminile" == gender:
         gender = 2
     elif "maschile" == gender:

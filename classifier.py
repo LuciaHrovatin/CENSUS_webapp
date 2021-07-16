@@ -1,4 +1,3 @@
-import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
 from io import StringIO
@@ -8,14 +7,14 @@ import redis
 from saver import MySQLManager
 
 
-def redis_training(table: str, saver: MySQLManager, case: int, sex: Optional[bool] = False):
+def redis_training(table: str, saver: MySQLManager, case: int, no_sex: Optional[bool] = False):
     df = saver.execute_read_query(table_name=table)
 
     y_train = np.array([x for x in df.iloc[:, df.shape[1] - 1]])
 
     columns_to_exclude = [0, 2, 7]
 
-    if sex:
+    if no_sex:
         columns_to_exclude.append(3)
 
     X_train = df.drop(columns_to_exclude, axis=1)
@@ -73,6 +72,7 @@ def redis_training(table: str, saver: MySQLManager, case: int, sex: Optional[boo
 
 def redis_prediction(x_to_predict, key_tree: str) -> int:
     feature_names = list(range(0, len(x_to_predict[0])))
+
     r = redis.StrictRedis(host="localhost", port=6380)
     r_pred = np.full(len(x_to_predict), -1, dtype=int)
 
