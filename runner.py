@@ -22,7 +22,7 @@ for dag_name in ["ingestion_phase", "etl_phase", "mySQL_phase"]:
                 run = False
                 print("{} is running".format(dag_name))
         else:
-            time.sleep(20)
+            time.sleep(40)
 
 cursor_Mysql = MySQLManager(host="localhost",
                             port=3310,
