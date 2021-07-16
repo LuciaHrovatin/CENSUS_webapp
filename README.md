@@ -14,14 +14,14 @@ Specifically, the datasets employed are:
 
 - Lab24: [Qualità della vita](https://lab24.ilsole24ore.com/qualita-della-vita/) 
 
-Whereas the Banca d’Italia offered a large amount of data per survey, only three datasets have been retained: **carcom**, containing the generalties of people who taken part into the survey, **rper**, individual income, and **rfam**, income per household. The variable descriptions, along with the survey items, can be found in the [Documentazione per l’utilizzo dei microdati]( https://www.bancaditalia.it/statistiche/tematiche/indagini-famiglie-imprese/bilanci-famiglie/documentazione/index.html).             
+Whereas the Banca d’Italia offered a large amount of data per survey, only three datasets have been retained: **carcom**, containing the generalties of people who taken part into the survey, **rper**, individual income, and **rfam**, income per household. The variable descriptions, along with the survey items, can be found in the [Documentazione per l’utilizzo dei microdati](https://www.bancaditalia.it/statistiche/tematiche/indagini-famiglie-imprese/bilanci-famiglie/documentazione/index.html).             
 
 ## Prerequisites 
 
 In order to run this project, the following tools have been installed on your workstation: 
-- Python, preferably (3.9)[ https://www.python.org/downloads/release/python-390/] 
-- (Docker Desktop)[ https://www.docker.com/], preferably 3.5
-- (Docker Compose)[ https://docs.docker.com/compose/install/] v1.27.0 and newer
+- Python, preferably [3.9](https://www.python.org/downloads/release/python-390/) 
+- [Docker Desktop](https://www.docker.com/), preferably 3.5
+- [Docker Compose](https://docs.docker.com/compose/install/) v1.27.0 and newer
 
 Older versions of `docker-compose` do not support all features required by the `docker-compose.yml` file, so check that the minimum version requirements are satisied.
 
@@ -64,11 +64,12 @@ pip install -r requirements.txt
 
 ## Usage
 This project employs few Docker images: 
--	the official (apache-airflow Docker)[ https://hub.docker.com/r/apache/airflow] image with a Celery Executor and using the official (Postgres)[ https://hub.docker.com/_/postgres/] as backend and (Redis)[ https://hub.docker.com/_/redis/] as message broker.
+-	the official [apache-airflow Docker](https://hub.docker.com/r/apache/airflow) image with a Celery Executor and using the official [Postgres](https://hub.docker.com/_/postgres/) as backend and [Redis](https://hub.docker.com/_/redis/) as message broker.
  
--	the official (mysql)[ https://hub.docker.com/_/mysql] along with its web interface (phpmyadmit)[ https://hub.docker.com/_/phpmyadmin]. 
+-	the official [mysql](https://hub.docker.com/_/mysql) along with its web interface [phpmyadmit](https://hub.docker.com/_/phpmyadmin). 
 
--	the Docker image (shaynativ/redis-ml)[ https://hub.docker.com/r/shaynativ/redis-ml] that contains both the Redis server and the Redis ML module, used during the Machine Learning procedure. 
+-	the Docker image [shaynativ/redis-ml](https://hub.docker.com/r/shaynativ/redis-ml) that contains both the Redis server and the Redis ML module, used during the Machine Learning procedure. 
+
 If running on **Linux** system, a further check for deploying Airflow is needed. The mounted volumes (in the `docker-compose.yml` file) use the user/group permissions, therefore double-check if the container and the host computer have matching file permissions.
 ```
 mkdir ./dags  ./logs 
