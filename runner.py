@@ -4,6 +4,8 @@ from saver import MySQLManager
 from classifier import redis_training
 import os
 
+url = 'http://localhost:8080/api/v1/pools'
+r = requests.get(url, auth=('airflow', 'airflow'))
 
 for dag_name in ["ingestion_phase", "etl_phase", "mySQL_phase"]:
     url = 'http://localhost:8080/api/v1/dags/'+dag_name+'/dagRuns'
