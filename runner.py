@@ -17,10 +17,10 @@ for dag_name in ["ingestion_phase", "etl_phase", "mySQL_phase"]:
         url = 'http://localhost:8080/api/v1/dags/' + dag_name + '/dagRuns'
         r = requests.get(url, auth=('airflow', 'airflow'))
         result = r.json()
+        print("{} is running".format(dag_name))
         for entry in result["dag_runs"]:
             if entry["state"] == allowed_state:
                 run = False
-                print("{} is running".format(dag_name))
         else:
             time.sleep(40)
 
