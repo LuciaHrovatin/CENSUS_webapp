@@ -144,6 +144,9 @@ A user can access the web application in two different ways:
 2. connecting to the stable C.E.N.S.U.S web application, hosted on a server: [http://elisapaolazzi.pythonanywhere.com/]( http://elisapaolazzi.pythonanywhere.com/) 
 
 The web application, reported below, predicts the income bracket of the user, following the [IRPEF](https://www.informazionefiscale.it/Irpef-2021-aliquote-scaglioni-calcolo-novita) categories and further sub-groups.  
+Accessing to the web application, you will see this page:
+
+![INTERFACE](static/interface.png)
 
 ## Close the project 
 The script will automatically end with the deployment of the web application. However, a manual stop of the Docker containers is needed using the command: 
