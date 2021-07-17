@@ -8,16 +8,21 @@
         <td>
             <h4 class="text-center">Prezzo medio di vendita delle case</h4>
             <h6 class="text-center" style="color:#787878;">Per appartamenti nuovi di 100 mq in zona semicentrale nei capoluoghi</h6>
-           <img src="{{ url_for('static', filename='prezzi_abitaz.png') }}" alt="Spese famiglie italiane" width="482" height="416">
+           <img src="{{ url_for('static', filename='prezzi_abitaz.png') }}" alt="Prezzo medio di vendita delle case" width="407" height="338">
         </td>
         <td>
-            <h4 class="text-center">Internet >= 100 Mbit/s - abbonamenti</h4>
-            <h6 class="text-center" style="color:#787878;">Accessi broadband - In % sulla popolazione residente</h6><br>
-           <img src="{{ url_for('static', filename='internet_map.png') }}" alt="Spese famiglie italiane" width="558" height="418">
+            <h4 class="text-center">Internet ≥ 100 Mbit/s - abbonamenti</h4>
+            <h6 class="text-center" style="color:#787878;">Accessi broadband - In % sulla popolazione residente</h6>
+           <img src="{{ url_for('static', filename='internet_map.png') }}" alt="Internet >= 100 Mbit/s - abbonamenti" width="457" height="328">
         </td>
     </tr>
-    <tr>
 
+    <tr>
+        <td colspan="2">
+            <h4 class="text-center">Spazio abitativo medio</h4>
+            <h6 class="text-center" style="color:#787878;">Mq medi delle abitazioni/componenti medi per famiglia</h6><br>
+            <img src="{{ url_for('static', filename='spazio_abitaz_barplot.png') }}" alt="Spazio abitativo medio" width="1138" height="618">
+        </td>
     </tr>
 </table>
 
