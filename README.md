@@ -5,7 +5,7 @@ ___
 The C.E.N.S.U.S. project has been developed as final assignment of the Big Data Technologies course, offered by the University of Trento. 
 
 ## Project objective 
-The project objective refers to deploying a web application, taking as input specific user data and returning a prediction of his/her income group, subcategorizing the Irpef system of taxation and its income segmentation. The prediction corresponds to the output of a Random Forest model trained with data provided by the Banca d’Italia and by the Sole24ore.
+The project objective refers to deploying a Big Data system, taking as input specific user data and returning a prediction of his/her income group, subcategorizing the IRPEF system of taxation and its income segmentation. The prediction corresponds to the output of a Random Forest model trained with data provided by the Banca d’Italia and by the Sole24ore.
 Specifically, the datasets employed are: 
 
 - Banca d'Italia, Indagine sui bilanci delle famiglie italiane, [Indagine sul 2016](https://www.bancaditalia.it/statistiche/tematiche/indagini-famiglie-imprese/bilanci-famiglie/distribuzione-microdati/ricerca/ricerca.html?min_anno_pubblicazione=2018&max_anno_pubblicazione=2018) whose data refers to the 2016 survey 
@@ -18,7 +18,7 @@ Whereas the Banca d’Italia offered a large amount of data per survey, only thr
 
 ## Prerequisites 
 
-In order to run this project, the following tools have been installed on your workstation: 
+In order to run this project, the following tools have been installed on your machine: 
 - Python, preferably [3.9](https://www.python.org/downloads/release/python-390/) 
 - [Docker Desktop](https://www.docker.com/), preferably 3.5
 - [Docker Compose](https://docs.docker.com/compose/install/) v1.27.0 and newer
@@ -59,7 +59,6 @@ In the running virtual environment, install all libraries contained in the `requ
 
 ```
 pip install -r requirements.txt
-
 ```
 
 ## Usage
@@ -107,14 +106,13 @@ The two-step procedure can be sidestepped by running the `docker-compose up -d` 
 
 ```
 docker-compose ps  
-
 ```
 Specificaly, the resulting view should be the same as the screenshot below. 
 
 --> immagine da inserire 
 
 ### Run the script 
-After the virtual environment and the Docker images are set up, a last step must be manually performed. To start the entire data pipeline, type in the command line (within the virtual environment): 
+After the virtual environment and the Docker images are set up, a last step must be manually performed. To start the entire data pipeline, type in the command line (with the activated virtual environment): 
 
 ```
 python runner.py 
@@ -125,7 +123,7 @@ The pipeline will start following some steps:
 -	**ETL phase**: a DAG in Airflow extracts relevant data, transforms it employing [pandas]( https://pandas.pydata.org/) Python library, and loads it to the MySQL database `project_bdt`
 -	**storage phase**: data is stored in a MySQL server running in another container 
 -	**machine learning**: data is processed using Redis ML module implementing a [Random Forest model](https://redislabs.com/blog/introduction-redis-ml-part-five/) 
--	**web application**: the C.E.N.S.U.S. web application is launched and can be visited by clicking or copy-pasting the link in the terminal 
+-	**web application**: the C.E.N.S.U.S. web application is launched and can be visualized by clicking or copy-pasting the localhost (which will apperas in the terminal) link in the browser 
     
 
 ### Access to web servers 
@@ -141,7 +139,7 @@ Accessing each service web server is the recommended approach to monitor the pip
 
 A user can access the web application in two different ways: 
 
-1. clicking on lochalhost the link returned at the end of the data pipeline 
+1. clicking on the lochalhost link returned at the end of the data pipeline 
 
 2. connecting to the stable C.E.N.S.U.S web application, hosted on a server: [http://elisapaolazzi.pythonanywhere.com/]( http://elisapaolazzi.pythonanywhere.com/) 
 
@@ -152,11 +150,10 @@ The script will automatically end with the deployment of the web application. Ho
 
 ```
 docker-compose down 
-
 ```
 # Code structure
 
-The code structure is composed by:
+The backend code structure is composed by:
 -   `airflow` folder, containing the dags files (pipeline)
 -   `R_graph_scripts` folder, containing the R scripts for the interface plots  
 -   `src`, containing python files that include important function for the data collection, ingestion and machine learning phases
