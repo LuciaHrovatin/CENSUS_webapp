@@ -132,13 +132,15 @@ Accessing each service web server is the recommended approach to monitor the pip
 
 -	**Airflow** [http://localhost:8080](http://localhost:8080/) a first log-in may be necessary with the chosen credentials (the default credentials are `username: airflow` and `password: airflow`). 
 
+
 ![Airflow](static/airflow_2.png)
+
 
 -	**Flower** [http://localhost:5555](http://localhost:5555/) for monitoring the tasks assigned to the Celery worker.  
 
 -	**phpMyAdmit** [http://localhost:8082](http://localhost:8082/), which handles the administration of MySQL. Also in this case, a log-in is required reporting the credentials chosen in the `docker-compose.yml`file (the default credentials are `server: mysql`, `user: root`, and `password: password`). 
 
-![phpMyAdmit](static/php_1.png)
+![phpMyAdmit](static/php.png)
 
 ### Access to C.E.N.S.U.S. web application 
 
