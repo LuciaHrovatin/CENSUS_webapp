@@ -139,31 +139,22 @@ Accessing each service web server is the recommended approach to monitor the pip
 
 ### Access to C.E.N.S.U.S. web application 
 
+A user can access the web application in two different ways: 
 
+1. clicking on the link returned at the end of the data pipeline 
 
+2. connecting to the stable C.E.N.S.U.S web application, hosted on a server: [http://elisapaolazzi.pythonanywhere.com/]( http://elisapaolazzi.pythonanywhere.com/) 
 
-# NUTS2 - Istat code for region of residence:
+The web application, reported below, predicts the income bracket of the user, following the [IRPEF](https://www.informazionefiscale.it/Irpef-2021-aliquote-scaglioni-calcolo-novita) categories and further sub-groups.  
 
-1=Piemonte, 
-2=Valle d'Aosta,
-3=Lombardia, 
-4=Trentino, 
-5=Veneto,
-6=Friuli, 
-7=Liguria,
-8=Emilia Romagna,
-9=Toscana,
-10=Umbria,
-11=Marche,
-12=Lazio, 
-13=Abruzzo,
-14=Molise,
-15=Campania,
-16=Puglia,
-17=Basilicata,
-18=Calabria,
-19=Sicilia, 
-20=Sardegna
+## Close the project 
+The script will automatically end with the deployment of the web application. However, a manual stop of the Docker containers is needed using the command: 
+
+```
+docker-compose down 
+
+```
+
 
 # VARIABILI nella tabella "FINAL" ovvero l'unione di 2016-2014 (dal 2014 provengono solo le fam che poi hanno abbandonato il questionario) 
  
@@ -189,10 +180,6 @@ Stato civile del rispondente STACIV
 !!!! PRIMA DI ATTIVARE FLASK !!!!
 
 1. Far partire docker 
-
-# Per runnare DOCKER 
-nella cmd (con venv già attivata) scrivere:  docker-compose up -d 
-il -d sta per detached, è possibile farlo partire anche senza  
 
 # per bloccare DOCKER 
 docker-compose stop 
