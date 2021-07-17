@@ -31,8 +31,8 @@ Older versions of `docker-compose` do not support all features required by the `
 
 Clone this repository to a local directory typing in the command line: 
 
- ```
-$  git clone https://github.com/elypaolazz/BDT-Project.git
+```
+git clone https://github.com/elypaolazz/BDT-Project.git
 ```
 
 ### Environment 
@@ -121,11 +121,24 @@ python runner.py
 ```
 
 The pipeline will start following some steps: 
--	**ingestion phase**: the [requests](https://pypi.org/project/requests/) library data is downloaded from the Banca d’Italia and the Sole24ore websites 
--	**ETL phase**: a DAG in Airflow extracts relevant data, transforms it employing [pandas]( https://pandas.pydata.org/) Python library, and loads it to MySQL database `project_bdt`
+-	**ingestion phase**: the [requests](https://pypi.org/project/requests/) Python library downloads the data from the Banca d’Italia and Sole24ore websites 
+-	**ETL phase**: a DAG in Airflow extracts relevant data, transforms it employing [pandas]( https://pandas.pydata.org/) Python library, and loads it to the MySQL database `project_bdt`
 -	**storage phase**: data is stored in a MySQL server running in another container 
 -	**machine learning**: data is processed using Redis ML module implementing a [Random Forest model](https://redislabs.com/blog/introduction-redis-ml-part-five/) 
--	**web application**: the web application is launched and can be visited by clicking or copy-pasting the link in the terminal 
+-	**web application**: the C.E.N.S.U.S. web application is launched and can be visited by clicking or copy-pasting the link in the terminal 
+    
+
+### Access to web servers 
+Accessing each service web server is the recommended approach to monitor the pipeline development. The web servers can be accessed in the browser by navigating to: 
+
+-	**Airflow** [http://localhost:8080](http://localhost:8080/) a first log-in may be necessary with the chosen credentials (the default credentials are `username: airflow` and `password: airflow`). 
+
+-	**Flower** [http://localhost:5555](http://localhost:5555/) for monitoring the tasks assigned to the Celery worker.  
+
+-	**phpMyAdmit** [http://localhost:8082](http://localhost:8082/), which handles the administration of MySQL. Also in this case, a log-in is required reporting the credentials chosen in the `docker-compose.yml`file (the default credentials are `server: mysql`, `user: root`, and `password: password`). 
+
+### Access to C.E.N.S.U.S. web application 
+
 
 
 
