@@ -63,6 +63,7 @@ pip install -r requirements.txt
 ```
 
 ## Usage
+
 This project employs few Docker images: 
 -	the official [apache-airflow Docker](https://hub.docker.com/r/apache/airflow) image with a Celery Executor and using the official [Postgres](https://hub.docker.com/_/postgres/) as backend and [Redis](https://hub.docker.com/_/redis/) as message broker.
  
@@ -75,13 +76,19 @@ If running on **Linux** system, a further check for deploying Airflow is needed.
 mkdir ./dags  ./logs 
 echo -e „AIRFLOW_UID=$(id -u) \nAIRFLOW_GID=0” > .env
 ```
+
+### Activate Docker images 
+
 On **all operating systems**, initialize the project running:
 ```
 docker-compose up airflow-init  
 ```
 The command above starts the database migrations and creates the Airflow user account passing as `username: airflow` and `password: airflow`. The initialization is complete when the message below appears:
-```
-start_airflow-init_1 exited with code 0
+
+```diff
+# airflow-init_1   | Admin user airflow created 
+# airflow-init_1   | 2.1.1
++ airflow-init_1 exited with code 0
 ```
 Now is possible to start all the other services by typing:
 ```
@@ -95,14 +102,30 @@ Furthermore, the logs are recalled with:
 ```
 docker-compose logs [OPTIONAL: container name] 
 ```
-Note that this two-step procedure might be sidestepped by running once the command: 
-```
-docker-compose up -d 
-```
-However, this shortcut implies a constant check of the conditions of the containers via: 
+**NOTE**:
+The two-step procedure can be sidestepped by running the `docker-compose up -d` command only once. However, this shortcut implies a constant check of the containers' condition to detect when `airflow-init` exits:
+
 ```
 docker-compose ps  
+
 ```
+Specificaly, the resulting view should be the same as the screenshot below. 
+
+--> immagine da inserire 
+
+### Run the script 
+After the virtual environment and the Docker images are set up, a last step must be manually performed. To start the entire data pipeline, type in the command line (within the virtual environment): 
+
+```
+python runner.py 
+```
+
+The pipeline will start following some steps: 
+-	**ingestion phase**: the [requests](https://pypi.org/project/requests/) library data is downloaded from the Banca d’Italia and the Sole24ore websites 
+-	**ETL phase**: a DAG in Airflow extracts relevant data, transforms it employing [pandas]( https://pandas.pydata.org/) Python library, and loads it to MySQL database `project_bdt`
+-	**storage phase**: data is stored in a MySQL server running in another container 
+-	**machine learning**: data is processed using Redis ML module implementing a [Random Forest model](https://redislabs.com/blog/introduction-redis-ml-part-five/) 
+-	**web application**: the web application is launched and can be visited by clicking or copy-pasting the link in the terminal 
 
 
 
