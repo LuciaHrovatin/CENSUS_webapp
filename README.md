@@ -171,7 +171,7 @@ The system interface is a Flask web application composed by:
 -   `static folder`, containing the CSS file for the presentation file (layout, colors, and fonts) and the images
 
 ## Overall code structure
-
+```
 ├── `airflow`
 │   └── `dags`
 │   	  ├── `first_dag.py`
@@ -207,7 +207,7 @@ The system interface is a Flask web application composed by:
 ├── `main.py`
 ├── `requirements.txt`
 └── `runner.py`
-
+```
 
 
 
