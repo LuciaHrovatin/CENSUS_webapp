@@ -1,7 +1,7 @@
 from flask import Flask, render_template, url_for, flash, redirect, Markup, request
 from forms import CensusData
-from collector import number_regions
-from classifier import RandomFor
+from src.collector import number_regions
+from src.classifier import RandomFor
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
