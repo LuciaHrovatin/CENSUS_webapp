@@ -172,41 +172,41 @@ The system interface is a Flask web application composed by:
 
 ## Overall code structure
 ```
-├── `airflow`
-│   └── `dags`
-│   	  ├── `first_dag.py`
-│   	  ├── `second_dag.py`
-│   	  └── `third_dag.py`
+├── airflow
+│   └── dags
+│   	  ├── first_dag.py
+│   	  ├── second_dag.py
+│   	  └── third_dag.py
 │
-├── `R_graph_scripts`
-│   ├── `internet_map_graph.Rmd`
-│   ├── `prezzo_abitaz_map_graph.Rmd`
-│	├── `spazio_abitazz_map_graph.Rmd`
-│   └── `spesa_fam_map_graph.Rmd`
+├── R_graph_scripts
+│   ├── internet_map_graph.Rmd
+│   ├── prezzo_abitaz_map_graph.Rmd
+│	├── spazio_abitazz_map_graph.Rmd
+│   └── spesa_fam_map_graph.Rmd
 │ 
-├── `src`
-│   ├── `classifier.py`
-│   ├── `collector.py`
-│	├── `province_ita.json`
-│   └── `saver.py`
+├── src
+│   ├── classifier.py
+│   ├── collector.py
+│	├── province_ita.json
+│   └── saver.py
 │ 
-├── `static`
-│    ├── `main.css`
-│    ├── `grraph.png`
+├── static
+│    ├── main.css
+│    ├── grraph.png
 │    └── ...
 │
-├── `templates`
-│    ├── `about.htm`
-│    ├── `home.htm`
-│    ├── `layout.htm`
-│    └── `line_chart.htm`
+├── templates
+│    ├── about.htm
+│    ├── home.htm
+│    ├── layout.htm
+│    └── line_chart.htm
 │
-├── `.gitignore`
-├── `docker-compose.yml`
-├── `forms.py`
-├── `main.py`
-├── `requirements.txt`
-└── `runner.py`
+├── .gitignore
+├── docker-compose.yml
+├── forms.py
+├── main.py
+├── requirements.txt
+└── runner.py
 ```
 
 
