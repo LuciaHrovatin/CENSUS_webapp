@@ -109,7 +109,8 @@ docker-compose ps
 ```
 Specificaly, the resulting view should be the same as the screenshot below. 
 
---> immagine da inserire 
+![Docker container's condition](static/container_condition.png)
+
 
 ### Run the script 
 After the virtual environment and the Docker images are set up, a last step must be manually performed. To start the entire data pipeline, type in the command line (with the activated virtual environment): 
@@ -131,9 +132,13 @@ Accessing each service web server is the recommended approach to monitor the pip
 
 -	**Airflow** [http://localhost:8080](http://localhost:8080/) a first log-in may be necessary with the chosen credentials (the default credentials are `username: airflow` and `password: airflow`). 
 
+![Airflow](static/airflow_2.png)
+
 -	**Flower** [http://localhost:5555](http://localhost:5555/) for monitoring the tasks assigned to the Celery worker.  
 
 -	**phpMyAdmit** [http://localhost:8082](http://localhost:8082/), which handles the administration of MySQL. Also in this case, a log-in is required reporting the credentials chosen in the `docker-compose.yml`file (the default credentials are `server: mysql`, `user: root`, and `password: password`). 
+
+![phpMyAdmit](static/php_1.png)
 
 ### Access to C.E.N.S.U.S. web application 
 
@@ -141,7 +146,7 @@ A user can access the web application in two different ways:
 
 1. clicking on the lochalhost link returned at the end of the data pipeline 
 
-2. connecting to the stable C.E.N.S.U.S web application, hosted on a server: [http://elisapaolazzi.pythonanywhere.com/]( http://elisapaolazzi.pythonanywhere.com/) 
+2. connecting to the stable C.E.N.S.U.S. web application, hosted on a server: [http://elisapaolazzi.pythonanywhere.com/]( http://elisapaolazzi.pythonanywhere.com/) 
 
 The web application, reported below, predicts the income bracket of the user, following the [IRPEF](https://www.informazionefiscale.it/Irpef-2021-aliquote-scaglioni-calcolo-novita) categories and further sub-groups.  
 Accessing to the web application, you will see this page:
@@ -157,11 +162,11 @@ docker-compose down
 # Code structure
 
 The backend code structure is composed by:
--   `airflow` folder, containing the dags files (pipeline)
+-   `airflow` folder, containing the dags files of the first three stages of the datapipeline: ingestion phase (`first_dag.py`), ETL phase (`second_dag.py`) and MySQL storage (`third_dag.py`)
 -   `R_graph_scripts` folder, containing the R scripts for the interface plots  
--   `src`, containing python files that include important function for the data collection, ingestion and machine learning phases
--   `docker-compose.yml`, docker file that defines the docker containers structure 
--   `runner.py`, pyhton file for dags triggering
+-   `src`, containing Python files with specific functions for data collection, data transformation and machine learning training/testing process 
+-   `docker-compose.yml`, docker file that defines the docker containers and their relationships  
+-   `runner.py`, that triggers the entire project 
 
 ## Interface code structure
 The system interface is a Flask web application composed by:
