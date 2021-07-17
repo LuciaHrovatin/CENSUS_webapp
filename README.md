@@ -165,8 +165,8 @@ The backend code structure is composed by:
 
 ## Interface code structure
 The system interface is a Flask web application composed by:
--   `main.py`, python file containing the function needed to launch the app in the local server and the route functions (that define variables, actions and events) of the different pages 
--   `forms.py`, file that defines and manages the app forms and their fields
+-   `main.py`, python file containing the function needed to launch the application in the local server and the route functions (that define variables, actions and events) of the different pages 
+-   `forms.py`, file that defines and manages the application forms and their fields
 -   `templates folder`, containing the HTMLfiles for each page template
 -   `static folder`, containing the CSS file for the presentation file (layout, colors, and fonts) and the images
 
