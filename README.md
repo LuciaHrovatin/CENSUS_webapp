@@ -141,7 +141,7 @@ Accessing each service web server is the recommended approach to monitor the pip
 
 A user can access the web application in two different ways: 
 
-1. clicking on the link returned at the end of the data pipeline 
+1. clicking on lochalhost the link returned at the end of the data pipeline 
 
 2. connecting to the stable C.E.N.S.U.S web application, hosted on a server: [http://elisapaolazzi.pythonanywhere.com/]( http://elisapaolazzi.pythonanywhere.com/) 
 
@@ -154,6 +154,64 @@ The script will automatically end with the deployment of the web application. Ho
 docker-compose down 
 
 ```
+# Code structure
+
+The code structure is composed by:
+-   `airflow` folder, containing the dags files (pipeline)
+-   `R_graph_scripts` folder, containing the R scripts for the interface plots  
+-   `src`, containing python files that include important function for the data collection, ingestion and machine learning phases
+-   `docker-compose.yml`, docker file that defines the docker containers structure 
+-   `runner.py`, pyhton file for dags triggering
+
+## Interface code structure
+The system interface is a Flask web application composed by:
+-   `main.py`, python file containing the function needed to launch the app in the local server and the route functions (that define variables, actions and events) of the different pages 
+-   `forms.py`, file that defines and manages the app forms and their fields
+-   `templates folder`, containing the HTMLfiles for each page template
+-   `static folder`, containing the CSS file for the presentation file (layout, colors, and fonts) and the images
+
+## Overall code structure
+
+├── `airflow`
+│   └── `dags`
+│   	  ├── `first_dag.py`
+│   	  ├── `second_dag.py`
+│   	  └── `third_dag.py`
+│
+├── `R_graph_scripts`
+│   ├── `internet_map_graph.Rmd`
+│   ├── `prezzo_abitaz_map_graph.Rmd`
+│	├── `spazio_abitazz_map_graph.Rmd`
+│   └── `spesa_fam_map_graph.Rmd`
+│ 
+├── `src`
+│   ├── `classifier.py`
+│   ├── `collector.py`
+│	├── `province_ita.json`
+│   └── `saver.py`
+│ 
+├── `static`
+│    ├── `main.css`
+│    ├── `grraph.png`
+│    └── ...
+│
+├── `templates`
+│    ├── `about.htm`
+│    ├── `home.htm`
+│    ├── `layout.htm`
+│    └── `line_chart.htm`
+│
+├── `.gitignore`
+├── `docker-compose.yml`
+├── `forms.py`
+├── `main.py`
+├── `requirements.txt`
+└── `runner.py`
+
+
+
+
+
 
 
 # VARIABILI nella tabella "FINAL" ovvero l'unione di 2016-2014 (dal 2014 provengono solo le fam che poi hanno abbandonato il questionario) 
