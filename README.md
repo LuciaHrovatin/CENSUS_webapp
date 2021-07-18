@@ -66,7 +66,7 @@ pip install -r requirements.txt
 This project employs few Docker images: 
 -	the official [apache-airflow Docker](https://hub.docker.com/r/apache/airflow) image with a Celery Executor and using the official [Postgres](https://hub.docker.com/_/postgres/) as backend and [Redis](https://hub.docker.com/_/redis/) as message broker.
  
--	the official [mysql](https://hub.docker.com/_/mysql) along with its web interface [phpmyadmit](https://hub.docker.com/_/phpmyadmin). 
+-	the official [mysql](https://hub.docker.com/_/mysql) along with its web interface [phpmyadmin](https://hub.docker.com/_/phpmyadmin). 
 
 -	the Docker image [shaynativ/redis-ml](https://hub.docker.com/r/shaynativ/redis-ml) that contains both the Redis server and the Redis ML module, used during the Machine Learning procedure. 
 
