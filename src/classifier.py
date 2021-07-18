@@ -4,7 +4,7 @@ from io import StringIO
 from typing import Optional
 import numpy as np
 import redis
-from saver import MySQLManager
+from src.saver import MySQLManager
 
 
 def redis_training(table: str, saver: MySQLManager, case: int, no_sex: Optional[bool] = False):
