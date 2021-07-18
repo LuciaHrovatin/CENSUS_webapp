@@ -75,6 +75,7 @@ If running on **Linux** system, a further check for deploying Airflow is needed.
 mkdir ./dags  ./logs 
 echo -e „AIRFLOW_UID=$(id -u) \nAIRFLOW_GID=0” > .env
 ```
+Further information available here: [Running Airflow in Docker](https://airflow.apache.org/docs/apache-airflow/stable/start/docker.html)
 
 ### Activate Docker images 
 
@@ -82,25 +83,26 @@ On **all operating systems**, initialize the project running:
 ```
 docker-compose up airflow-init  
 ```
-The command above starts the database migrations and creates the Airflow user account passing as `username: airflow` and `password: airflow`. The initialization is complete when the message below appears:
+The command above starts the database migrations and creates the Airflow user account passing as `username: airflow` and `password: airflow`. The initialisation is complete when the message below appears:
 
 ```diff
 # airflow-init_1   | Admin user airflow created 
 # airflow-init_1   | 2.1.1
 + airflow-init_1 exited with code 0
 ```
-Now is possible to start all the other services by typing:
+Now it is possible to start all the other services by typing:
 ```
 docker-compose up 
 ```
-If a detached mode is preferred: 
+Or if a detached mode is preferred: 
 ```
 docker-compose up -d 
 ```
-Furthermore, the logs are recalled with:
+Furthermore, the logs can be are recalled with:
 ```
 docker-compose logs [OPTIONAL: container name] 
 ```
+
 **NOTE**:
 The two-step procedure can be sidestepped by running the `docker-compose up -d` command only once. However, this shortcut implies a constant check of the containers' condition to detect when `airflow-init` exits:
 
@@ -148,7 +150,7 @@ A user can access the web application in two different ways:
 
 1. clicking on the lochalhost link returned at the end of the data pipeline 
 
-2. connecting to the stable C.E.N.S.U.S. web application, hosted on a server: [http://elisapaolazzi.pythonanywhere.com/]( http://elisapaolazzi.pythonanywhere.com/) 
+2. connecting to the stable CENSUS web application, hosted on a server: [http://elisapaolazzi.pythonanywhere.com/]( http://elisapaolazzi.pythonanywhere.com/) 
 
 The web application, reported below, predicts the income bracket of the user, following the [IRPEF](https://www.informazionefiscale.it/Irpef-2021-aliquote-scaglioni-calcolo-novita) categories and further sub-groups.  
 Accessing to the web application, you will see this page:
@@ -199,7 +201,7 @@ The system interface is a Flask web application composed by:
 │ 
 ├── static
 │    ├── main.css
-│    ├── grraph.png
+│    ├── graph.png
 │    └── ...
 │
 ├── templates
