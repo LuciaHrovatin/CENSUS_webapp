@@ -216,28 +216,28 @@ The system interface is a Flask web application composed by:
 └── runner.py
 ```
 
+## Troubleshooting
+When running the project, some errors may occur. The most common together with an option for a possible resolution are listed below: 
+-	Docker daemon does not reply after the docker-compose up command: relevant information can be found at the following link: (Configure and troubleshoot the Docker daemon)[https://docs.docker.com/config/daemon/]
+
+-	Other common errors are directly linked to the requests sent to the Airflow API. In particular:
+
+1. 
+```
+ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+```
+The target machine refused the connection with the client. In this framework, it may refer to the fact that the Airflow initialisation procedure has not ended yet. The suggestion is to check the Docker container status by typing “docker-compose ps” in the command line and wait until airflow-init exits.      
+
+2.
+```
+ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host
+```
+It refers to an overload of requests. A straightforward solution consists of setting a longer interval into the function `sleep()` present at the line 25 of the `runner.py` file. It is set to 30 seconds, but this temporal interval may not be enough. 
+
+- When launching the webservers, a 
+```
+500 Internal Server Error
+```
+may arise. This server error response code indicates that the server encountered an unexpected condition that prevented it from fulfilling the request. Just try to refresh the page or to relaunch the web server. If this error appears when submitting a prediction request to the CENSUS application, either a bug in the deployed code is present or the Redis server is disconnected.  
 
 
-
-
-
-# VARIABILI nella tabella "FINAL" ovvero l'unione di 2016-2014 (dal 2014 provengono solo le fam che poi hanno abbandonato il questionario) 
- 
-NQUEST and NORD: The primary key to merge household level information is NQUEST (household ID). 
-NQUEST must be considered together with NORD (ID of each household member) to merge individual level 
-information. 
-
-NCOMP: numero di componenti per famiglia 
-
-SEX: maschio 1, femmina 2 
-
-ANASC: anno di nascita 
-
-STACIV: stato civile 
-Stato civile del rispondente STACIV
-> Celibe/nubile 1
-> Convivente 2
-> Sposato/sposata 3
-> Vedovo/vedova 4
-> Separato/separata 5
-> Divorziato/Divorziata 6
