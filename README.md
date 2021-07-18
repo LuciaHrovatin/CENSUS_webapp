@@ -218,17 +218,15 @@ The system interface is a Flask web application composed by:
 
 ## Troubleshooting
 When running the project, some errors may occur. The most common together with an option for a possible resolution are listed below: 
--	Docker daemon does not reply after the docker-compose up command: relevant information can be found at the following link: (Configure and troubleshoot the Docker daemon)[https://docs.docker.com/config/daemon/]
+-	Docker daemon does not reply after the docker-compose up command: relevant information can be found at the following link: [Configure and troubleshoot the Docker daemon](https://docs.docker.com/config/daemon/)
 
--	Other common errors are directly linked to the requests sent to the Airflow API. In particular:
+-	Other common errors are directly linked to the requests sent to the [Airflow REST API](https://airflow.apache.org/docs/apache-airflow/stable/stable-rest-api-ref.html#tag/DAGRun). In particular:
 
-1. 
 ```
 ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
 ```
-The target machine refused the connection with the client. In this framework, it may refer to the fact that the Airflow initialisation procedure has not ended yet. The suggestion is to check the Docker container status by typing “docker-compose ps” in the command line and wait until airflow-init exits.      
+The target machine refused the connection with the client. In this framework, it may refer to the fact that the Airflow initialisation procedure has not ended yet. The suggestion is to check the Docker container status by typing `docker-compose ps` or `docker-compose [airflow-init] logs` in the command line and wait until airflow-init exits.       
 
-2.
 ```
 ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host
 ```
@@ -238,6 +236,6 @@ It refers to an overload of requests. A straightforward solution consists of set
 ```
 500 Internal Server Error
 ```
-may arise. This server error response code indicates that the server encountered an unexpected condition that prevented it from fulfilling the request. Just try to refresh the page or to relaunch the web server. If this error appears when submitting a prediction request to the CENSUS application, either a bug in the deployed code is present or the Redis server is disconnected.  
+may arise. This server error response code indicates that the server encountered an unexpected condition that prevented it from fulfilling the request. Just try to refresh the page or to relaunch the web server. If this error appears when submitting a prediction request to the CENSUS application, either a bug in the deployed code is present or the Redis server is disconnected (to check if this second option is applicable, type: `docker-compose [redis-ml] logs`).  
 
 
