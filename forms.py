@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, IntegerField, RadioField, SelectField, DateField
-from wtforms.validators import DataRequired, Length, EqualTo
+from wtforms import SubmitField, RadioField, SelectField
+from wtforms.validators import DataRequired
 
 
 years = [('2002'), ('2001'), ('2000'), ('1999'), ('1998'), ('1997'), ('1996'), ('1995'), ('1994'), ('1993'),

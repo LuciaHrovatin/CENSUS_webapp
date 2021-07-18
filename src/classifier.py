@@ -8,12 +8,20 @@ from src.saver import MySQLManager
 
 
 def redis_training(table: str, saver: MySQLManager, case: int, no_sex: Optional[bool] = False):
+    """
+    Redis training phase. 4 different models can be trained modifying the input parameters.
+    :param str table: name of the table to consider (either final or final_individual)
+    :param MySQLManager saver: allows the connection to MySQL server
+    :param int case: defines which model has to be trained
+    :param bool no_sex: the default value is False, if set to True it trains models without the sex variable
+    """
     df = saver.execute_read_query(table_name=table)
 
     y_train = np.array([x for x in df.iloc[:, df.shape[1] - 1]])
 
     columns_to_exclude = [0, 2, 7]
 
+    # exclude the column that corresponds to "sex"
     if no_sex:
         columns_to_exclude.append(3)
 
@@ -22,7 +30,6 @@ def redis_training(table: str, saver: MySQLManager, case: int, no_sex: Optional[
     # Decision tree training
     cl_tree = DecisionTreeClassifier(max_depth=8, random_state=0)
     cl_tree.fit(X_train, y_train)
-    t_nodes = cl_tree.tree_.node_count
     t_left = cl_tree.tree_.children_left
     t_right = cl_tree.tree_.children_right
     t_feature = cl_tree.tree_.feature
@@ -31,8 +38,7 @@ def redis_training(table: str, saver: MySQLManager, case: int, no_sex: Optional[
 
     feature_names = X_train.columns.values
 
-
-    # create a buffer to build the Redis command
+    # buffer to build the Redis command
     forrest_cmd = StringIO()
 
     if case == 1:
@@ -44,7 +50,7 @@ def redis_training(table: str, saver: MySQLManager, case: int, no_sex: Optional[
     else:
         forrest_cmd.write("ML.FOREST.ADD census_ind_nosex:tree 0 ")
 
-    # Traverse the tree starting with the root and a path of “.”
+    # traverse the tree
     stack = [(0, ".")]
 
     while len(stack) > 0:
@@ -64,13 +70,13 @@ def redis_training(table: str, saver: MySQLManager, case: int, no_sex: Optional[
     r = redis.StrictRedis(host="localhost", port=6380)
     r.execute_command(forrest_cmd.getvalue())
 
-# choosing the best max_depth
-# for i in range(1, 10):
-#     cl_tree = DecisionTreeClassifier(max_depth=i, random_state=0)
-#     cl_tree.fit(X_train, y_train)
-#     print(cl_tree.score(X_test, y_test), i)
-
 def redis_prediction(x_to_predict, key_tree: str) -> int:
+    """
+    This function returns a prediction of the income bracket of an individual or household
+    :param x_to_predict: array of new data entered by the user
+    :param str key_tree: key of the ML trained model stored on Redis server
+    :return: the predicted Irpef income group
+    """
     feature_names = list(range(0, len(x_to_predict[0])))
 
     r = redis.StrictRedis(host="localhost", port=6380)
@@ -88,7 +94,15 @@ def redis_prediction(x_to_predict, key_tree: str) -> int:
 
 
 def redis_classifier(ncomp: int, sex: int, age: int, statciv: int, place: int) -> int:
-
+    """
+    This function recalls the appropriate trained ML model depending on the input parameters
+    :param int ncomp: number of components per family
+    :param int sex: sex of the respondent
+    :param int age: year of birth of the respondent
+    :param int statciv: marital status of the respondent
+    :param int place: region of residence
+    :return: predicted Irpef income group
+    """
     X_test = [[ncomp, sex, age, statciv, place]]
 
     # If statciv is 1, then the dataset containing the individual census data will be considered
@@ -98,7 +112,7 @@ def redis_classifier(ncomp: int, sex: int, age: int, statciv: int, place: int) -
             return redis_prediction(X_test, "census_ind_nosex")
         return redis_prediction(X_test, "census_individuals")
 
-    # If the choice was "Preferisco non dirlo" then, data will not include "sex" information
+    # If the choice was "Preferisco non specificare" then, data will not include "sex" information
     if not sex:
         X_test = [[ncomp, age, statciv, place]]
         return redis_prediction(X_test, "census_nosex")

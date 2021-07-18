@@ -7,6 +7,9 @@ import pandas as pd
 class MySQLManager:
 
     def __init__(self, host: str, port: int, user: str, password: str, database: str) -> None:
+        """
+        Connects python to MySQL, requiring host, port, username, password and database.
+        """
         self.connection = mysql.connector.connect(
             host=host,
             user=user,
@@ -16,29 +19,12 @@ class MySQLManager:
         )
         self.connection.autocommit = True
 
-    def modify_columns(self, table_name: str, col_name_1: str, col_name_2: str):
-        """
-        Changes the order of the columns in order to merge them
-        :param table_name: SQL table where columns are swapped
-        :param col_name_1: name of first column to swap
-        :param col_name_2: name of second column to swap
-        """
-        cursor = self.connection.cursor()
-        try:
-            query = "ALTER TABLE {} CHANGE COLUMN {} {} INT NOT NULL AFTER {};".format(table_name, col_name_1, col_name_1, col_name_2)
-            cursor.execute(query)
-        except mysql.connector.Error as err:
-            if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
-                print("Table {} already exists.".format(table_name))
-            else:
-                print(err.msg)
-        cursor.close()
 
     def label_irpef(self, table_name: str):
         """
-        Creates census classes following the 5 Irpef categories.
-        :param table_name: Name of the table whose census data will be modified
-        :return: modified table having the attribute "Y" standardized
+        Creates census brackets following the Irpef (sub)categories.
+        :param str table_name: Name of the table whose census data will be modified
+        :return: modified table having the attribute "y" standardized
         """
         cursor = self.connection.cursor(buffered=True)
         try:
@@ -62,6 +48,11 @@ class MySQLManager:
         cursor.close()
 
     def execute_read_query(self, table_name: str):
+        """
+        Selecting query to recall a table stored in the project_bdt database
+        :param str table_name: name of the table that the user wants to recall
+        :return: the table is returned as Pandas DataFrame
+        """
         cursor = self.connection.cursor()
         try:
             query = "SELECT * FROM {}".format(table_name)

@@ -4,6 +4,7 @@ from src.saver import MySQLManager
 from src.classifier import redis_training
 import os
 
+# First authentication
 url = 'http://localhost:8080/api/v1/pools'
 r = requests.get(url, auth=('airflow', 'airflow'))
 
@@ -22,7 +23,7 @@ for dag_name in ["ingestion_phase", "etl_phase", "mySQL_phase"]:
             if entry["state"] == allowed_state:
                 run = False
         else:
-            time.sleep(40)
+            time.sleep(30)  # function freezes the code for 30 seconds, another interval can be set
 
 cursor_Mysql = MySQLManager(host="localhost",
                             port=3310,
@@ -33,12 +34,19 @@ cursor_Mysql = MySQLManager(host="localhost",
 cursor_Mysql.label_irpef(table_name="final")
 cursor_Mysql.label_irpef(table_name="final_individual")
 
-# Redis training
+# Redis training of 4 models
+# 1. Final dataset with variable sex
 redis_training(saver=cursor_Mysql, table="final", case=1)
+
+# 2. Final dataset without variable sex
 redis_training(saver=cursor_Mysql, table="final", case=2, sex=True)
+
+# 3. Final_individual (statciv=1) dataset with variable sex
 redis_training(saver=cursor_Mysql, table="final_individual", case=3)
+
+# 4. Final_individual (statciv=1) dataset without variable sex
 redis_training(saver=cursor_Mysql, table="final_individual", case=3, sex=True)
 
-# Connecting to flask
+# Connecting and launching flask
 os.environ['FLASK_APP'] = 'main.py'
 os.system("flask run")
