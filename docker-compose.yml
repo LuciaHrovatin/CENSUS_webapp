@@ -6,18 +6,17 @@ version: '3'
 
 x-airflow-common:
   &airflow-common
-  image: apache/airflow:2.1.1
+  image: apache/airflow:2.1.2
   environment:
     &airflow-common-env
     AIRFLOW__CORE__EXECUTOR: CeleryExecutor
     AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
     AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow
     AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
-    AIRFLOW__CORE__FERNET_KEY: ''
+    AIRFLOW__CORE__FERNET_KEY: 'Dp1Kdz2mnj0QIJswTH41SLI_auwA9DhGY0-PArc8LCQ='
     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'false'
-    AIRFLOW__CORE__LOAD_EXAMPLES: 'true'
+    AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
     AIRFLOW__API__AUTH_BACKEND: 'airflow.api.auth.backend.basic_auth'
-    _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-}
     AIRFLOW__CORE__PARALLELISM: 64
     AIRFLOW__CORE__DAG_CONCURRENCY: 16
     AIRFLOW__SCHEDULER__PARSING_PROCESSES: 4
@@ -100,6 +99,8 @@ services:
       timeout: 10s
       retries: 5
     restart: always
+    depends_on:
+      - airflow-init
 
   airflow-scheduler:
     <<: *airflow-common
@@ -111,6 +112,8 @@ services:
       timeout: 10s
       retries: 5
     restart: always
+    depends_on:
+      - airflow-init
 
   airflow-worker:
     <<: *airflow-common
@@ -124,6 +127,8 @@ services:
       timeout: 10s
       retries: 5
     restart: always
+    depends_on:
+      - airflow-init
 
   flower:
     <<: *airflow-common
@@ -136,6 +141,8 @@ services:
       timeout: 10s
       retries: 5
     restart: always
+    depends_on:
+      - airflow-init
 
   airflow-init:
     <<: *airflow-common
