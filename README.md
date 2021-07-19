@@ -45,7 +45,7 @@ The creation of a virtual environment is highly suggested. If not already instal
 
 - in Windows systems:
     ```
-    py -m pip install --user virtualenv
+    python -m pip install --user virtualenv
     ```
 
 And then create the virtual environment named *venv* typing in the command line (inside the project folder): 
@@ -57,7 +57,7 @@ And then create the virtual environment named *venv* typing in the command line 
 
 - in Windows systems:
     ```
-    py -m venv venv
+    python -m venv venv
     ```
 
 The virtual environment can be activated as follow: 
