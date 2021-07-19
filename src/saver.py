@@ -19,7 +19,6 @@ class MySQLManager:
         )
         self.connection.autocommit = True
 
-
     def label_irpef(self, table_name: str):
         """
         Creates census brackets following the Irpef (sub)categories.

@@ -70,6 +70,7 @@ def redis_training(table: str, saver: MySQLManager, case: int, no_sex: Optional[
     r = redis.StrictRedis(host="localhost", port=6380)
     r.execute_command(forrest_cmd.getvalue())
 
+
 def redis_prediction(x_to_predict, key_tree: str) -> int:
     """
     This function returns a prediction of the income bracket of an individual or household
@@ -130,7 +131,6 @@ def random_forest(ncomp: int, sex: int, age: int, statciv: int, place: int) -> i
     :param int place: region of residence
     :return: predicted Irpef income group
     """
-
     saver = MySQLManager(host="localhost",
                          port=3310,
                          user="root",

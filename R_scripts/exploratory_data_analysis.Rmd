@@ -1,4 +1,4 @@
-# Explorative data analysis
+# Explorative Data Analysis (EDA)
 
 ### Import libraries
 ```{r message=FALSE, warning=FALSE}
@@ -30,7 +30,8 @@ final_individual <- na.omit(final_individual)
 
 ```
 
-### Compute variables corelation matrix
+### Compute variables correlation matrix
+
 ```{r message=FALSE, warning=FALSE}
 
 cor(final)
@@ -73,9 +74,11 @@ plot_grid(final_corplot, final_indv_corplot)
 
 ```
 
-#### As can be seen in the plots, the Exploratory Data Analysis detected several high Pearson correlation coefficients. $\rho > |\pm 0.6|$ between staciv-anasc, staciv-sex, anasc-ireg, sex-anasc, and ireg-sex in both the datasets.
+#### As the correlographs show, the Exploratory Data Analysis (EDA) detected several high Pearson correlation coefficients. In particular, a $\rho > |\pm 0.6|$ is detected between:
+#### **staciv-anasc**, **staciv-sex**, **anasc-ireg**, and **ireg-sex** in both datasets. A strong negative correlation ($\rho = -1$) characterises the couple **sex-anasc**.
+#### These results can already cut out some classification methods having the assumption of independence between predictors.
 
-### Compute more informative matrixes
+### Compute more informative matrices
 ```{r fig.height=16, fig.width=16, message=FALSE, warning=FALSE}
 
 final_chart <- ggpairs(final,            

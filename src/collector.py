@@ -1,6 +1,7 @@
 from __future__ import absolute_import, annotations
 import json
 
+
 def number_regions(filename: str, province: str) -> int:
     """
     Takes the province and returns the integer according to the data encoded in the dataset.
