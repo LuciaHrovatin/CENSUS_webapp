@@ -1,0 +1,101 @@
+# Explorative data analysis
+
+### Import libraries
+```{r message=FALSE, warning=FALSE}
+
+library(ggplot2)
+library(ggcorrplot)
+library(cowplot)
+library(PerformanceAnalytics)
+library(GGally)
+
+```
+
+### Import final and final_individual tables
+```{r}
+
+final <- read.csv("/Users/elypa/Downloads/final.csv")
+final_individual <- read.csv("/Users/elypa/Downloads/final_individual.csv")
+
+```
+
+### Tidy up and remove unuseful columns ("id" and "area5")
+```{r}
+
+final <- final[-c(1, 10)]
+final <- na.omit(final)
+
+final_individual <- final[-c(1, 10)]
+final_individual <- na.omit(final_individual)
+
+```
+
+### Compute variables corelation matrix
+```{r message=FALSE, warning=FALSE}
+
+cor(final)
+cor(final_individual)
+
+```
+
+### Plot correlation matrix
+```{r fig.height=9, fig.width=12, message=FALSE, warning=FALSE}
+
+# final
+# Correlation matrix
+corr_final = round(cor(final), 1)
+
+# Plot
+final_corplot <- ggcorrplot(corr_final, hc.order = TRUE, 
+                            type = "lower", 
+                            lab = TRUE, 
+                            lab_size = 3, 
+                            method="circle", 
+                            colors = c("tomato2", "white", "springgreen3"), 
+                            title="final variable corelation", 
+                            ggtheme=theme_bw)
+
+#final_individual
+# Correlation matrix
+corr_final_indiv = round(cor(final_individual), 1)
+
+# Plot
+final_indv_corplot <- ggcorrplot(corr_final_indiv, hc.order = TRUE, 
+                                 type = "lower", 
+                                 lab = TRUE, 
+                                 lab_size = 3, 
+                                 method="circle", 
+                                 colors = c("tomato2", "white", "springgreen3"), 
+                                 title="final_individual variable corelation", 
+                                 ggtheme=theme_bw)
+
+plot_grid(final_corplot, final_indv_corplot)
+
+```
+
+#### As can be seen in the plots, the Exploratory Data Analysis detected several high Pearson correlation coefficients. $\rho > |\pm 0.6|$ between staciv-anasc, staciv-sex, anasc-ireg, sex-anasc, and ireg-sex in both the datasets.
+
+### Compute more informative matrixes
+```{r fig.height=16, fig.width=16, message=FALSE, warning=FALSE}
+
+final_chart <- ggpairs(final,            
+                       lower = list(continuous = wrap("points", alpha = 0.5)), 
+                       diag = list(discrete="barDiag", continuous = wrap("densityDiag", alpha=0.5 ))
+                       )
+
+final_chart
+
+
+```
+
+```{r fig.height=16, fig.width=16, message=FALSE, warning=FALSE}
+
+final_indiv_chart <- ggpairs(final_individual,            
+                       lower = list(continuous = wrap("points", alpha = 0.5)), 
+                       diag = list(discrete="barDiag", continuous = wrap("densityDiag", alpha=0.5 ))
+                       )
+
+final_indiv_chart
+
+```
+
