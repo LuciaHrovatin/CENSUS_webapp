@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 from forms import CensusData
 from src.collector import number_regions
 from src.classifier import redis_classifier
-from scr import *
+from src import *
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
