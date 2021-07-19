@@ -135,9 +135,15 @@ Specificaly, the resulting view should be the same as the screenshot below.
 ### Run the script 
 After the virtual environment and the Docker images are set up, a last step must be manually performed. To start the entire data pipeline, type in the command line (with the activated virtual environment): 
 
-```
-python runner.py 
-```
+- in Unix systems:
+    ```
+    python3 runner.py
+    ```
+
+- in Windows systems:
+    ```
+    python runner.py
+    ```
 
 The pipeline will start following some steps: 
 -	**ingestion phase**: the [requests](https://pypi.org/project/requests/) Python library downloads the data from the Banca d’Italia and Sole24ore websites 
