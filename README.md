@@ -245,6 +245,12 @@ When running the project, some errors may occur. The most common together with a
 ```
 ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
 ```
+
+or 
+
+```
+CONNECTION ERROR: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response',))
+```
 The target machine refused the connection with the client. In this framework, it may refer to the fact that the Airflow initialisation procedure has not ended yet. The suggestion is to check the Docker container status by typing `docker-compose ps` or `docker-compose [airflow-init] logs` in the command line and wait until airflow-init exits.       
 
 ```
