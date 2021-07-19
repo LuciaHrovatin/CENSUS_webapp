@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 from forms import CensusData
 from src.collector import number_regions
 from src.classifier import redis_classifier
+from scr import *
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
@@ -50,7 +51,7 @@ def home():
     if place is None:
         prob2 = 0
     else:
-        region = number_regions(province=place, filename="province-ita.json")
+        region = number_regions(province=place, filename="src.province-ita.json")
         prob2 = redis_classifier(ncomp=componenti, sex=gender, age=age, statciv=stato_civile, place=region)
 
     return render_template('home.html', form=form, age=age, gender=gender, place=place, componenti=componenti, stato_civile=stato_civile, prob=prob2)
