@@ -49,7 +49,7 @@ class MySQLManager:
 
     def execute_read_query(self, table_name: str):
         """
-        Selecting query to recall a table stored in the project_bdt database
+        Select operation to recall a table stored in the project_bdt database
         :param str table_name: name of the table that the user wants to recall
         :return: the table is returned as Pandas DataFrame
         """

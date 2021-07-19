@@ -43,7 +43,7 @@ def download_file(url: str, target_path: str, file_to_keep: Optional[list] = Non
 
 
 default_args = {
-    'owner': 'airflows',
+    'owner': 'airflow',
     'depends_on_past': False,
     'retries': 1,
     'retry_delay': timedelta(minutes=1),

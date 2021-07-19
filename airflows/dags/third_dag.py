@@ -2,11 +2,11 @@ from errno import errorcode
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 from datetime import datetime, timedelta
-from airflow.hooks.mysql_hook import MySqlHook
+from airflow.providers.mysql.hooks.mysql import MySqlHook
 
 
 default_args = {
-    'owner': 'airflows',
+    'owner': 'airflow',
     'depends_on_past': False,
     'start_date': datetime.now(),
     'retries': 1,

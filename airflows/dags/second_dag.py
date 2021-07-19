@@ -10,6 +10,7 @@ from datetime import timedelta, datetime
 from airflow.hooks.mysql_hook import MySqlHook
 
 
+# -----------------------------------
 def rename_column(filename: str):
     """
     The function renames the column of pandas dataframes given the file name
@@ -239,7 +240,7 @@ def lst_tables(filename: str) -> tuple:
 # ------------------------------------------- DAG -----------------------------------------------
 
 default_args = {
-    'owner': 'airflows',
+    'owner': 'airflow',
     'depends_on_past': True,
     'retries': 1,
     'retry_delay': timedelta(minutes=1),

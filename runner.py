@@ -6,19 +6,19 @@ import os
 
 # First authentication
 url = 'http://localhost:8080/api/v1/pools'
-r = requests.get(url, auth=('airflows', 'airflows'))
+r = requests.get(url, auth=('airflow', 'airflow'))
 
 for dag_name in ["ingestion_phase", "etl_phase", "mySQL_phase"]:
     url = 'http://localhost:8080/api/v1/dags/' + dag_name + '/dagRuns'
     headers = {'Content-Type': 'application/json', 'Cache-Control': 'no-cache'}
-    r = requests.post(url, headers=headers, data="{}", auth=('airflows', 'airflows'))
+    r = requests.post(url, headers=headers, data="{}", auth=('airflow', 'airflow'))
     run = True
     allowed_state = 'success'
+    print("{} is running".format(dag_name))
     while run:
         url = 'http://localhost:8080/api/v1/dags/' + dag_name + '/dagRuns'
-        r = requests.get(url, auth=('airflows', 'airflows'))
+        r = requests.get(url, auth=('airflow', 'airflow'))
         result = r.json()
-        print("{} is running".format(dag_name))
         for entry in result["dag_runs"]:
             if entry["state"] == allowed_state:
                 run = False
@@ -39,13 +39,13 @@ cursor_Mysql.label_irpef(table_name="final_individual")
 redis_training(saver=cursor_Mysql, table="final", case=1)
 
 # 2. Final dataset without variable sex
-redis_training(saver=cursor_Mysql, table="final", case=2, sex=True)
+redis_training(saver=cursor_Mysql, table="final", case=2, no_sex=True)
 
 # 3. Final_individual (statciv=1) dataset with variable sex
 redis_training(saver=cursor_Mysql, table="final_individual", case=3)
 
 # 4. Final_individual (statciv=1) dataset without variable sex
-redis_training(saver=cursor_Mysql, table="final_individual", case=3, sex=True)
+redis_training(saver=cursor_Mysql, table="final_individual", case=4, no_sex=True)
 
 # Connecting and launching flask
 os.environ['FLASK_APP'] = 'main.py'
