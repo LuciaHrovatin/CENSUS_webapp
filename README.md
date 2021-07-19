@@ -1,8 +1,8 @@
-# C.E.N.S.U.S 
+# CENSUS 
 ## *Calculator of Earnings Nationally Scored via User Specifics*
 ___
 
-The C.E.N.S.U.S. project has been developed as final assignment of the Big Data Technologies course, offered by the University of Trento. 
+The CENSUS project has been developed as final assignment of the Big Data Technologies course, offered by the University of Trento. 
 
 ## Project objective 
 The project objective refers to deploying a Big Data system, taking as input specific user data and returning a prediction of his/her income group, subcategorizing the IRPEF system of taxation and its income segmentation. The prediction corresponds to the output of a Random Forest model trained with data provided by the Banca d’Italia and by the Sole24ore.
@@ -126,7 +126,7 @@ The pipeline will start following some steps:
 -	**ETL phase**: a DAG in Airflow extracts relevant data, transforms it employing [pandas]( https://pandas.pydata.org/) Python library, and loads it to the MySQL database `project_bdt`
 -	**storage phase**: data is stored in a MySQL server running in another container 
 -	**machine learning**: data is processed using Redis ML module implementing a [Random Forest model](https://redislabs.com/blog/introduction-redis-ml-part-five/) 
--	**web application**: the C.E.N.S.U.S. web application is launched and can be visualized by clicking or copy-pasting the localhost (which will apperas in the terminal) link in the browser 
+-	**web application**: the CENSUS web application is launched and can be visualized by clicking or copy-pasting the localhost (which will apperas in the terminal) link in the browser 
     
 
 ### Access to web servers 
@@ -144,7 +144,7 @@ Accessing each service web server is the recommended approach to monitor the pip
 
 ![phpMyAdmit](static/php.png)
 
-### Access to C.E.N.S.U.S. web application 
+### Access to CENSUS web application 
 
 A user can access the web application in two different ways: 
 
