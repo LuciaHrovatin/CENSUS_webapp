@@ -150,7 +150,7 @@ A user can access the web application in two different ways:
 
 1. clicking on the lochalhost link returned at the end of the data pipeline 
 
-2. connecting to the stable CENSUS web application, hosted on a server: [http://elisapaolazzi.pythonanywhere.com/]( http://elisapaolazzi.pythonanywhere.com/) 
+2. connecting to the stable CENSUS web application, hosted on a third-party server: [http://elisapaolazzi.pythonanywhere.com/]( http://elisapaolazzi.pythonanywhere.com/) 
 
 The web application, reported below, predicts the income bracket of the user, following the [IRPEF](https://www.informazionefiscale.it/Irpef-2021-aliquote-scaglioni-calcolo-novita) categories and further sub-groups.  
 Accessing to the web application, you will see this page:
