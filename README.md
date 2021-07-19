@@ -36,13 +36,31 @@ git clone https://github.com/elypaolazz/BDT-Project.git
 ```
 
 ### Environment 
-The creation of a virtual environment is highly suggested. It can be created tipying in the command line (inside the project folder): 
+The creation of a virtual environment is highly suggested. If not already installed, install virtualenv:
 
-```
-virtualenv venv
-```
+- in Unix systems:
+    ```
+    python3 -m pip install --user virtualenv
+    ```
 
-The command above created a virtual environment named *venv*, which can be activated as follow.  
+- in Windows systems:
+    ```
+    py -m pip install --user virtualenv
+    ```
+
+And then create the virtual environment named *venv* typing in the command line (inside the project folder): 
+
+- in Unix systems:
+    ```
+    python3 -m venv venv
+    ```
+
+- in Windows systems:
+    ```
+    py -m venv venv
+    ```
+
+The virtual environment can be activated as follow: 
 
 - in Unix systems:
     ```
