@@ -6,17 +6,17 @@ import os
 
 # First authentication
 url = 'http://localhost:8080/api/v1/pools'
-r = requests.get(url, auth=('airflow', 'airflow'))
+r = requests.get(url, auth=('airflows', 'airflows'))
 
 for dag_name in ["ingestion_phase", "etl_phase", "mySQL_phase"]:
     url = 'http://localhost:8080/api/v1/dags/' + dag_name + '/dagRuns'
     headers = {'Content-Type': 'application/json', 'Cache-Control': 'no-cache'}
-    r = requests.post(url, headers=headers, data="{}", auth=('airflow', 'airflow'))
+    r = requests.post(url, headers=headers, data="{}", auth=('airflows', 'airflows'))
     run = True
     allowed_state = 'success'
     while run:
         url = 'http://localhost:8080/api/v1/dags/' + dag_name + '/dagRuns'
-        r = requests.get(url, auth=('airflow', 'airflow'))
+        r = requests.get(url, auth=('airflows', 'airflows'))
         result = r.json()
         print("{} is running".format(dag_name))
         for entry in result["dag_runs"]:

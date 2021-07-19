@@ -2,17 +2,17 @@ version: '3'
 
 x-airflow-common:
   &airflow-common
-  image: apache/airflow:2.1.1
+  image: apache/airflows:2.1.1
   environment:
     &airflow-common-env
     AIRFLOW__CORE__EXECUTOR: CeleryExecutor
-    AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
-    AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow
+    AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflows:airflows@postgres/airflows
+    AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflows:airflows@postgres/airflows
     AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
     AIRFLOW__CORE__FERNET_KEY: ''
     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'false'
     AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
-    AIRFLOW__API__AUTH_BACKEND: 'airflow.api.auth.backend.basic_auth'
+    AIRFLOW__API__AUTH_BACKEND: 'airflows.api.auth.backend.basic_auth'
     _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-}
     AIRFLOW__CORE__PARALLELISM: 64
     AIRFLOW__CORE__DAG_CONCURRENCY: 16
@@ -21,8 +21,8 @@ x-airflow-common:
     AIRFLOW_CONN_MYSQL_TEST_CONN: mysql://root:password@172.17.0.1:3310/project_bdt
   user: "${AIRFLOW_UID:-50000}:${AIRFLOW_GID:-50000}"
   volumes:
-    - ./airflow/dags:/opt/airflow/dags
-    #- ./airflow/logs:/opt/airflow/logs
+    - ./airflows/dags:/opt/airflows/dags
+    #- ./airflows/logs:/opt/airflows/logs
   depends_on:
     redis:
       condition: service_healthy
@@ -59,14 +59,14 @@ services:
   postgres:
     image: postgres:9.6
     environment:
-      POSTGRES_USER: airflow
-      POSTGRES_PASSWORD: airflow
-      POSTGRES_DB: airflow
+      POSTGRES_USER: airflows
+      POSTGRES_PASSWORD: airflows
+      POSTGRES_DB: airflows
     volumes:
       #- ./data/postgres:/var/lib/postgresql/data
       - ./data/postgres:/var/lib/postgresql/logs
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "airflow"]
+      test: ["CMD", "pg_isready", "-U", "airflows"]
       interval: 5s
       retries: 5
     restart: always
@@ -104,7 +104,7 @@ services:
     container_name: "scheduler"
     command: scheduler
     healthcheck:
-      test: ["CMD-SHELL", 'airflow jobs check --job-type SchedulerJob --hostname "$${HOSTNAME}"']
+      test: ["CMD-SHELL", 'airflows jobs check --job-type SchedulerJob --hostname "$${HOSTNAME}"']
       interval: 10s
       timeout: 10s
       retries: 5
@@ -120,7 +120,7 @@ services:
     healthcheck:
       test:
         - "CMD-SHELL"
-        - 'celery --app airflow.executors.celery_executor.app inspect ping -d "celery@$${HOSTNAME}"'
+        - 'celery --app airflows.executors.celery_executor.app inspect ping -d "celery@$${HOSTNAME}"'
       interval: 10s
       timeout: 10s
       retries: 5
@@ -151,6 +151,6 @@ services:
       <<: *airflow-common-env
       _AIRFLOW_DB_UPGRADE: 'true'
       _AIRFLOW_WWW_USER_CREATE: 'true'
-      _AIRFLOW_WWW_USER_USERNAME: ${_AIRFLOW_WWW_USER_USERNAME:-airflow}
-      _AIRFLOW_WWW_USER_PASSWORD: ${_AIRFLOW_WWW_USER_PASSWORD:-airflow}
+      _AIRFLOW_WWW_USER_USERNAME: ${_AIRFLOW_WWW_USER_USERNAME:-airflows}
+      _AIRFLOW_WWW_USER_PASSWORD: ${_AIRFLOW_WWW_USER_PASSWORD:-airflows}
 

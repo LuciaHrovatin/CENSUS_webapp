@@ -239,7 +239,7 @@ def lst_tables(filename: str) -> tuple:
 # ------------------------------------------- DAG -----------------------------------------------
 
 default_args = {
-    'owner': 'airflow',
+    'owner': 'airflows',
     'depends_on_past': True,
     'retries': 1,
     'retry_delay': timedelta(minutes=1),
