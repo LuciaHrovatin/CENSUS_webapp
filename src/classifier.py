@@ -47,9 +47,9 @@ def redis_training(table: str, saver: MySQLManager, case: int, no_sex: Optional[
     elif case == 2:
         forrest_cmd.write("ML.FOREST.ADD census_nosex:tree 0 ")
     elif case == 3:
-        forrest_cmd.write("ML.FOREST.ADD census_individuals:tree 0 ")
-    else:
-        forrest_cmd.write("ML.FOREST.ADD census_ind_nosex:tree 0 ")
+        forrest_cmd.write("ML.FOREST.ADD census_individual:tree 0 ")
+    elif case == 4:
+        forrest_cmd.write("ML.FOREST.ADD census_ind_no_sex:tree 0 ")
 
     # traverse the tree
     stack = [(0, ".")]
@@ -62,14 +62,14 @@ def redis_training(table: str, saver: MySQLManager, case: int, no_sex: Optional[
             stack.append((t_left[node_id], path + "l"))
             cmd = "{} NUMERIC {} {} ".format(path, feature_names[t_feature[node_id]], t_threshold[node_id])
             forrest_cmd.write(cmd)
-
         else:
             cmd = "{} LEAF {} ".format(path, np.argmax(t_value[node_id]))
             forrest_cmd.write(cmd)
-
+    print(forrest_cmd.getvalue())
     # execute command in Redis
     r = redis.StrictRedis(host="localhost", port=6380)
     r.execute_command(forrest_cmd.getvalue())
+
 
 
 def redis_prediction(x_to_predict, key_tree: str) -> int:
@@ -111,14 +111,13 @@ def redis_classifier(ncomp: int, sex: int, age: int, statciv: int, place: int) -
     if statciv == 1:
         if not sex:
             X_test = [[ncomp, age, statciv, place]]
-            return redis_prediction(X_test, "census_ind_nosex")
-        return redis_prediction(X_test, "census_individuals")
+            return redis_prediction(X_test, "census_ind_no_sex")
+        return redis_prediction(X_test, "census_individual")
 
     # If the choice was "Preferisco non specificare" then, data will not include "sex" information
     if not sex:
         X_test = [[ncomp, age, statciv, place]]
         return redis_prediction(X_test, "census_nosex")
-
     return redis_prediction(X_test, "census")
 
 

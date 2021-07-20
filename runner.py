@@ -38,17 +38,17 @@ cursor_Mysql.label_irpef(table_name="final_individual")
 
 # Redis training of 4 models
 # 1. Final dataset with variable sex
-redis_training(saver=cursor_Mysql, table="final", case=1)
+#redis_training(saver=cursor_Mysql, table="final", case=1)
 
 # 2. Final dataset without variable sex
-redis_training(saver=cursor_Mysql, table="final", case=2, no_sex=True)
+#redis_training(saver=cursor_Mysql, table="final", case=2, no_sex=True)
 
 # 3. Final_individual (statciv=1) dataset with variable sex
-redis_training(saver=cursor_Mysql, table="final_individual", case=3)
+#redis_training(saver=cursor_Mysql, table="final_individual", case=3)
 
 # 4. Final_individual (statciv=1) dataset without variable sex
-redis_training(saver=cursor_Mysql, table="final_individual", case=4, no_sex=True)
+#redis_training(saver=cursor_Mysql, table="final_individual", case=4, no_sex=True)
 
 # Connecting and launching flask
-os.environ['FLASK_APP'] = 'main.py'
-os.system("flask run")
+#os.environ['FLASK_APP'] = 'main.py'
+#os.system("flask run")
