@@ -17,12 +17,8 @@ def join_SQL(table_1: str, table_2: str, table_name: str):
     conn = mysql.get_conn()
     cursor = conn.cursor()
     try:
-        if "rper[0-9]+" == table_2:
-            query = "CREATE TABLE {} as (SELECT n.*, s.y from {} as n join {} as s on n.{} = s.{} and n.{} = s.{})".format(
-                table_name,
-                table_1, table_2,
-                "nquest", "nquest",
-                "nord", "nord")
+        if table_2.find("rper") != -1:
+            query = "CREATE TABLE {} as (SELECT n.*, s.y from {} as n join {} as s on n.{} = s.{} or n.{} = s.{})".format(table_name, table_1, table_2, "nquest", "nquest","nord", "nord")
         else:
             query = "CREATE TABLE {} as (SELECT n.*, s.y from {} as n join {} as s on n.{} = s.{})".format(table_name,
                                                                                                            table_1,
@@ -49,8 +45,7 @@ def union_SQL(table_1: str, table_2: str, table_name: str):
     conn = mysql.get_conn()
     cursor = conn.cursor()
     try:
-        query = "CREATE TABLE {} as (SELECT * FROM {} UNION SELECT * FROM {} WHERE {} NOT IN (SELECT {} FROM {}))".format(
-            table_name, table_1, table_2, "nquest", "nquest", table_1)
+        query = "CREATE TABLE {} as (SELECT * FROM {} UNION SELECT * FROM {} WHERE {} NOT IN (SELECT {} FROM {}))".format(table_name, table_1, table_2, "nquest", "nquest", table_1)
         cursor.execute(query)
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
