@@ -65,7 +65,7 @@ def redis_training(table: str, saver: MySQLManager, case: int, no_sex: Optional[
         else:
             cmd = "{} LEAF {} ".format(path, np.argmax(t_value[node_id]))
             forrest_cmd.write(cmd)
-    print(forrest_cmd.getvalue())
+
     # execute command in Redis
     r = redis.StrictRedis(host="localhost", port=6380)
     r.execute_command(forrest_cmd.getvalue())
