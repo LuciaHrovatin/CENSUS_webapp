@@ -30,6 +30,7 @@ def redis_training(table: str, saver: MySQLManager, case: int, no_sex: Optional[
     # Decision tree training
     cl_tree = DecisionTreeClassifier(max_depth=8, random_state=0)
     cl_tree.fit(X_train, y_train)
+    t_nodes = cl_tree.tree_.node_count
     t_left = cl_tree.tree_.children_left
     t_right = cl_tree.tree_.children_right
     t_feature = cl_tree.tree_.feature
