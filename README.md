@@ -181,12 +181,25 @@ Accessing to the web application, you will see this page:
 
 ![INTERFACE](static/interface.png)
 
-## Close the project 
-The script will automatically end with the deployment of the web application. However, a manual stop of the Docker containers is needed using the command: 
+## Close the project and cleaning up 
+The script will automatically end with the deployment of the web application. However, notice that: 
+
+1. the logs of the web application will be uploaded on the terminal.
+
+2. a manual stop of Docker containers is needed.
+
+To stop and remove the running containers: 
 
 ```
 docker-compose down 
 ```
+
+To completely cleaning up the environment (i.e., delete containers, delete volumes with database data and download images), run:
+
+```
+docker-compose down --volumes --rmi all
+```
+
 # Code structure
 
 The backend code structure is composed by:
