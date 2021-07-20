@@ -56,12 +56,11 @@ dag1 = DAG('ingestion_phase',
            schedule_interval=None
            )
 
-
-
 t01 = PythonOperator(
     task_id='file1',
-    python_callable = download_file,
-    op_kwargs={'url': "https://www.bancaditalia.it/statistiche/tematiche/indagini-famiglie-imprese/bilanci-famiglie/distribuzione-microdati/documenti/ind16_ascii.zip",
+    python_callable=download_file,
+    op_kwargs={
+        'url': "https://www.bancaditalia.it/statistiche/tematiche/indagini-famiglie-imprese/bilanci-famiglie/distribuzione-microdati/documenti/ind16_ascii.zip",
         'target_path': "bancaditalia_dataset_16.zip",
         'file_to_keep': ["carcom16.csv", "rfam16.csv", "rper16.csv"]},
     dag=dag1
@@ -69,11 +68,12 @@ t01 = PythonOperator(
 
 t02 = PythonOperator(
     task_id='file2',
-    python_callable = download_file,
-    op_kwargs={'url': "https://www.bancaditalia.it/statistiche/tematiche/indagini-famiglie-imprese/bilanci-famiglie/distribuzione-microdati/documenti/ind14_ascii.zip",
-        'target_path':"bancaditalia_dataset_14.zip",
+    python_callable=download_file,
+    op_kwargs={
+        'url': "https://www.bancaditalia.it/statistiche/tematiche/indagini-famiglie-imprese/bilanci-famiglie/distribuzione-microdati/documenti/ind14_ascii.zip",
+        'target_path': "bancaditalia_dataset_14.zip",
         'file_to_keep': ["carcom14.csv", "rfam14.csv", "rper14.csv"],
-        'multistep':True},
+        'multistep': True},
     dag=dag1
 )
 
@@ -85,8 +85,6 @@ t03 = PythonOperator(
         'target_path': "dataset/Qualita_vita.csv"},
     dag=dag1
 )
-
-
 
 # sequence of events
 t01.set_downstream(t02)

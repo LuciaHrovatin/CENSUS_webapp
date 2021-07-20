@@ -4,7 +4,8 @@ from src.saver import MySQLManager
 from src.classifier import redis_training
 import os
 
-# First authentication
+# First (delayed) authentication
+time.sleep(15)
 url = 'http://localhost:8080/api/v1/pools'
 r = requests.get(url, auth=('airflow', 'airflow'))
 

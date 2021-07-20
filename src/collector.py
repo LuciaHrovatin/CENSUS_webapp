@@ -4,7 +4,7 @@ import json
 
 def number_regions(filename: str, province: str) -> int:
     """
-    Takes the province and returns the integer according to the data encoded in the dataset.
+    Takes the province and returns the integer according to the codes (NUTS2) reported in the dataset.
     :param str filename: json file containing all the Italian region
     :param str province: name of the province
     :return: integer of the region (1-20)

@@ -5,16 +5,6 @@ from datetime import datetime, timedelta
 from airflow.providers.mysql.hooks.mysql import MySqlHook
 
 
-default_args = {
-    'owner': 'airflow',
-    'depends_on_past': False,
-    'start_date': datetime.now(),
-    'retries': 1,
-    'retry_delay': timedelta(minutes=1)}
-
-dag3 = DAG('mySQL_phase', schedule_interval=None, default_args=default_args)
-
-
 def join_SQL(table_1: str, table_2: str, table_name: str):
     """
     Function that performs a full outer join of two tables based on the primary key nquest or
@@ -28,12 +18,17 @@ def join_SQL(table_1: str, table_2: str, table_name: str):
     cursor = conn.cursor()
     try:
         if "rper[0-9]+" == table_2:
-            query = "CREATE TABLE {} as (SELECT n.*, s.y from {} as n join {} as s on n.{} = s.{} and n.{} = s.{})".format(table_name,
-                                                                                                           table_1,table_2,
-                                                                                                           "nquest","nquest",
-                                                                                                           "nord", "nord")
+            query = "CREATE TABLE {} as (SELECT n.*, s.y from {} as n join {} as s on n.{} = s.{} and n.{} = s.{})".format(
+                table_name,
+                table_1, table_2,
+                "nquest", "nquest",
+                "nord", "nord")
         else:
-            query = "CREATE TABLE {} as (SELECT n.*, s.y from {} as n join {} as s on n.{} = s.{})".format(table_name, table_1, table_2, "nquest", "nquest")
+            query = "CREATE TABLE {} as (SELECT n.*, s.y from {} as n join {} as s on n.{} = s.{})".format(table_name,
+                                                                                                           table_1,
+                                                                                                           table_2,
+                                                                                                           "nquest",
+                                                                                                           "nquest")
         cursor.execute(query)
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
@@ -54,7 +49,12 @@ def union_SQL(table_1: str, table_2: str, table_name: str):
     conn = mysql.get_conn()
     cursor = conn.cursor()
     try:
-        query = "CREATE TABLE {} as (SELECT * FROM {} UNION SELECT * FROM {} WHERE {} NOT IN (SELECT {} FROM {}))".format(table_name, table_1, table_2, "nquest", "nquest", table_1)
+        if table_1.find("fam") > 0:
+            query = "CREATE TABLE {} as (SELECT * FROM {} UNION SELECT * FROM {} WHERE {} NOT IN (SELECT {} FROM {}))".format(
+                table_name, table_1, table_2, "nquest", "nquest", table_1)
+        else:
+            query = "CREATE TABLE {} as (SELECT * FROM {} UNION SELECT * FROM {} WHERE {} AND {} NOT IN (SELECT {}, {} FROM {}))".format(
+                table_name, table_1, table_2, "nquest", "nord", "nquest","nord", table_1)
         cursor.execute(query)
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
@@ -62,6 +62,18 @@ def union_SQL(table_1: str, table_2: str, table_name: str):
         else:
             print(err.msg)
     cursor.close()
+
+
+# ---------------------------------------- DAG --------------------------------------
+
+default_args = {
+    'owner': 'airflow',
+    'depends_on_past': False,
+    'start_date': datetime.now(),
+    'retries': 1,
+    'retry_delay': timedelta(minutes=1)}
+
+dag3 = DAG('mySQL_phase', schedule_interval=None, default_args=default_args)
 
 t1 = PythonOperator(
     task_id='final_create',
@@ -117,4 +129,5 @@ t6 = PythonOperator(
                'table_name': "final"}
 )
 
+# sequence of events
 t1 >> t2 >> t3 >> t4 >> t5 >> t6

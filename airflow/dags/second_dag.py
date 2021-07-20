@@ -10,7 +10,8 @@ from datetime import timedelta, datetime
 from airflow.hooks.mysql_hook import MySqlHook
 
 
-# -----------------------------------
+# ----------------------------------- COLUMNS' CLEANSING ----------------------------------
+
 def rename_column(filename: str):
     """
     The function renames the column of pandas dataframes given the file name
@@ -20,11 +21,10 @@ def rename_column(filename: str):
     """
     data = pd.read_csv(filename)
     file_n = filename[filename.find("/") + 1:]  # extract the name
-    if file_n == "Qualita_vita.csv":
-        renamed_data = data.rename(columns={'CODICE NUTS 3 2021': 'NUTS3',
-                                            'RIFERIMENTO TEMPORALE': 'TIME',
-                                            'INDICATORE': 'INDEXES',
-                                            'NOME PROVINCIA (ISTAT)': 'PROVINCE'})
+    renamed_data = data.rename(columns={'CODICE NUTS 3 2021': 'NUTS3',
+                                        'RIFERIMENTO TEMPORALE': 'TIME',
+                                        'INDICATORE': 'INDEXES',
+                                        'NOME PROVINCIA (ISTAT)': 'PROVINCE'})
     renamed_data.to_csv("dataset/" + file_n, index=None)
 
 
@@ -40,7 +40,8 @@ def delete_column(filename: str, cols_to_remove: list):
     data = data.drop(del_col, inplace=False, axis=1)
     data.to_csv(filename, index=None)
 
-# -----------------------------------------CLEANING ROWS ----------------------------------
+
+# -----------------------------------------ROWS' CLEANSING----------------------------------
 
 def parse_date(str_date: str):
     """
@@ -132,13 +133,13 @@ def list_arg(filename: str):
         rows = json.load(f)
         return rows
 
-# ---------------------------------------------DELETE NOT RELEVANT INDICATORS-----------------------------------------
+
+# ---------------------------------------------NOT RELEVANT INDICATORS-----------------------------------------
 
 def del_indicators(filename: str):
     """
     The function deletes all rows containing an index not relevant for further analyses
     :param str filename: name of the file from which deleting the rows
-    :param list indicators: list of indicators not relevant for further analyses
     :return: cleaned file
     """
     lst_index = list_arg("dataset/indicators.json")
@@ -218,22 +219,15 @@ def lst_tables(filename: str) -> tuple:
     data = pd.read_csv(filename)
     table_to_be = []
     cols = [str(i) for i in data.columns.tolist()]
-    primary_key = 0
     for i in range(len(cols)):
         pointer = data.loc[0, cols[i]]
-        if cols[i].lower() == "id":
-            primary_key = ", PRIMARY KEY(`{}`))".format(cols[i].lower())
         if isinstance(pointer, str):
             table_to_be.append("`" + cols[i].lower() + "` VARCHAR(255) NOT NULL")
         elif isinstance(pointer, np.int64):
             table_to_be.append("`" + cols[i].lower() + "` INT NOT NULL")
         elif isinstance(pointer, float):
             table_to_be.append("`" + cols[i].lower() + "` FLOAT NOT NULL")
-    if not primary_key:
-        data_set = "CREATE TABLE `" + name + "` ( `id` int NOT NULL AUTO_INCREMENT, \n" + \
-                   ", \n".join(table_to_be) + ", PRIMARY KEY(`id`))"
-    else:
-        data_set = "CREATE TABLE `" + name + "` ( " + ", \n".join(table_to_be) + primary_key
+    data_set = "CREATE TABLE `" + name + "` ( " + ", \n".join(table_to_be) + " )"
     return name, data_set
 
 
@@ -250,10 +244,10 @@ default_args = {
 }
 
 dag2 = DAG('etl_phase',
-          default_args=default_args,
-          description='ETL files',
-          schedule_interval=None
-          )
+           default_args=default_args,
+           description='ETL files',
+           schedule_interval=None
+           )
 
 fam_canc = ['YL', 'YL1', 'YL2', 'YT', 'YTP', 'YTP1', 'YTP2', 'YTA', 'YTA1',
             'YTA2', 'YTA3', 'YTA31', 'YTA32', 'YM', 'YMA1', 'YMA2', 'YC',
@@ -374,13 +368,14 @@ t13 = PythonOperator(
     dag=dag2
 )
 
+
 def lst_tables(filename: str) -> tuple:
     """
     The function prepares the SQL command to insert a new table into the chosen database
     :param str filename: name of the dataset to be inserted
     :return: tuple having as first element the name of the new table and as second element the SQL command
     """
-    name = filename[filename.find("/")+1 :filename.find(".")].lower()
+    name = filename[filename.find("/") + 1:filename.find(".")].lower()
     data = pd.read_csv(filename)
     table_to_be = []
     cols = [str(i) for i in data.columns.tolist()]
@@ -396,29 +391,27 @@ def lst_tables(filename: str) -> tuple:
     return name, data_set
 
 
-
-def create_db(filename: str, **kwargs):
+def create_db(filename: str):
     res = lst_tables(filename)
     mysql_hook = MySqlHook(mysql_conn_id='mysql_test_conn', schema="project_bdt")
     mysql_hook.run(res[1])
 
 
-def store_data(filename: str, **kwargs):
+def store_data(filename: str):
     res = lst_tables(filename)
     mysql_hook = MySqlHook(mysql_conn_id='mysql_test_conn', schema="project_bdt")
     with open(filename, "r", newline='') as f:
         results = csv.reader(f)
-        next(results, None) # skip the header
+        next(results, None)  # skip the header
         mysql_hook.insert_rows(table=res[0], rows=results)
 
 
 py1 = PythonOperator(
-     task_id='create_db',
-     dag=dag2,
-     python_callable=create_db,
-     op_kwargs={'filename': 'dataset/rfam14.csv'}
- )
-
+    task_id='create_db',
+    dag=dag2,
+    python_callable=create_db,
+    op_kwargs={'filename': 'dataset/rfam14.csv'}
+)
 
 py2 = PythonOperator(
     task_id='store_opt',
@@ -427,14 +420,12 @@ py2 = PythonOperator(
     op_kwargs={'filename': 'dataset/rfam14.csv'}
 )
 
-
 py3 = PythonOperator(
-     task_id='create_db_2',
-     dag=dag2,
-     python_callable=create_db,
-     op_kwargs={'filename': 'dataset/rfam16.csv'}
- )
-
+    task_id='create_db_2',
+    dag=dag2,
+    python_callable=create_db,
+    op_kwargs={'filename': 'dataset/rfam16.csv'}
+)
 
 py4 = PythonOperator(
     task_id='store_opt_2',
@@ -443,14 +434,12 @@ py4 = PythonOperator(
     op_kwargs={'filename': 'dataset/rfam16.csv'}
 )
 
-
 py5 = PythonOperator(
-     task_id='create_db_3',
-     dag=dag2,
-     python_callable=create_db,
-     op_kwargs={'filename': 'dataset/rper16.csv'}
- )
-
+    task_id='create_db_3',
+    dag=dag2,
+    python_callable=create_db,
+    op_kwargs={'filename': 'dataset/rper16.csv'}
+)
 
 py6 = PythonOperator(
     task_id='store_opt_3',
@@ -459,14 +448,12 @@ py6 = PythonOperator(
     op_kwargs={'filename': 'dataset/rper16.csv'}
 )
 
-
 py7 = PythonOperator(
-     task_id='create_db_4',
-     dag=dag2,
-     python_callable=create_db,
-     op_kwargs={'filename': 'dataset/rper14.csv'}
- )
-
+    task_id='create_db_4',
+    dag=dag2,
+    python_callable=create_db,
+    op_kwargs={'filename': 'dataset/rper14.csv'}
+)
 
 py8 = PythonOperator(
     task_id='store_opt_4',
@@ -476,12 +463,11 @@ py8 = PythonOperator(
 )
 
 py9 = PythonOperator(
-     task_id='create_db_5',
-     dag=dag2,
-     python_callable=create_db,
-     op_kwargs={'filename': 'dataset/carcom14.csv'}
- )
-
+    task_id='create_db_5',
+    dag=dag2,
+    python_callable=create_db,
+    op_kwargs={'filename': 'dataset/carcom14.csv'}
+)
 
 py10 = PythonOperator(
     task_id='store_opt_5',
@@ -491,12 +477,11 @@ py10 = PythonOperator(
 )
 
 py11 = PythonOperator(
-     task_id='create_db_6',
-     dag=dag2,
-     python_callable=create_db,
-     op_kwargs={'filename': 'dataset/carcom16.csv'}
- )
-
+    task_id='create_db_6',
+    dag=dag2,
+    python_callable=create_db,
+    op_kwargs={'filename': 'dataset/carcom16.csv'}
+)
 
 py12 = PythonOperator(
     task_id='store_opt_6',
@@ -505,7 +490,20 @@ py12 = PythonOperator(
     op_kwargs={'filename': 'dataset/carcom16.csv'}
 )
 
+py13 = PythonOperator(
+    task_id='create_db_7',
+    dag=dag2,
+    python_callable=create_db,
+    op_kwargs={'filename': 'dataset/Qualita_vita.csv'}
+)
 
+py14 = PythonOperator(
+    task_id='store_opt_7',
+    dag=dag2,
+    python_callable=store_data,
+    op_kwargs={'filename': 'dataset/Qualita_vita.csv'}
+)
 
-# Sequence of the DAG
-t1 >> [t2, t8, t9, t10, t11, t12, t13] >> t3 >> t4 >> t5 >> t6 >> t7 >> py1 >> py2 >> py3 >> py4 >> py5 >> py6 >> py7 >> py8 >> py9 >> py10 >> py11 >> py12
+# Sequence of events
+t1 >> [t2, t8, t9, t10, t11, t12, t13] >> py1 >> py2 >> py3 >> py4 >> py5 >> py6 >> py7 >> py8 >> py9 >> py10 >> py11 >> py12
+t2 >> t3 >> t4 >> t5 >> t6 >> t7 >> py13 >> py14
