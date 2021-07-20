@@ -505,5 +505,6 @@ py14 = PythonOperator(
 )
 
 # Sequence of events
-t1 >> [t2, t8, t9, t10, t11, t12, t13] >> py1 >> py2 >> py3 >> py4 >> py5 >> py6 >> py7 >> py8 >> py9 >> py10 >> py11 >> py12
-t2 >> t3 >> t4 >> t5 >> t6 >> t7 >> py13 >> py14
+t1 >> t2 >> t3 >> t4 >> t5 >> t6 >> t7 >> [t8, t9, t10, t11, t12, t13] >> py1 >> py2 >> py3 >> py4 >> py5
+py5 >> py6 >> py7 >> py8 >> py9 >> py10 >> py11 >> py12 >> py13 >> py14
+
