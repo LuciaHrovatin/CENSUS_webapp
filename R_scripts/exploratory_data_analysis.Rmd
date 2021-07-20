@@ -111,7 +111,7 @@ The variables contained in those datasets are:<b>
 - *anasc*: year of birth of the respondent
 - *staciv*: marital status which is inserted as integer number ranging from 1 to 6. Specifically, it identifies: <b>
 1 = celibe/nubile, 2 = convivente, 3 = Sposato/a, 4 = Vedovo/a, 5 Separato/a, and 6 Divorziato/a.
-- **ireg**: integer number (1-20) reporting the NUTS2 codes, meaning the numbers associated with the Italian regions. In particular: 
+- *ireg*: integer number (1-20) reporting the NUTS2 codes, meaning the numbers associated with the Italian regions. In particular: 
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 
