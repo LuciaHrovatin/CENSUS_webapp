@@ -91,7 +91,7 @@ This project employs few Docker images:
 If running on **Linux** system, a further check for deploying Airflow is needed. The mounted volumes (in the `docker-compose.yml` file) use the user/group permissions, therefore double-check if the container and the host computer have matching file permissions.
 ```
 mkdir ./dags  ./logs 
-echo -e „AIRFLOW_UID=$(id -u) \nAIRFLOW_GID=0” > .env
+echo -e "AIRFLOW_UID=$(id -u) \nAIRFLOW_GID=0" > .env
 ```
 Further information available here: [Running Airflow in Docker](https://airflow.apache.org/docs/apache-airflow/stable/start/docker.html)
 
