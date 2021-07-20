@@ -1,7 +1,7 @@
 ---
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 # CENSUS Graphs
 
@@ -270,15 +270,15 @@ means <- aggregate(VALORE ~ REGION, data = df_spazio, FUN = mean)
 ### Barplot
 ```{r fig.height=11, fig.width=18, message=FALSE, warning=FALSE}
 
-# par(bg = '#fafafa-')
-# par(mar = c(12, 5, 5, 5))
+par(bg = '#fafafa')
+par(mar = c(12, 5, 5, 5))
 barplot(means$VALORE , border=F , names.arg=means$REGION, 
                   las=2, 
                   col= "#17a2b8", 
                   ylim=c(0,110.88) , 
                   ylab="Mq/componenti",
                   main="" )
-abline(h = mean(means$VALORE), col="tomato")
+abline(h = mean(means$VALORE), col="tomato", lwd=3)
  
 ```
 
@@ -446,12 +446,13 @@ means <- aggregate(VALORE ~ REGION, data = df_spett, FUN = mean)
 ggplot(means, aes(x=reorder(REGION, VALORE), y=VALORE)) + 
   geom_bar(stat = "identity", fill= "#17a2b8") +
   geom_hline(yintercept = mean(means$VALORE), 
-                color = "tomato", size=1) +
+                color = "tomato", size=0.8) +
   coord_flip() +
   xlab("") +
-  ylab("Euro pro capite all'anno")
-
-
+  ylab("Euro pro capite all'anno") +
+  theme_classic() +
+  theme(plot.background = element_rect(fill = "#fafafa", color = NA)) 
+  
 
 ```
 
