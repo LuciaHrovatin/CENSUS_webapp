@@ -8,6 +8,8 @@ library(ggcorrplot)
 library(cowplot)
 library(PerformanceAnalytics)
 library(GGally)
+library(knitr)
+library(kableExtra)
 
 ```
 
@@ -74,9 +76,10 @@ plot_grid(final_corplot, final_indv_corplot)
 
 ```
 
-#### As the correlographs show, the Exploratory Data Analysis (EDA) detected several high Pearson correlation coefficients. In particular, a $\rho > |\pm 0.6|$ is detected between:
-#### **staciv-anasc**, **staciv-sex**, **anasc-ireg**, and **ireg-sex** in both datasets. A strong negative correlation ($\rho = -1$) characterises the couple **sex-anasc**.
-#### These results can already cut out some classification methods having the assumption of independence between predictors.
+As the correlographs show, the Exploratory Data Analysis (EDA) detected several high Pearson correlation coefficients. In particular, a $\rho > |\pm 0.6|$ is detected between: <b>
+**staciv-anasc**, **staciv-sex**, **anasc-ireg**, and **ireg-sex** in both datasets. <b>
+A strong negative correlation ($\rho = -1$) characterises the couple **sex-anasc**. <b>
+These results can already cut out some classification methods having the assumption of independence between predictors.
 
 ### Compute more informative matrices
 ```{r fig.height=16, fig.width=16, message=FALSE, warning=FALSE}
@@ -102,3 +105,38 @@ final_indiv_chart
 
 ```
 
+The variables contained in those datasets are:<b>
+- *nquest* and *nord*: both integer numbers. nquest (household ID) represents the primary key to merge household level. In order to merge individual level information it must be considered together with nord (ID of each household member).<b>
+- *sex*: define males as 1 and females as 2.<b>
+- *anasc*: year of birth of the respondent
+- *staciv*: marital status which is inserted as integer number ranging from 1 to 6. Specifically, it identifies: <b>
+1 = celibe/nubile, 2 = convivente, 3 = Sposato/a, 4 = Vedovo/a, 5 Separato/a, and 6 Divorziato/a.
+- **ireg**: integer number (1-20) reporting the NUTS2 codes, meaning the numbers associated with the Italian regions. In particular: 
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+regions <- c("Piemonte", "Valle d'Aosta", "Lombardia",
+            "Trentino Alto Adige", "Veneto",
+            "Friuli Venezia Giulia","Liguria", 
+            "Emilia Romagna", "Toscana", "Umbria",
+            "Marche", "Lazio", "Abruzzo", "Molise",
+            "Campania", "Puglia",
+            "Basilicata", "Calabria","Sicilia", "Sardegna")
+numbers <- seq(1,20)
+
+association <- data.frame("Region"=regions,"NUTS2"=numbers)
+
+knitr::kable(association, caption = "Regions and corresponding NUTS2 code")
+
+```
+
+
+The variables' density functions highlight an absence of normality. Therefore, they do not satisfy the assumptions of statistical learning methods such as LDA (Linear Discriminant Analysis) and QDA (Quadratic Discriminant Analysis). Indeed, the assumptions that must be satisfied in LDA and QDA:
+
+* **Multivariate normality**: the predictors taken into consideration should follow a gaussian distribution for each grouping variable level.
+
+* **Homoscedasticity**: LDA assumes an equal variance among the different predictor variables, while in QDA the assumption of a common variance/covariance matrix across classes does not hold.
+
+* **Multicollinearity**: the predictor variables should not be  significantly correlated
+
+As seen above, these assumptions are not met and they are expected to perform poorly or at least worse than other classification algorithms, such as $k$-NN and Random Forest.
