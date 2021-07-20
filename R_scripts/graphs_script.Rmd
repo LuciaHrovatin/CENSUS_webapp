@@ -272,12 +272,13 @@ means <- aggregate(VALORE ~ REGION, data = df_spazio, FUN = mean)
 
 # par(bg = '#fafafa-')
 # par(mar = c(12, 5, 5, 5))
-my_bar <- barplot(means$VALORE , border=F , names.arg=means$REGION, 
+barplot(means$VALORE , border=F , names.arg=means$REGION, 
                   las=2, 
                   col= "#17a2b8", 
                   ylim=c(0,110.88) , 
                   ylab="Mq/componenti",
                   main="" )
+abline(h = mean(means$VALORE), col="tomato")
  
 ```
 
