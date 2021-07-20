@@ -1,27 +1,87 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<h1 class="text-center" style="color:#17a2b8; font-size: 32px;"><br><b>CENSUS data graphs</b><br></h1>
+<h1 class="text-center" style="color:#17a2b8; font-size: 32px;"><br><b>Visualizzazioni grafiche</b><br></h1>
 <br><br>
+<table class="table table-borderless" border="5" bordercolor="#fafafa">
+    <tr>
+        <td scope="col" style="width: 10%;">
+            <img src="{{ url_for('static', filename='consumi.svg') }}" width="70" height="70">
+        </td>
+        <td scope="col" style="width: 50%;" class="table-body-text">
+            <br>
+            <h6 style="color:#787878; font-size: 25px;">Consumi</h6>
+            <br>
+        </td scope="col" style="width: 10%;">
+        <td scope="col" style="width: 10%;">
+            <img src="{{ url_for('static', filename='cultura.svg') }}" width="70" height="70">
+        </td>
+        <td scope="col" style="width: 60%;">
+            <br>
+            <h6 style="color:#787878; font-size: 25px;">Cultura ed intrattenimento</h6>
+            <br>
+        </td>
+    </tr>
+    <tr>
+        <td scope="col" style="width: 10%;">
+            <img src="{{ url_for('static', filename='abitazione.svg') }}" width="70" height="70">
+        </td>
+        <td scope="col" style="width: 50%;">
+            <br>
+            <h6 style="color:#787878; font-size: 25px;">Abitazione</h6>
+            <br>
+        </td>
+        <td scope="col" style="width: 10%;">
+            <img src="{{ url_for('static', filename='servizi.svg') }}" width="70" height="70">
+        </td>
+        <td scope="col" style="width: 60%;">
+            <br>
+            <h6 style="color:#787878; font-size: 25px;">Servizi</h6>
+            <br>
+        </td>
+    </tr>
+</table>
+<br>
 <table class="table table-borderless">
     <tr>
         <td>
+            <center>
+            <img src="{{ url_for('static', filename='servizi.svg') }}" width="70" height="70">
             <h4 class="text-center">Prezzo medio di vendita delle case</h4>
             <h6 class="text-center" style="color:#787878;">Per appartamenti nuovi di 100 mq in zona semicentrale nei capoluoghi</h6>
            <img src="{{ url_for('static', filename='prezzi_abitaz.png') }}" alt="Prezzo medio di vendita delle case" width="407" height="338">
+           </center>
         </td>
         <td>
+            <center>
+            <img src="{{ url_for('static', filename='abitazione.svg') }}" width="70" height="70">
             <h4 class="text-center">Internet ≥ 100 Mbit/s - abbonamenti</h4>
             <h6 class="text-center" style="color:#787878;">Accessi broadband - In % sulla popolazione residente</h6>
            <img src="{{ url_for('static', filename='internet_map.png') }}" alt="Internet >= 100 Mbit/s - abbonamenti" width="457" height="328">
+           </center>
         </td>
     </tr>
 
     <tr>
         <td colspan="2">
+            <center>
+            <img src="{{ url_for('static', filename='abitazione.svg') }}" width="70" height="70">
             <h4 class="text-center">Spazio abitativo medio</h4>
             <h6 class="text-center" style="color:#787878;">Mq medi delle abitazioni/componenti medi per famiglia</h6><br>
-            <img src="{{ url_for('static', filename='spazio_abitaz_barplot.png') }}" alt="Spazio abitativo medio" width="1138" height="618">
+            <img src="{{ url_for('static', filename='spazio_abitaz_barplot.png') }}" alt="Spazio abitativo medio" width="1112" height="603">
+            <h6 class="text-center" style="color:#ff6347 ;">La linea rossa si riferisce alla media italiana (77.50 mq)</h6>
+            </center>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <center>
+            <img src="{{ url_for('static', filename='cultura.svg') }}" width="70" height="70">
+            <h4 class="text-center">Spettacoli - Spesa al botteghino</h4>
+            <h6 class="text-center" style="color:#787878;">In euro pro capite all'anno</h6><br>
+            <img src="{{ url_for('static', filename='spett.png') }}" alt="Spesa al botteghino" width="907" height="606">
+            <h6 class="text-center" style="color:#ff6347 ;">La linea rossa si riferisce alla media italiana (30.43 €)</h6>
+            </center>
         </td>
     </tr>
 </table>
