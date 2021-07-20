@@ -1,3 +1,8 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 # Explorative Data Analysis (EDA)
 
 ### Import libraries
@@ -16,24 +21,21 @@ library(kableExtra)
 ### Import final and final_individual tables
 ```{r}
 
-final <- read.csv("/Users/elypa/Downloads/final.csv")
-final_individual <- read.csv("/Users/elypa/Downloads/final_individual.csv")
+final <- read.csv("https://raw.githubusercontent.com/elypaolazz/dataset/main/final%20(1).csv")
+final_individual <- read.csv("https://raw.githubusercontent.com/elypaolazz/dataset/main/final%20(1).csv")
 
 ```
 
-### Tidy up and remove unuseful columns ("id" and "area5")
+### Tidy up 
 ```{r}
 
-final <- final[-c(1, 10)]
 final <- na.omit(final)
 
-final_individual <- final[-c(1, 10)]
 final_individual <- na.omit(final_individual)
 
 ```
 
 ### Compute variables correlation matrix
-
 ```{r message=FALSE, warning=FALSE}
 
 cor(final)
@@ -58,7 +60,7 @@ final_corplot <- ggcorrplot(corr_final, hc.order = TRUE,
                             title="final variable corelation", 
                             ggtheme=theme_bw)
 
-#final_individual
+# final_individual
 # Correlation matrix
 corr_final_indiv = round(cor(final_individual), 1)
 
@@ -76,9 +78,9 @@ plot_grid(final_corplot, final_indv_corplot)
 
 ```
 
-As the correlographs show, the Exploratory Data Analysis (EDA) detected several high Pearson correlation coefficients. In particular, a $\rho > |\pm 0.6|$ is detected between: <b>
-**staciv-anasc**, **staciv-sex**, **anasc-ireg**, and **ireg-sex** in both datasets. <b>
-A strong negative correlation ($\rho = -1$) characterises the couple **sex-anasc**. <b>
+As the correlographs show, the Exploratory Data Analysis (EDA) detected several high Pearson correlation coefficients. In particular, a $\rho > |\pm 0.6|$ is detected between: <br>
+**staciv-anasc**, **staciv-sex**, **anasc-ireg**, and **ireg-sex** in both datasets. <br>
+A strong negative correlation ($\rho = -1$) characterises the couple **sex-anasc**. <br>
 These results can already cut out some classification methods having the assumption of independence between predictors.
 
 ### Compute more informative matrices
@@ -105,11 +107,11 @@ final_indiv_chart
 
 ```
 
-The variables contained in those datasets are:<b>
-- *nquest* and *nord*: both integer numbers. nquest (household ID) represents the primary key to merge household level. In order to merge individual level information it must be considered together with nord (ID of each household member).<b>
-- *sex*: define males as 1 and females as 2.<b>
+The variables contained in those datasets are:<br>
+- *nquest* and *nord*: both integer numbers. nquest (household ID) represents the primary key to merge household level. In order to merge individual level information it must be considered together with nord (ID of each household member).<br>
+- *sex*: define males as 1 and females as 2.<br>
 - *anasc*: year of birth of the respondent
-- *staciv*: marital status which is inserted as integer number ranging from 1 to 6. Specifically, it identifies: <b>
+- *staciv*: marital status which is inserted as integer number ranging from 1 to 6. Specifically, it identifies: <br>
 1 = celibe/nubile, 2 = convivente, 3 = Sposato/a, 4 = Vedovo/a, 5 Separato/a, and 6 Divorziato/a.
 - *ireg*: integer number (1-20) reporting the NUTS2 codes, meaning the numbers associated with the Italian regions. In particular: 
 
@@ -129,6 +131,8 @@ association <- data.frame("Region"=regions,"NUTS2"=numbers)
 knitr::kable(association, caption = "Regions and corresponding NUTS2 code")
 
 ```
+
+<br><br>
 
 
 The variables' density functions highlight an absence of normality. Therefore, they do not satisfy the assumptions of statistical learning methods such as LDA (Linear Discriminant Analysis) and QDA (Quadratic Discriminant Analysis). Indeed, the assumptions that must be satisfied in LDA and QDA:
