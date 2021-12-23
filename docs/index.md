@@ -129,7 +129,7 @@ docker-compose ps
 ```
 The resulting view should be the same as the below. 
 
-![Docker container's condition](container_condition.png)
+![Docker container's condition](/docs/assets/container_condition.png)
 
 
 ### Run the script 
