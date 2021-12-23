@@ -129,7 +129,7 @@ docker-compose ps
 ```
 The resulting view should be the same as the below. 
 
-![Docker container's condition](https://github.com/LuciaHrovatin/CENSUS_webapp/blob/017e68b3e566064ad95dbe85c09005ae37e09fb9/static/container_condition.png)
+![Docker container's condition](container_condition.png)
 
 
 ### Run the script 
