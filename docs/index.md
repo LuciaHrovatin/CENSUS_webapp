@@ -129,8 +129,6 @@ docker-compose ps
 ```
 The resulting view should be the same as the below. 
 
-![Docker container's condition](/docs/assets/container_condition.png)
-
 
 ### Run the script 
 After the virtual environment and the Docker images set up, a last step must be manually performed. To start the entire data pipeline, type in the command line (with the activated virtual environment): 
@@ -158,15 +156,9 @@ Accessing each service's webserver is the recommended approach to monitor the pi
 
 -	**Airflow** [http://localhost:8080](http://localhost:8080/) a first log-in may be necessary with the chosen credentials (the default credentials are `username: airflow` and `password: airflow`). 
 
-
-![Airflow](docs/assets/airflow_2.png)
-
-
 -	**Flower** [http://localhost:5555](http://localhost:5555/) for monitoring the tasks assigned to the Celery worker.  
 
 -	**phpMyAdmim** [http://localhost:8082](http://localhost:8082/), which handles the administration of MySQL. As above, a log-in is required using the credentials chosen in the `docker-compose.yml` file (the default credentials are `server: mysql`, `user: root`, and `password: password`). 
-
-![phpMyAdmim](/docs/assets/php.png)
 
 ### Access to CENSUS web application 
 
@@ -179,7 +171,6 @@ A user can access the web application in two different ways:
 The web application, reported below, predicts the income bracket of the user, following the [IRPEF](https://www.informazionefiscale.it/Irpef-2021-aliquote-scaglioni-calcolo-novita) categories and further sub-groups.  
 Accessing the web application, you will see this page:
 
-![INTERFACE](/docs/assets/interface.png)
 
 ## Close the project and clean up 
 The script will automatically end with the deployment of the web application. However, notice that: 
