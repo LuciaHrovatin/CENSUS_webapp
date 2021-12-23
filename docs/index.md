@@ -127,8 +127,6 @@ The two-step procedure can be sidestepped by running the `docker-compose up -d` 
 ```
 docker-compose ps  
 ```
-The resulting view should be the same as the below. 
-
 
 ### Run the script 
 After the virtual environment and the Docker images set up, a last step must be manually performed. To start the entire data pipeline, type in the command line (with the activated virtual environment): 
