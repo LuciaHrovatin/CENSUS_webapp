@@ -4,7 +4,7 @@ ___
 
 The CENSUS project has been developed as final assignment of the Big Data Technologies course, offered by the University of Trento. 
 
-## Project objective 
+### Project objective 
 The project objective refers to deploying a Big Data system, taking as input specific user data and returning a prediction of his/her income group, subcategorising the IRPEF system of taxation and its income segmentation. The prediction corresponds to the output of a Random Forest model trained with data provided by the Banca d’Italia and by the Sole24ore.
 Specifically, the datasets employed are: 
 
@@ -16,7 +16,7 @@ Specifically, the datasets employed are:
 
 Whereas the Banca d’Italia offers a large amount of data per survey, only three datasets are retained: **carcom**, containing the generalties of people who taken part into the survey, **rper**, individual income, and **rfam**, income per household. The variable descriptions, along with the survey items, can be found in the [Documentazione per l’utilizzo dei microdati](https://www.bancaditalia.it/statistiche/tematiche/indagini-famiglie-imprese/bilanci-famiglie/documentazione/index.html) and in `exploratory_data_analysis.Rmd`.             
 
-## Prerequisites 
+### Prerequisites 
 
 In order to run this project, the following tools have to be installed on your machine: 
 - Python, preferably [3.9](https://www.python.org/downloads/release/python-390/) 
@@ -25,9 +25,9 @@ In order to run this project, the following tools have to be installed on your m
 
 Older versions of `docker-compose` do not support all features required by the `docker-compose.yml` file, so check that the minimum version requirements are satisfied.
 
-## Installation 
+### Installation 
 
-### Clone the repository 
+#### Clone the repository 
 
 Clone this repository in a local directory typing in the command line: 
 
@@ -35,7 +35,7 @@ Clone this repository in a local directory typing in the command line:
 git clone https://github.com/elypaolazz/BDT-Project.git
 ```
 
-### Environment 
+#### Environment 
 The creation of a virtual environment is highly suggested. If not already installed, install virtualenv:
 
 - in Unix systems:
@@ -71,7 +71,7 @@ The virtual environment can be activated as follow:
     ```
     venv\Scripts\activate
     ```
-### Requirements 
+#### Requirements 
 
 In the active virtual environment, install all libraries contained in the `requirements.txt` file:
 
@@ -79,7 +79,7 @@ In the active virtual environment, install all libraries contained in the `requi
 pip install -r requirements.txt
 ```
 
-## Usage
+### Usage
 
 This project employs few Docker images: 
 -	the official [Apache-Airflow Docker](https://hub.docker.com/r/apache/airflow) image with Celery Executor, [PostgreSQL](https://hub.docker.com/_/postgres/) image as backend and [Redis](https://hub.docker.com/_/redis/) image as message broker.
@@ -95,7 +95,7 @@ echo -e "AIRFLOW_UID=$(id -u) \nAIRFLOW_GID=0" > .env
 ```
 Further information available here: [Running Airflow in Docker](https://airflow.apache.org/docs/apache-airflow/stable/start/docker.html)
 
-### Activate Docker images 
+#### Activate Docker images 
 
 On **all operating systems**, initialise the project by running:
 ```
@@ -129,7 +129,7 @@ docker-compose ps
 ```
 
 
-### Run the script 
+#### Run the script 
 After the virtual environment and the Docker images set up, a last step must be manually performed. To start the entire data pipeline, type in the command line (with the activated virtual environment): 
 
 - in Unix systems:
@@ -150,7 +150,7 @@ The pipeline will start and follow these steps:
 -	**web application**: the CENSUS web application is launched and can be visualised by clicking or copy-pasting the localhost link (appering in the terminal) in the browser 
     
 
-### Access to webservers 
+#### Access to webservers 
 Accessing each service's webserver is the recommended approach to monitor the pipeline development. The webservers can be accessed in the browser by navigating to: 
 
 -	**Airflow** [http://localhost:8080](http://localhost:8080/) a first log-in may be necessary with the chosen credentials (the default credentials are `username: airflow` and `password: airflow`). 
@@ -162,7 +162,7 @@ Accessing each service's webserver is the recommended approach to monitor the pi
 -	**phpMyAdmim** [http://localhost:8082](http://localhost:8082/), which handles the administration of MySQL. As above, a log-in is required using the credentials chosen in the `docker-compose.yml` file (the default credentials are `server: mysql`, `user: root`, and `password: password`). 
 
 
-### Access to CENSUS web application 
+#### Access to CENSUS web application 
 
 A user can access the web application in two different ways: 
 
@@ -173,7 +173,7 @@ A user can access the web application in two different ways:
 The web application, reported below, predicts the income bracket of the user, following the [IRPEF](https://www.informazionefiscale.it/Irpef-2021-aliquote-scaglioni-calcolo-novita) categories and further sub-groups.  
 Accessing the web application, you will see this page:
 
-## Close the project and clean up 
+### Close the project and clean up 
 The script will automatically end with the deployment of the web application. However, notice that: 
 
 1. the logs of the web application will be uploaded on the terminal.
@@ -192,7 +192,7 @@ To completely cleaning up the environment (i.e., delete containers, delete volum
 docker-compose down --volumes --rmi all
 ```
 
-# Code structure
+### Code structure
 
 The backend code structure is composed by:
 -   `airflow` folder, containing the DAGs files of the first three stages of the data pipeline: ingestion phase (`first_dag.py`), ETL phase (`second_dag.py`) and MySQL storage (`third_dag.py`)
@@ -201,14 +201,14 @@ The backend code structure is composed by:
 -   `docker-compose.yml`, defining the Docker containers and their relationships  
 -   `runner.py`, triggers the entire project 
 
-## Interface code structure
+### Interface code structure
 The final interface is a Flask web application composed by:
 -   `main.py`, which contains the function needed to launch the application in the local server and the route functions (that define variables, actions and events) of the different pages 
 -   `forms.py`, file that defines and manages the application form and its fields
 -   `templates folder`, containing the HTML template for each page
 -   `static folder`, containing the CSS file for the presentation (layout, colors, and fonts) and the images
 
-## Overall code structure
+### Overall code structure
 ```
 ├── airflow
 │   └── dags
@@ -245,7 +245,7 @@ The final interface is a Flask web application composed by:
 └── runner.py
 ```
 
-## Troubleshooting
+### Troubleshooting
 When running the project, some errors may occur 😥. The most common errors, together with a possible resolution, are listed below: 
 -	Docker daemon does not reply after the `docker-compose up` command: relevant information can be found at the following link: [Configure and troubleshoot the Docker daemon](https://docs.docker.com/config/daemon/)
 
