@@ -262,7 +262,7 @@ CONNECTION ERROR: ('Connection aborted.', RemoteDisconnected('Remote end closed 
 ```
 The target machine refused the connection with the client. In this framework, it may refer to the fact that the Airflow initialisation procedure has not ended yet. 
 The suggestion is to check the Docker container status by typing `docker-compose ps` or `docker-compose [airflow-init] logs` in the command line and wait until `airflow-init` exits.       
-<br>
+
 ```
 ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host
 ```
