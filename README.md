@@ -64,7 +64,7 @@ The virtual environment can be activated as follow:
 
 - in Unix systems:
     ```
-    source venv
+    source venv/bin/activate
     ```
 
 - in Windows systems:
