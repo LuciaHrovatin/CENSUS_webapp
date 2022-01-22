@@ -252,6 +252,7 @@ The final interface is a Flask web application composed by:
 │    └── line_chart.htm
 │
 ├── .gitignore
+├── Final_report.pdf
 ├── docker-compose.yml
 ├── forms.py
 ├── main.py
