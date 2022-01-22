@@ -16,6 +16,11 @@ Specifically, the datasets employed are:
 
 Whereas the Banca d’Italia offers a large amount of data per survey, only three datasets are retained: **carcom**, containing the generalties of people who taken part into the survey, **rper**, individual income, and **rfam**, income per household. The variable descriptions, along with the survey items, can be found in the [Documentazione per l’utilizzo dei microdati](https://www.bancaditalia.it/statistiche/tematiche/indagini-famiglie-imprese/bilanci-famiglie/documentazione/index.html) and in `exploratory_data_analysis.Rmd`.             
 
+## Deployed architecture 
+
+The following pipeline has been deployed:
+![pipeline](static/pipeline.png)
+
 ## Prerequisites 
 
 In order to run this project, the following tools have to be installed on your machine: 
@@ -199,10 +204,6 @@ To completely cleaning up the environment (i.e., delete containers, delete volum
 ```
 docker-compose down --volumes --rmi all
 ```
-
-# Architecture structure 
-The following pipeline can be runned:
-![pipeline](static/architecture.png)
 
 # Code structure
 
