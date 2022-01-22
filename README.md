@@ -19,6 +19,7 @@ Whereas the Banca d’Italia offers a large amount of data per survey, only thre
 ## Deployed architecture 
 
 The following pipeline has been deployed:
+
 ![pipeline](static/pipeline.png)
 
 ## Prerequisites 
