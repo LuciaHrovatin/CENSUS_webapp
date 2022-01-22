@@ -200,6 +200,10 @@ To completely cleaning up the environment (i.e., delete containers, delete volum
 docker-compose down --volumes --rmi all
 ```
 
+# Architecture structure 
+The following pipeline can be runned:
+![pipeline](static/architecture.png)
+
 # Code structure
 
 The backend code structure is composed by:
